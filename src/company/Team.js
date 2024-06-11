@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Navbar from './company/Navbar';
 
 const TEAM = () => {
   const [data, setData] = useState([]);
@@ -28,6 +29,7 @@ const TEAM = () => {
   }
 
   return (
+    <Navbar/>
     <div className="w-[1105px] max-w-full flex flex-col items-start justify-start gap-[32px] leading-normal tracking-normal text-left text-[20px] text-black font-inter mq725:gap-[16px]">
       <b className="relative font-bold inline-block min-w-[54px] mq450:text-base">Team</b>
       <section className="self-stretch rounded bg-white box-border flex flex-col items-start justify-start pt-[19px] px-[22px] pb-6 gap-[15px] max-w-full text-left text-base text-black font-inter border-[1px] border-solid border-blue-300 mq450:pt-5 mq450:pb-5 mq450:box-border">
