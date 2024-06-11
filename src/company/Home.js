@@ -17,6 +17,12 @@ const Home = () => {
         >
           Verify OTP
         </a>
+        <a
+          href="/usermanage"
+          className="block w-64 p-3 my-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+        >
+          user management
+        </a>
       </div>
     </div>
   );
