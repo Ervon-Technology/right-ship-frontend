@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './company/Home';
 import Login from './company/Login';
 import OtpVerify from './company/Otpverify';
-import {Navbar} from './company/Navbar';
-import TEAM from './company/Usermanage';
+import Navbar from './company/Navbar';
+import TEAM from './company/Team';
 const App = () => {
   return (
     <div>
