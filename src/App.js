@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './company/Home';
 import Login from './company/Login';
+import OtpVerify from './company/Otpverify';
 const App = () => {
   return (
     <div>
@@ -10,6 +11,7 @@ const App = () => {
       <Routes>
           <Route index element={<Home />} />
           <Route path="Login" element={<Login />} />
+          <Route path="otpverify" element={<OtpVerify />} />
       </Routes>
     </BrowserRouter>
     </div>
