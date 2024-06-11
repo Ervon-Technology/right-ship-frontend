@@ -18,13 +18,13 @@ const Navbar = () => {
                   </div>
                   <nav>
                     <ul>
-                      <li className="text-white p-4 flex"><img width="24" height="24" className='me-2' src="https://img.icons8.com/windows/32/FFFFFF/plus-math.png" alt="plus-math"/><h5 className='mt-0.5 text-sm'>Create New</h5></li>
-                      <li className="text-white p-4 flex"><img width="20" height="20" className='ms-0.5 me-2.5' src="https://img.icons8.com/external-sbts2018-outline-sbts2018/58/FFFFFF/external-jobs-social-media-basic-1-sbts2018-outline-sbts2018.png" alt="external-jobs-social-media-basic-1-sbts2018-outline-sbts2018"/><h5 className='mt-0.5 text-sm'>Jobs</h5></li>
-                      <li className="text-white p-4 flex"><img width="22" height="22" className='me-2.5' src="https://img.icons8.com/external-solid-design-circle/64/FFFFFF/external-Candidates-job-services-solid-design-circle.png" alt="external-Candidates-job-services-solid-design-circle"/><h5 className='mt-0.5 text-sm'>Candidates</h5></li>
-                      <li className="text-white p-4 flex"><img width="20" height="20" className='me-2.5' src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png" alt="chat--v1"/><h5 className='mt-0.5 text-sm'>Manage Users</h5></li>
-                      <li className="text-white p-4 flex"><img width="20" height="20" className='me-2.5' src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png" alt="chat--v1"/><h5 className='mt-0.5 text-sm'>Suport</h5></li>
-                      <li className="text-white p-4 flex"><img width="20" height="20" className='me-2.5' src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png" alt="chat--v1"/><h5 className='mt-0.5 text-sm'>Settings</h5></li>
-                      <li className="text-white p-4 flex"><img width="20" height="20" className='me-2.5' src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png" alt="chat--v1"/><h5 className='mt-0.5 text-sm'>Sign Out</h5></li>
+                      <li className="text-white p-4 flex"><img width="24" height="24" className='me-2' src="https://img.icons8.com/windows/32/FFFFFF/plus-math.png" alt="plus-math"/><a href='#' className='mt-0.5 text-sm'>Create New</a></li>
+                      <li className="text-white p-4 flex"><img width="20" height="20" className='ms-0.5 me-2.5' src="https://img.icons8.com/external-sbts2018-outline-sbts2018/58/FFFFFF/external-jobs-social-media-basic-1-sbts2018-outline-sbts2018.png" alt="external-jobs-social-media-basic-1-sbts2018-outline-sbts2018"/><a href='#' className='mt-0.5 text-sm'>Jobs</a></li>
+                      <li className="text-white p-4 flex"><img width="22" height="22" className='me-2.5' src="https://img.icons8.com/external-solid-design-circle/64/FFFFFF/external-Candidates-job-services-solid-design-circle.png" alt="external-Candidates-job-services-solid-design-circle"/><a href='#' className='mt-0.5 text-sm'>Candidates</a></li>
+                      <li className="text-white p-4 flex"><img width="20" height="20" className='me-2.5' src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png" alt="chat--v1"/><a href='#' className='mt-0.5 text-sm'>Manage Users</a></li>
+                      <li className="text-white p-4 flex"><img width="20" height="20" className='me-2.5' src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png" alt="chat--v1"/><a href='#' className='mt-0.5 text-sm'>Suport</a></li>
+                      <li className="text-white p-4 flex"><img width="20" height="20" className='me-2.5' src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png" alt="chat--v1"/><a href='#' className='mt-0.5 text-sm'>Settings</a></li>
+                      <li className="text-white p-4 flex"><img width="20" height="20" className='me-2.5' src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png" alt="chat--v1"/><a href='#' className='mt-0.5 text-sm'>Sign Out</a></li>
                     </ul>
                   </nav>
                 </div>
