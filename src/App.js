@@ -6,6 +6,7 @@ import Login from './company/Login';
 import OtpVerify from './company/Otpverify';
 import Navbar from './company/Navbar';
 import TEAM from './company/Team';
+import Footer from './company/Footer'
 const App = () => {
   return (
     <div>
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="otpverify" element={<OtpVerify />} />
           <Route path="navbar" element={<Navbar/>} />
           <Route path="usermanagement" element={<TEAM/>}/>
+          <Route path="footer" element={<Footer/>}/>
       </Routes>
     </BrowserRouter>
     </div>
