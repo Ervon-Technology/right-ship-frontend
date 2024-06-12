@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <div id='footer'>
+    <div id='footer' className='main-container'>
         <footer className="bg-white mb-3 py-4 px-4 border-t absolute inset-x-0 bottom-0">
           <p className="p-4 text-sm text-black font-medium">&thinsp;© 2024 RightShips</p>
           <nav className="space-x-4 px-5">

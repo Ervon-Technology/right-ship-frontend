@@ -65,7 +65,9 @@ const OtpVerify = () => {
   // Convert timer value to minutes and seconds
   const minutes = Math.floor(resendTimer / 60);
   const seconds = resendTimer % 60;
-
+const handlecmp = ()=>{
+  window.location = '/emp'
+}
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="p-4 shadow-md bg-white rounded-md">
@@ -89,6 +91,7 @@ const OtpVerify = () => {
           <button
             type="submit"
             className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+            onClick={handlecmp}
           >
             Verify OTP
           </button>

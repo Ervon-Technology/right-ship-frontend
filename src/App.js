@@ -1,35 +1,40 @@
 import React from 'react';
+import Sidebar from './company/Sidebar';
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './company/Home';
-import Login from './company/Login';
-import OtpVerify from './company/Otpverify';
-import { Sidebar, SidebarItem } from './company/Sidebar';
-import { Plus, BriefcaseBusiness, UsersRound, MessagesSquare } from 'lucide-react'
-import TEAM from './company/Team';
+import Empteam from './company/Manageemp';
 import Footer from './company/Footer'
+import Login from './company/Login';
+import OtpVerify from './company/Otpverify'
+
+
 const App = () => {
   return (
-    <div>
-      <BrowserRouter>
-        <div className='flex'>
-        <Sidebar>
-            <SidebarItem icon={<Plus size={20} />} text="Create New" />
-            <SidebarItem icon={<BriefcaseBusiness size={20} />} text="Jobs" />
-            <SidebarItem icon={<UsersRound size={20} />} text="Candidates" />
-            <SidebarItem icon={<MessagesSquare size={20} />} text="Manage Users" />
-            <SidebarItem icon={<MessagesSquare size={20} />} text="Support" />
-        </Sidebar>
-        </div>
-        <Routes>
-            <Route index element={<Home />} />
-            <Route path="Login" element={<Login />} />
-            <Route path="otpverify" element={<OtpVerify />} />
-            <Route path="usermanagement" element={<TEAM/>}/>
-            <Route path="footer" element={<Footer/>}/>
-        </Routes>
+    <BrowserRouter>
+      <Routes>
+        {/* Route with Sidebar */}
+        <Route path="/emp" element={
+          <div className='flex'>
+            <Sidebar />
+            <div className="content">
+              <Empteam />
+            </div>
+          </div>
+        } />
+        <Route path="/footer" element={
+          <div className='flex flex-row'>
+            <Sidebar />
+            <div className="content">
+              <Footer/>
+            </div>
+          </div>
+        } />
+        {/* Route without Sidebar (Login Page) */}
+        <Route path="/" element={<Login/>} />
+        <Route path="/otpverify" element={<OtpVerify/>} />
+      </Routes>
     </BrowserRouter>
-    </div>
-  )
-}
+  );
+};
+
 export default App;
