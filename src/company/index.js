@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Empteam from './Navbar';
+import Empteam from './Manageemp';
+
 const Company = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -11,10 +12,12 @@ const Company = () => {
     <div id="navbar" className="flex flex-col h-screen">
       {/* Header section */}
       <nav className="bg-white px-4 py-2 border-b flex justify-between items-center z-10">
+        {/* Button to toggle navbar */}
         <button
           onClick={toggleNavbar}
           className="text-black bg-none p-1 rounded burgerMenu"
         >
+          {/* Conditional rendering based on isOpen state */}
           {isOpen ? (
             <img
               width="25"
@@ -30,6 +33,8 @@ const Company = () => {
             </div>
           )}
         </button>
+
+        {/* Other header content */}
         <div className="flex items-center justify-end flex-1">
           <div className="content1 m-3 px-3 flex text-sm font-bold">
             <img
@@ -82,9 +87,8 @@ const Company = () => {
       <div className="relative flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <div
-          className={`fixed inset-y-0 left-0 z-20 transform ${
-            isOpen ? 'translate-x-0' : '-translate-x-full'
-          } transition-transform duration-300 ease-in-out bg-customBlue w-64 p-4 h-full`}
+          className={`fixed inset-y-0 left-0 z-20 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+            } transition-transform duration-300 ease-in-out bg-customBlue w-64 p-4 h-full`}
         >
           <div className="flex justify-between items-center mb-4">
             <button
@@ -105,7 +109,7 @@ const Company = () => {
           </div>
           <nav>
             <ul>
-              <li className="text-white p-4 flex">
+              <li className="text-white hover:bg-gray-500 rounded p-4 flex group">
                 <img
                   width="24"
                   height="24"
@@ -113,11 +117,11 @@ const Company = () => {
                   src="https://img.icons8.com/windows/32/FFFFFF/plus-math.png"
                   alt="plus-math"
                 />
-                <a href="/" className="mt-0.5 text-sm">
+                <a href="/" className="mt-0.5 text-sm  px-2">
                   Create New
                 </a>
               </li>
-              <li className="text-white p-4 flex">
+              <li className="text-white p-4 hover:bg-gray-500 rounded flex group">
                 <img
                   width="20"
                   height="20"
@@ -125,11 +129,11 @@ const Company = () => {
                   src="https://img.icons8.com/external-sbts2018-outline-sbts2018/58/FFFFFF/external-jobs-social-media-basic-1-sbts2018-outline-sbts2018.png"
                   alt="external-jobs-social-media-basic-1-sbts2018-outline-sbts2018"
                 />
-                <a href="/" className="mt-0.5 text-sm">
+                <a href="/" className="mt-0.5 text-sm  px-2">
                   Jobs
                 </a>
               </li>
-              <li className="text-white p-4 flex">
+              <li className="text-white hover:bg-gray-500 rounded p-4 flex group">
                 <img
                   width="22"
                   height="22"
@@ -137,11 +141,11 @@ const Company = () => {
                   src="https://img.icons8.com/external-solid-design-circle/64/FFFFFF/external-Candidates-job-services-solid-design-circle.png"
                   alt="external-Candidates-job-services-solid-design-circle"
                 />
-                <a href="/" className="mt-0.5 text-sm">
+                <a href="/" className="mt-0.5 text-sm  px-2">
                   Candidates
                 </a>
               </li>
-              <li className="text-white p-4 flex">
+              <li className="text-white p-4 flex hover:bg-gray-500 rounded  group">
                 <img
                   width="20"
                   height="20"
@@ -149,11 +153,11 @@ const Company = () => {
                   src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png"
                   alt="chat--v1"
                 />
-                <a href="/" className="mt-0.5 text-sm">
+                <a href="/" className="mt-0.5 text-sm px-2">
                   Manage Users
                 </a>
               </li>
-              <li className="text-white p-4 flex">
+              <li className="text-white hover:bg-gray-500 rounded p-4 flex group">
                 <img
                   width="20"
                   height="20"
@@ -161,11 +165,11 @@ const Company = () => {
                   src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png"
                   alt="chat--v1"
                 />
-                <a href="/" className="mt-0.5 text-sm">
+                <a href="/" className="mt-0.5 text-sm  px-2">
                   Support
                 </a>
               </li>
-              <li className="text-white p-4 flex">
+              <li className="text-white p-4 hover:bg-gray-500 rounded flex group">
                 <img
                   width="20"
                   height="20"
@@ -173,11 +177,11 @@ const Company = () => {
                   src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png"
                   alt="chat--v1"
                 />
-                <a href="/" className="mt-0.5 text-sm">
+                <a href="/" className="mt-0.5 text-sm  px-2">
                   Settings
                 </a>
               </li>
-              <li className="text-white p-4 flex">
+              <li className="text-white p-4 hover:bg-gray-500 rounded flex group">
                 <img
                   width="20"
                   height="20"
@@ -185,7 +189,7 @@ const Company = () => {
                   src="https://img.icons8.com/fluency-systems-regular/48/FFFFFF/chat--v1.png"
                   alt="chat--v1"
                 />
-                <a href="/" className="mt-0.5 text-sm">
+                <a href="/" className="mt-0.5 text-sm  px-2">
                   Sign Out
                 </a>
               </li>
@@ -196,18 +200,21 @@ const Company = () => {
         {/* Main content area */}
         <div className="flex-1 px-5 py-2 relative overflow-y-auto">
           {/* TEAM component */}
-          <div className={`absolute right-0 top-0 mt-10 ${isOpen ? 'w-3/3 right-8' : 'w-full'}`}>
+          <div className={`absolute right-0 top-4 ${isOpen ? 'w-2/1 ' : 'w-full'}`}>
             <Empteam />
           </div>
         </div>
       </div>
 
       {/* Footer section */}
-      <footer className="bg-white px-4 py-2 border-t z-10">
+      <footer className="bg-white px-4 py-2 border-t z-10 text-right">
         <div className="container mx-auto">
-          {/* Footer content here */}
+          <dl>
+            <dt className="text-lg font-semibold">Footer Title</dt>
+          </dl>
         </div>
       </footer>
+
     </div>
   );
 };
