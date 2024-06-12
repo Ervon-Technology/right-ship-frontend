@@ -66,7 +66,7 @@ const OtpVerify = () => {
   const minutes = Math.floor(resendTimer / 60);
   const seconds = resendTimer % 60;
 const handlecmp = ()=>{
-  window.location = '/cmp'
+  window.location = '/emp'
 }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

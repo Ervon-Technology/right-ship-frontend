@@ -1,25 +1,31 @@
 import React from 'react';
-import { Sidebar, SidebarItem } from './company/Sidebar';
-import { Plus, BriefcaseBusiness, UsersRound, MessagesSquare } from 'lucide-react'
+import Sidebar from './company/Sidebar';
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Empteam from './company/Manageemp';
+import Login from './company/Login';
+import OtpVerify from './company/Otpverify'
+
 const App = () => {
   return (
-    <div className='flex'>
-      <Sidebar>
-          <SidebarItem icon={<Plus size={20} />} text="Create New" />
-          <SidebarItem icon={<BriefcaseBusiness size={20} />} text="Jobs" />
-          <SidebarItem icon={<UsersRound size={20} />} text="Candidates" />
-          <SidebarItem icon={<MessagesSquare size={20} />} text="Manage Users" />
-          <SidebarItem icon={<MessagesSquare size={20} />} text="Support" />
-      </Sidebar>
-      <BrowserRouter>
+    <BrowserRouter>
       <Routes>
-          <Route path="/" element={<Empteam />} />
+        {/* Route with Sidebar */}
+        <Route path="/emp" element={
+          <div className='flex'>
+            <Sidebar />
+            <div className="content">
+              <Empteam />
+            </div>
+          </div>
+        } />
+
+        {/* Route without Sidebar (Login Page) */}
+        <Route path="/" element={<Login/>} />
+        <Route path="/otpverify" element={<OtpVerify/>} />
       </Routes>
     </BrowserRouter>
-    </div>
-  )
-}
+  );
+};
+
 export default App;
