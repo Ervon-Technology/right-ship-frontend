@@ -2,6 +2,11 @@ import React from 'react';
 import { Sidebar, SidebarItem } from './company/Sidebar';
 import { Plus, BriefcaseBusiness, UsersRound, MessagesSquare } from 'lucide-react'
 import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from './company/Login';
+import OtpVerify from './company/Otpverify';
+import Company from './company/index';
+import Empteam from './company/Manageemp';
 import Footer from './company/Footer';
 const App = () => {
   return (
@@ -14,8 +19,14 @@ const App = () => {
           <SidebarItem icon={<MessagesSquare size={20} />} text="Support" />
       </Sidebar>
       <Footer/>
-      
-
+      <BrowserRouter>
+      <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="otpverify" element={<OtpVerify />} />
+          <Route path="/cmp" element={<Company/>}/>
+          <Route path="/emp" element={<Empteam/>}/>
+      </Routes>
+    </BrowserRouter>
     </div>
   )
 }

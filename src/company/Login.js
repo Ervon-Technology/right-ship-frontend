@@ -1,6 +1,11 @@
 import React from 'react'
 
 const Login = () => {
+
+
+const handleotp = ()=>{
+    window.location = '/otpverify'
+}
     return (
         <div>
             <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -22,7 +27,7 @@ const Login = () => {
                             placeholder="0000000000" 
                         />
                     </div>
-                    <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleotp}>
                         Send OTP
                     </button>
                 </div>
