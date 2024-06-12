@@ -38,7 +38,9 @@ const Empteam = () => {
   const handleDropdownToggle = (index) => {
     const newData = [...filteredData];
     newData[index].expanded = !newData[index].expanded;
+    setFilteredData(newData);  // Update the state with the modified data
   };
+
 
   const handleAddUserClick = () => {
     setShowPopup(true);
@@ -48,7 +50,7 @@ const Empteam = () => {
     setShowPopup(false);
   };
   const handleFormSubmit = (e) => {
-    e.preventDefault();  
+    e.preventDefault();
     setShowPopup(false);
   };
 
@@ -125,19 +127,19 @@ const Empteam = () => {
                             className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 shadow-lg rounded-lg py-1 z-10"
                           >
                             <i
-                             
+
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                             >
                               Option 1
                             </i>
                             <i
-                             
+
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                             >
                               Option 2
                             </i>
                             <i
-                             
+
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                             >
                               Option 3
@@ -171,7 +173,7 @@ const Empteam = () => {
                 />
               </div>
               <div className="mb-4">
-              <input
+                <input
                   type="checkbox"
                   name="sendInvite"
                 />
