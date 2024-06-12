@@ -6,14 +6,6 @@ const Empteam = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [newUser, setNewUser] = useState({
-    name: "",
-    email: "",
-    contact: "",
-    status: "",
-    role: "",
-    sendInvite: false
-  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,9 +48,7 @@ const Empteam = () => {
     setShowPopup(false);
   };
   const handleFormSubmit = (e) => {
-    e.preventDefault();
-    // Here you can add the code to handle the form submission, like sending the data to the server
-    console.log(newUser);
+    e.preventDefault();  
     setShowPopup(false);
   };
 
@@ -134,24 +124,24 @@ const Empteam = () => {
                           <div
                             className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 shadow-lg rounded-lg py-1 z-10"
                           >
-                            <a
-                              href="#"
+                            <i
+                             
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                             >
                               Option 1
-                            </a>
-                            <a
-                              href="#"
+                            </i>
+                            <i
+                             
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                             >
                               Option 2
-                            </a>
-                            <a
-                              href="#"
+                            </i>
+                            <i
+                             
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                             >
                               Option 3
-                            </a>
+                            </i>
                           </div>
                         )}
                       </td>
