@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Empteam from './company/Manageemp';
 import Login from './company/Login';
 import OtpVerify from './company/Otpverify'
+import LoadingScreen from './company/users'
 
 const App = () => {
   return (
@@ -16,6 +17,14 @@ const App = () => {
             <Sidebar />
             <div className="content">
               <Empteam />
+            </div>
+          </div>
+        } />
+        <Route path="/users" element={
+          <div className='flex'>
+            <Sidebar />
+            <div className="content">
+              <LoadingScreen />
             </div>
           </div>
         } />

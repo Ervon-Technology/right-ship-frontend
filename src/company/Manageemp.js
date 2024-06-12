@@ -10,7 +10,7 @@ const Empteam = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://655500aa63cafc694fe75243.mockapi.io/crud-youtube", {
+        const response = await fetch("https://666995dc2e964a6dfed5c163.mockapi.io/Akash", {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -61,21 +61,21 @@ const Empteam = () => {
   return (
     <div className="main-container p-4 h-full overflow-hidden">
       <div className="container mx-auto h-full">
-        <div className="man-w-[1000px] border border-black px-4 py-2 mx-auto h-full">
-          <div className="flex justify-between items-center mb-4">
+        <div className="max-h-[460px] border-2 border-gray-300 px-4 py-2  mx-auto h-full">
+          <div className="flex justify-between pt-2 items-center mb-4">
             <div className="flex items-center">
-              <label className="font-medium px-4 py-2 border border-black">Show All</label>
-            </div>
-            <div className="flex items-center">
+              <label className="font-medium hover:bg-sky-800 px-4 py-2 border-2 font-bold border-gray-300 hover:text-white rounded hover:border-white">Show All</label>
               <input
-                className="border border-black px-4 py-2 w-full sm:w-auto mr-2"
+                className="border-2 border-gray-300  ml-4 px-4 py-2 w-full sm:w-auto mr-2"
                 type="text"
                 placeholder="Search by name & Email"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
+            </div>
+            <div className="flex items-center">
               <button
-                className="border border-black px-4 py-2 w-full sm:w-auto mr-2 hover:bg-gray-300"
+                className="border-2 border-gray-300 px-4 py-2 w-full sm:w-auto mr-2 hover:bg-sky-800 hover:font-bold hover:text-white rounded-sm hover:border-white"
                 onClick={handleAddUserClick}
               >
                 Add User
@@ -85,8 +85,8 @@ const Empteam = () => {
 
           <div className="overflow-x-auto mt-4 h-full border-5 border-blue-300">
             <div style={{ maxHeight: "350px", overflowY: "auto" }}>
-              <table className="min-w-full bg-white border-collapse border border-black">
-                <thead className="bg-gray-100 sticky top-0">
+              <table className="min-w-full bg-white border-collapse border-2 border-gray-300">
+                <thead className="bg-gray-100 ">
                   <tr>
                     <th className="px-4 py-2 text-left font-medium" style={{ minWidth: '50px' }}>
                       <input className="h-4 w-4 border-gray-300 rounded" type="checkbox" />
@@ -101,7 +101,7 @@ const Empteam = () => {
                 </thead>
                 <tbody>
                   {filteredData.map((userData, index) => (
-                    <tr key={index} className="border border-black bg-white h-8">
+                    <tr key={index} className="border-2 border-gray-300 bg-white h-8">
                       <td className="px-4 py-2">
                         <input className="h-4 w-4 border-gray-300 rounded" type="checkbox" />
                       </td>
@@ -183,14 +183,14 @@ const Empteam = () => {
               </div>
               <div className="flex items-center justify-between">
                 <div
-                  className="border hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
+                  className="font-medium hover:bg-sky-800 px-4 py-2 border-2 font-bold border-gray-300 hover:text-white rounded-sm hover:border-white"
                   type="submit"
                   onClick={handlePopupClose}
                 >
                   Cancel
                 </div>
                 <button
-                  className="border hover:bg-gray-300 text-gray-700 font-bold py-2 px-4  focus:outline-none focus:shadow-outline"
+                  className="font-medium hover:bg-sky-800 px-4 py-2 border-2 font-bold border-gray-300 hover:text-white rounded-sm hover:border-white"
                   type="submit"
                 >
                   Add
