@@ -20,14 +20,6 @@ const App = () => {
             </div>
           </div>
         } />
-        <Route path="/users" element={
-          <div className='flex'>
-            <Sidebar />
-            <div className="content">
-              <LoadingScreen />
-            </div>
-          </div>
-        } />
 
         {/* Route without Sidebar (Login Page) */}
         <Route path="/" element={<Login/>} />
