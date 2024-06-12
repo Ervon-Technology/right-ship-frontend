@@ -2,6 +2,7 @@ import React from 'react';
 import { Sidebar, SidebarItem } from './company/Sidebar';
 import { Plus, BriefcaseBusiness, UsersRound, MessagesSquare } from 'lucide-react'
 import './App.css';
+import Footer from './company/Footer';
 const App = () => {
   return (
     <div className='flex'>
@@ -12,6 +13,7 @@ const App = () => {
           <SidebarItem icon={<MessagesSquare size={20} />} text="Manage Users" />
           <SidebarItem icon={<MessagesSquare size={20} />} text="Support" />
       </Sidebar>
+      <Footer/>
       
 
     </div>
