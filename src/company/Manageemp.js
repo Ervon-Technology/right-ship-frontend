@@ -60,12 +60,12 @@ const Empteam = () => {
   }
 
   return (
-    <div className="main-container p-4 h-full overflow-hidden">
+    <div className="main-container p-4  overflow-hidden">
       <div className="container mx-auto h-full">
-        <div className="max-h-[460px] border-2 border-gray-300 px-4 py-2  mx-auto h-full">
+        <div className=" border-2 border-gray-300 px-4 py-2  mx-auto h-full">
           <div className="flex justify-between pt-2 items-center mb-4">
             <div className="flex items-center">
-              <label className="font-medium hover:bg-sky-800 px-4 py-2 border-2 font-bold border-gray-300 hover:text-white rounded hover:border-white">Show All</label>
+              <label className="font-medium hover:bg-sky-800 px-4 py-2 border-2  border-gray-300 hover:text-white rounded hover:border-white">Show All</label>
               <input
                 className="border-2 border-gray-300  ml-4 px-4 py-2 w-full sm:w-auto mr-2"
                 type="text"
@@ -85,7 +85,7 @@ const Empteam = () => {
           </div>
 
           <div className="overflow-x-auto mt-4 h-full border-5 border-blue-300">
-            <div style={{ maxHeight: "350px", overflowY: "auto" }}>
+            <div style={{ maxHeight: "380px", overflowY: "auto" }}>
               <table className="min-w-full bg-white border-collapse border-2 border-gray-300">
                 <thead className="bg-gray-100 ">
                   <tr>

@@ -14,18 +14,14 @@ const App = () => {
       <Routes>
         {/* Route with Sidebar */}
         <Route path="/emp" element={
-          <div className='flex'>
+          <div className='flex min-h-screen'>
             <Sidebar />
-            <div className="content">
-              <Empteam />
-            </div>
-          </div>
-        } />
-        <Route path="/footer" element={
-          <div className='flex flex-row'>
-            <Sidebar />
-            <div className="content">
-              <Footer/>
+            <div className="flex flex-col flex-1">
+              <div className='flex-grow'>
+              <Footer />
+                <Empteam />
+                <Footer />
+              </div>
             </div>
           </div>
         } />
