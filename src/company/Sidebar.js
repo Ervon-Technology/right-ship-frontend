@@ -13,7 +13,7 @@ const Sidebar = () => {
 
   return (
     <div id="sidebar">
-      <div className='h-screen'>
+      <div className='h-full'>
         <nav className="h-full flex flex-col bg-customBlue border-r shadow-sm">
           <div className="p-5 pb-2 flex justify-between items-center">
             <button onClick={() => setExpanded((current) => !current)} className="text-black bg-none p-1 rounded flex">
