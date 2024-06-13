@@ -6,6 +6,7 @@ import Empteam from './company/Manageemp';
 import Footer from './company/Footer'
 import Login from './company/Login';
 import OtpVerify from './company/Otpverify'
+import Header from './company/Header';
 
 
 const App = () => {
@@ -18,13 +19,12 @@ const App = () => {
             <Sidebar />
             <div className="flex flex-col flex-1">
               <div className='flex-grow'>
-              <Footer />
+                <Header />
                 <Empteam />
                 <Footer />
               </div>
             </div>
-          </div>
-        } />
+          </div>} />
         {/* Route without Sidebar (Login Page) */}
         <Route path="/" element={<Login/>} />
         <Route path="/otpverify" element={<OtpVerify/>} />

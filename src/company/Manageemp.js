@@ -85,7 +85,7 @@ const Empteam = () => {
           </div>
 
           <div className="overflow-x-auto mt-4 h-full border-5 border-blue-300">
-            <div style={{ maxHeight: "380px", overflowY: "auto" }}>
+            <div style={{ maxHeight: "full", overflowY: "auto" }}>
               <table className="min-w-full bg-white border-collapse border-2 border-gray-300">
                 <thead className="bg-gray-100 ">
                   <tr>
@@ -184,14 +184,14 @@ const Empteam = () => {
               </div>
               <div className="flex items-center justify-between">
                 <div
-                  className="font-medium hover:bg-sky-800 px-4 py-2 border-2 font-bold border-gray-300 hover:text-white rounded-sm hover:border-white"
+                  className="font-medium hover:bg-sky-800 px-4 py-2 border-2 border-gray-300 hover:text-white rounded-sm hover:border-white"
                   type="submit"
                   onClick={handlePopupClose}
                 >
                   Cancel
                 </div>
                 <button
-                  className="font-medium hover:bg-sky-800 px-4 py-2 border-2 font-bold border-gray-300 hover:text-white rounded-sm hover:border-white"
+                  className="font-medium hover:bg-sky-800 px-4 py-2 border-2 border-gray-300 hover:text-white rounded-sm hover:border-white"
                   type="submit"
                 >
                   Add
