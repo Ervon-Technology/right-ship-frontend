@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import React from 'react';
+import {EllipsisVertical } from 'lucide-react'
 
 
 const Empteam = () => {
@@ -85,7 +86,7 @@ const Empteam = () => {
           </div>
 
           <div className="overflow-x-auto mt-4 h-full border-5 border-blue-300">
-            <div style={{ maxHeight: "full", overflowY: "auto" }}>
+            <div style={{ maxHeight: "425px", overflowY: "auto" }}>
               <table className="min-w-full bg-white border-collapse border-2 border-gray-300">
                 <thead className="bg-gray-100 ">
                   <tr>
@@ -116,12 +117,7 @@ const Empteam = () => {
                           className="focus:outline-none"
                           onClick={() => handleDropdownToggle(index)}
                         >
-                          <img
-                            width="24"
-                            height="24"
-                            src="https://img.icons8.com/material-rounded/24/menu-2.png"
-                            alt="menu-2"
-                          />
+                          <EllipsisVertical />
                         </button>
                         {userData.expanded && (
                           <div
