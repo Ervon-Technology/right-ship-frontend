@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Empteam from './company/Manageemp';
 import Login from './company/Login';
 import OtpVerify from './company/Otpverify'
+import Candidatelist from './company/Candidatelist'
 
 
 const App = () => {
@@ -17,6 +18,14 @@ const App = () => {
             <Sidebar />
             <div className="content">
               <Empteam />
+            </div>
+          </div>
+        } />
+        <Route path="/clist" element={
+          <div className='flex'>
+            <Sidebar />
+            <div className="justify-right content grow">
+              <Candidatelist /> 
             </div>
           </div>
         } />
