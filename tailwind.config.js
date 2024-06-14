@@ -7,6 +7,8 @@ module.exports = {
       colors: {
         customBlue: '#084C73',
         customGrey: '#484848',
+        customSky1: '#DDE5FF',
+        customSky2: '#F7F8FE',
       },
     },
   },
