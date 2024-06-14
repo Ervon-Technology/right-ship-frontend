@@ -25,7 +25,7 @@ const Sidebar = () => {
             </button>
           </div>
           <ul className='flex-1 px-3'>
-            <SidebarItem icon={<Plus size={20} />} text="Create New" to="/create-new" />
+            <SidebarItem icon={<Plus size={20} />} text="Create New" to="/add-job-basics" />
             <SidebarItem icon={<BriefcaseBusiness size={20} />} text="Jobs" to="/jobs" />
             <SidebarItem icon={<UsersRound size={20} />} text="Candidates" to="/candidates" />
             <SidebarItem icon={<MessagesSquare size={20} />} text="Manage Users" to="/manage-users" />
