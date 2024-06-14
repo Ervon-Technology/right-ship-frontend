@@ -16,15 +16,15 @@ const Sidebar = () => {
 
   return (
     <div id="sidebar">
-      <div className='h-screen sticky top-0'>
+      <div className='h-screen sticky top-0 transition-all'>
         <nav className="h-full flex flex-col bg-customBlue border-r shadow-sm">
           <div className="p-5 pb-2 flex justify-between items-center">
             <button onClick={() => setExpanded((current) => !current)} className="text-black bg-none p-1 rounded flex">
               {expanded ? <X color='white' size={20} /> : <Menu color='white' size={20} />}
-              <span className={`overflow-hidden text-sm text-white transition-all ${expanded ? " ml-3 " : " hidden "}`}>Collapse</span>
+              <span className={`overflow-hidden text-sm text-white ${expanded ? " ml-3 " : " hidden "}`}>Collapse</span>
             </button>
           </div>
-          <ul className='flex-1 px-3'>
+          <ul className='flex-1 px-3 transition duration-700"'>
             <SidebarItem icon={<Plus size={20} />} text="Create New" to="/add-job-basics" />
             <SidebarItem icon={<BriefcaseBusiness size={20} />} text="Jobs" to="/jobs" />
             <SidebarItem icon={<UsersRound size={20} />} text="Candidates" to="/candidates" />

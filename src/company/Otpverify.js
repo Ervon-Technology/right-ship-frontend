@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const OtpVerify = () => {
   const [otp, setOtp] = useState(Array(6).fill("")); // Initialize an array of 6 empty strings
   const [resendTimer, setResendTimer] = useState(120); // Initial timer value (in seconds)
   const timerInterval = useRef(null); // Ref to store the interval reference
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Function to start the countdown timer
@@ -60,14 +62,21 @@ const OtpVerify = () => {
     const otpString = otp.join("");
     // Simulate verification of OTP (replace with actual logic)
     console.log("Verifying OTP:", otpString);
+    
+    // If OTP verification is successful
+    const isOtpValid = true; // Replace this with actual validation
+
+    if (isOtpValid) {
+      navigate('/employeer-dashboard');
+    } else {
+      // Handle invalid OTP scenario
+    }
   };
 
   // Convert timer value to minutes and seconds
   const minutes = Math.floor(resendTimer / 60);
   const seconds = resendTimer % 60;
-const handlecmp = ()=>{
-  window.location = '/emp'
-}
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="p-4 shadow-md bg-white rounded-md">
@@ -91,7 +100,6 @@ const handlecmp = ()=>{
           <button
             type="submit"
             className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-            onClick={handlecmp}
           >
             Verify OTP
           </button>
