@@ -47,7 +47,7 @@ const AddPayAndBenefits = () => {
                 ></textarea>
                 <div className="flex justify-between mt-">
                     <Link to="/add-job-basics" className="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">&larr; Back</Link>
-                    <Link to="/add-pay-and-benefits" className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700">Continue &rarr;</Link>
+                    <Link to="/edit-jobs" className="bg-customBlue hover:bg-customBlue2 text-white font-bold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700">Continue &rarr;</Link>
                 </div>
             </div>
       </div>

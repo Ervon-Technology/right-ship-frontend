@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Plus, BriefcaseBusiness, UsersRound, MessagesSquare } from 'lucide-react';
+import { Menu, X, Plus, BriefcaseBusiness, UsersRound, MessagesSquare, LogOut, Settings } from 'lucide-react';
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(true);
@@ -28,8 +28,10 @@ const Sidebar = () => {
             <SidebarItem icon={<Plus size={20} />} text="Create New" to="/add-job-basics" />
             <SidebarItem icon={<BriefcaseBusiness size={20} />} text="Jobs" to="/jobs" />
             <SidebarItem icon={<UsersRound size={20} />} text="Candidates" to="/candidates" />
-            <SidebarItem icon={<MessagesSquare size={20} />} text="Manage Users" to="/manage-users" />
+            <SidebarItem icon={<MessagesSquare size={20} />} text="Manage Team" to="/manage-users" />
             <SidebarItem icon={<MessagesSquare size={20} />} text="Support" to="/support" />
+            <SidebarItem icon={<Settings size={20} />} text="Settings" to="/setting" />
+            <SidebarItem icon={<LogOut size={20} />} text="Sign Out" to="/sign out" />
           </ul>
         </nav>
       </div>

@@ -86,7 +86,7 @@ const ManageUsers = () => {
           </div>
 
           <div className="overflow-x-auto mt-4 h-full border-5 border-blue-300">
-            <div style={{ maxHeight: "425px", overflowY: "auto" }}>
+            <div style={{  }}>
               <table className="min-w-full bg-white border-collapse border-2 border-gray-300">
                 <thead className="bg-gray-100 ">
                   <tr>

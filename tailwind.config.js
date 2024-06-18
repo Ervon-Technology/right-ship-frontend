@@ -10,6 +10,7 @@ module.exports = {
         customGrey: '#484848',
         customSky1: '#DDE5FF',
         customSky2: '#F7F8FE',
+        customGrey: '#484848',
       },
     },
   },

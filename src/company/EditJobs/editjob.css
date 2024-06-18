@@ -1,0 +1,72 @@
+/* styles.css */
+@keyframes modal-overlay-show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes modal-overlay-hide {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes modal-content-show {
+    from {
+      transform: translate(-50%, -40%);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes modal-content-hide {
+    from {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+    to {
+      transform: translate(-50%, -40%);
+      opacity: 0;
+    }
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    animation: modal-overlay-show 0.3s ease-out;
+  }
+  
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    outline: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: modal-content-show 0.3s ease-out;
+  }
+  
+  .modal-overlay.modal-hide {
+    animation: modal-overlay-hide 0.3s ease-out forwards;
+  }
+  
+  .modal-content.modal-hide {
+    animation: modal-content-hide 0.3s ease-out forwards;
+  }
+  
