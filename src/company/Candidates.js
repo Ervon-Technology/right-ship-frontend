@@ -116,7 +116,7 @@ const Candidates = () => {
         <span className='font-semibold border py-1 px-2 border-slate-300'>
           Page {page} of {totalPages}
         </span>
-        <Link>
+        <Link to="/candidate-details">
             <button
               className="bg-customBlue hover:bg-customBlue2 text-white py-1 px-5 rounded"
               onClick={() => setPage(page < totalPages ? page + 1 : totalPages)}
