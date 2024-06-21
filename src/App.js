@@ -16,6 +16,7 @@ import Footer from './company/Footer'
 import Login from './company/Login';
 import OtpVerify from './company/Otpverify'
 import Header from './company/Header';
+import RegistrationForm from './company/RegistrationForm';
 
 
 
@@ -145,8 +146,8 @@ const App = () => {
               </div>
             </div>
           </div>} /> 
-
-        <Route path="/" element={<Login/>} />
+          <Route path="/" element={<RegistrationForm/>} />
+        <Route path="/login" element={<Login/>} />
         <Route path="/otpverify" element={<OtpVerify/>} />
       </Routes>
     </BrowserRouter>
