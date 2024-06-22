@@ -1,33 +1,68 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'tailwindcss/tailwind.css';
 
 const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    companyName: '',
-    websiteURL: '',
-    mobileNo: '',
-    email: '',
-    city: '',
-    licenseRPSL: '',
-    address: ''
-  });
-
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [websiteURL, setWebsiteURL] = useState('');
+  const [mobileNo, setMobileNo] = useState('');
+  const [email, setEmail] = useState('');
+  const [city, setCity] = useState('');
+  const [licenseRPSL, setLicenseRPSL] = useState('');
+  const [address, setAddress] = useState('');
   const [countryCode, setCountryCode] = useState('+91');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', { ...formData, mobileNo: `${countryCode}${formData.mobileNo}` });
+    console.log('Form submitted:', {
+      firstName,
+      lastName,
+      companyName,
+      websiteURL,
+      mobileNo: `${mobileNo}`,
+      email,
+      city,
+      licenseRPSL,
+      address
+    });
+    senddata();
   };
-
+  const senddata = async()=>{
+    try{
+      const responce = await fetch('http://localhost:3000/company/register',{
+        method:'POST',
+        headers:{
+         'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+          fullName:`${firstName} ${lastName}`,
+          contactPerson:`${firstName} ${lastName}`,
+          companyName:companyName,
+          companyUrl:websiteURL,
+          email:email,
+          phone:`${countryCode}${mobileNo}`,
+          address:address,
+          city:city
+        })
+      });
+      const data = responce.json();
+      console.log(data);
+      if(responce.ok){
+        toast.success("registration success now you have to verify your email and then you can login!!!")
+        window.location.href = "/login";
+      }
+      if(!responce.ok){
+        console.log("error while send data");
+      }
+    }catch(err){
+      console.log(err.message);
+    }
+  }
   const handleDropdownClick = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -47,6 +82,7 @@ const RegistrationForm = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100">
+       <ToastContainer />
       <nav className="w-full bg-white border-b border-gray-300">
         <div className="max-w-6xl mx-auto flex justify-between items-center h-12">
           <div className="flex items-center h-full"> 
@@ -86,8 +122,8 @@ const RegistrationForm = () => {
                 id="firstName"
                 name="firstName"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={formData.firstName}
-                onChange={handleChange}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
               />
             </div>
@@ -98,8 +134,8 @@ const RegistrationForm = () => {
                 id="lastName"
                 name="lastName"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={formData.lastName}
-                onChange={handleChange}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 required
               />
             </div>
@@ -110,8 +146,8 @@ const RegistrationForm = () => {
                 id="companyName"
                 name="companyName"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={formData.companyName}
-                onChange={handleChange}
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
                 required
               />
             </div>
@@ -122,8 +158,8 @@ const RegistrationForm = () => {
                 id="websiteURL"
                 name="websiteURL"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={formData.websiteURL}
-                onChange={handleChange}
+                value={websiteURL}
+                onChange={(e) => setWebsiteURL(e.target.value)}
                 required
               />
             </div>
@@ -138,8 +174,8 @@ const RegistrationForm = () => {
                   id="mobileNo"
                   name="mobileNo"
                   className="w-full p-2 border border-gray-300 rounded-r"
-                  value={formData.mobileNo}
-                  onChange={handleChange}
+                  value={mobileNo}
+                  onChange={(e) => setMobileNo(e.target.value)}
                   required
                 />
               </div>
@@ -151,8 +187,8 @@ const RegistrationForm = () => {
                 id="email"
                 name="email"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={formData.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -163,8 +199,8 @@ const RegistrationForm = () => {
                 id="city"
                 name="city"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={formData.city}
-                onChange={handleChange}
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
                 required
               />
             </div>
@@ -175,8 +211,8 @@ const RegistrationForm = () => {
                 id="licenseRPSL"
                 name="licenseRPSL"
                 className="w-full p-2 border border-gray-300 rounded"
-                value={formData.licenseRPSL}
-                onChange={handleChange}
+                value={licenseRPSL}
+                onChange={(e) => setLicenseRPSL(e.target.value)}
               />
             </div>
           </div>
@@ -186,8 +222,8 @@ const RegistrationForm = () => {
               id="address"
               name="address"
               className="w-full p-2 border border-gray-300 rounded"
-              value={formData.address}
-              onChange={handleChange}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
               required
             />
           </div>
@@ -205,4 +241,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default RegistrationForm
