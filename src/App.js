@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './company/Sidebar';
-import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from './company/Header';
+import Footer from './company/Footer';
 import EmployeerDashboard from './company/EmployeerDashboard';
 import EmployerDetails from './company/Preview&EditJobDetail/EmployerDetails';
 import Empteam from './company/Manageemp';
@@ -12,145 +13,61 @@ import ManageUsers from './company/ManageUsers';
 import Candidates from './company/Candidates';
 import CandidatesDetails from './company/CandidatesDetails';
 import JobDescription from './company/JobDescription';
-import Footer from './company/Footer'
 import Login from './company/Login';
-import OtpVerify from './company/Otpverify'
-import Header from './company/Header';
+import OtpVerify from './company/Otpverify';
 import RegistrationForm from './company/RegistrationForm';
 
-
-
-
 const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setLoggedIn(true);
+    }
+  }, []);
+
+  const DefaultLayout = ({ children }) => (
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <div className="flex flex-col flex-1">
+        <Header />
+        {children}
+        <Footer />
+      </div>
+    </div>
+  );
+
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route path="/employeer-dashboard" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
+        <Route
+          path="/"
+          element={
+            loggedIn ? (
+              <DefaultLayout>
                 <EmployeerDashboard />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/preview-edit-job-detail" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <EmployerDetails />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/emp" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <Empteam />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/add-job-basics" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <AddJobBasics />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/add-pay-and-benefits" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <AddPayAndBenefits />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/edit-jobs" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <EditJobs />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/candidates" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <Candidates />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/jobs" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <JobDescription />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/candidate-details" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <CandidatesDetails />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/edit-job-details" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <EmployerDetails />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-        <Route path="/manage-users" element={
-          <div className='flex min-h-screen'>
-            <Sidebar />
-            <div className="flex flex-col flex-1">
-              <div className='flex-grow'>
-                <Header />
-                <ManageUsers />
-                <Footer />
-              </div>
-            </div>
-          </div>} /> 
-          <Route path="/" element={<RegistrationForm/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/otpverify" element={<OtpVerify/>} />
+              </DefaultLayout>
+            ) : (
+              <RegistrationForm />
+            )
+          }
+        />
+        <Route path="/employeer-dashboard" element={<DefaultLayout><EmployeerDashboard /></DefaultLayout>} />
+        <Route path="/preview-edit-job-detail" element={<DefaultLayout><EmployerDetails /></DefaultLayout>} />
+        <Route path="/emp" element={<DefaultLayout><Empteam /></DefaultLayout>} />
+        <Route path="/add-job-basics" element={<DefaultLayout><AddJobBasics /></DefaultLayout>} />
+        <Route path="/add-pay-and-benefits" element={<DefaultLayout><AddPayAndBenefits /></DefaultLayout>} />
+        <Route path="/edit-jobs" element={<DefaultLayout><EditJobs /></DefaultLayout>} />
+        <Route path="/candidates" element={<DefaultLayout><Candidates /></DefaultLayout>} />
+        <Route path="/jobs" element={<DefaultLayout><JobDescription /></DefaultLayout>} />
+        <Route path="/candidate-details" element={<DefaultLayout><CandidatesDetails /></DefaultLayout>} />
+        <Route path="/edit-job-details" element={<DefaultLayout><EmployerDetails /></DefaultLayout>} />
+        <Route path="/manage-users" element={<DefaultLayout><ManageUsers /></DefaultLayout>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/otpverify" element={<OtpVerify />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 };
 

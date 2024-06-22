@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import {setempdetails} from '../slice/Empslice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Loader from './Loader';
 const OtpVerify = () => {
+  const dispatch = useDispatch();
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [resendTimer, setResendTimer] = useState(120);
   const [error, setError] = useState("");
   const timerInterval = useRef(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +58,7 @@ const OtpVerify = () => {
 
     if (otpString.length === 6 && email) {
       try {
+        setLoading(true);
         const response = await fetch("http://localhost:3000/company/loginotp", {
           method: "POST",
           headers: {
@@ -65,16 +71,19 @@ const OtpVerify = () => {
           const data = await response.json();
           console.log("OTP verified successfully:", data);
           localStorage.setItem('token',data.token);
+          dispatch(setempdetails(data.company))
           toast.success("OTP verify success");
           setTimeout(() => {
             navigate('/employeer-dashboard');
-          }, 3000);
+          }, 1000);
         } else {
           setError("Failed to verify OTP. Please try again.");
         }
       } catch (error) {
         console.error("Error verifying OTP:", error);
         setError("An error occurred. Please try again.");
+      }finally {
+        setLoading(false); // Stop loading
       }
     } else {
       setError("Please enter the complete 6-digit OTP.");
@@ -84,9 +93,10 @@ const OtpVerify = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <ToastContainer />
+        {loading &&<Loader/>}
       <div className="p-4 shadow-md bg-white rounded-md">
         <h1 className="text-2xl font-semibold mb-4 text-black">Verify with OTP</h1>
-        <p className="text-gray-500">OTP sent to ${localStorage.getItem("email")} </p>
+        <p className="text-gray-500">OTP sent to {localStorage.getItem("email")} </p>
         <form onSubmit={handleSubmit} className="space-y-3 flex flex-col items-center">
           <div className="flex space-x-2 mt-2">
             {otp.map((digit, index) => (

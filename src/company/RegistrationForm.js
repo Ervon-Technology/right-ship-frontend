@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'tailwindcss/tailwind.css';
+import Loader from './Loader';
 
 const RegistrationForm = () => {
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -19,6 +21,7 @@ const RegistrationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log('Form submitted:', {
       firstName,
       lastName,
@@ -32,37 +35,45 @@ const RegistrationForm = () => {
     });
     senddata();
   };
-  const senddata = async()=>{
-    try{
-      const responce = await fetch('http://localhost:3000/company/register',{
-        method:'POST',
-        headers:{
-         'Content-Type': 'application/json'
+
+  const senddata = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/company/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        body:JSON.stringify({
-          fullName:`${firstName} ${lastName}`,
-          contactPerson:`${firstName} ${lastName}`,
-          companyName:companyName,
-          companyUrl:websiteURL,
-          email:email,
-          phone:`${countryCode}${mobileNo}`,
-          address:address,
-          city:city
+        body: JSON.stringify({
+          fullName: `${firstName} ${lastName}`,
+          contactPerson: `${firstName} ${lastName}`,
+          companyName: companyName,
+          companyUrl: websiteURL,
+          email: email,
+          phone: `${countryCode}${mobileNo}`,
+          address: address,
+          city: city
         })
       });
-      const data = responce.json();
-      console.log(data);
-      if(responce.ok){
-        toast.success("registration success now you have to verify your email and then you can login!!!")
-        window.location.href = "/login";
+
+      const data = await response.json(); // Parse JSON response from backend
+
+      if (response.ok) {
+        toast.success(data.message); // Show success message
+        console.log(data);
+        // Optionally, redirect to another page after successful registration
+        // window.location.href = "/login";
+      } else {
+        toast.error(data.error || "Error while registering."); // Show error message
+        console.log("Error response:", data);
       }
-      if(!responce.ok){
-        console.log("error while send data");
-      }
-    }catch(err){
-      console.log(err.message);
+    } catch (error) {
+      console.log(error.message);
+      toast.error("Error occurred. Please try again."); // Show generic error message
+    } finally {
+      setLoading(false); // Stop loading state
     }
-  }
+  };
+
   const handleDropdownClick = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -80,9 +91,11 @@ const RegistrationForm = () => {
     };
   }, []);
 
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-100">
        <ToastContainer />
+       {loading && <Loader />}
       <nav className="w-full bg-white border-b border-gray-300">
         <div className="max-w-6xl mx-auto flex justify-between items-center h-12">
           <div className="flex items-center h-full"> 

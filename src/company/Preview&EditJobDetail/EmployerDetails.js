@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import EditJobDetail from './EditJobDetail';
 import { Link } from 'react-router-dom';
 
 const EmployerDetails = () => {
+  const empdetails = useSelector(state => state.emp.empdetails);
+  if(empdetails){
+    console.log(empdetails);
+  }else{
+    console.log("empdetails not found!!!");
+  }
   const [details, setDetails] = useState({
-    username: 'johndoe',
-    contactPerson: 'John Doe',
-    state: 'California',
-    country: 'USA',
-    phoneNumber: '123-456-7890',
-    email: 'johndoe@example.com',
-    address: '123 Main St',
-    companyName: 'Example Corp',
-    companyUrl: 'https://www.example.com',
-    city: 'Los Angeles',
-    zipCode: '90001',
+    username: empdetails.userName,
+    contactPerson: empdetails.contactPerson,
+    state: empdetails.state || 'not set',
+    country: empdetails.country || 'india',
+    phoneNumber: empdetails.phone,
+    email: empdetails.email,
+    address: empdetails.address,
+    companyName: empdetails.companyName,
+    companyUrl: empdetails.companyUrl,
+    city: empdetails.city,
+    zipCode: empdetails.zipcode || '400101',
     numberofship: '10',
     companyprofile: 'N/A',
     termandcondition: 'N/A',
@@ -28,7 +35,7 @@ const EmployerDetails = () => {
     const { name, value } = e.target;
     setDetails({ ...details, [name]: value });
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission, e.g., send details to the backend
