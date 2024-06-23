@@ -71,6 +71,7 @@ const OtpVerify = () => {
           const data = await response.json();
           console.log("OTP verified successfully:", data);
           localStorage.setItem('token',data.token);
+          localStorage.setItem('cmpid',data.company.id);
           dispatch(setempdetails(data.company))
           toast.success("OTP verify success");
           setTimeout(() => {

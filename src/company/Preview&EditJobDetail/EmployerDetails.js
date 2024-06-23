@@ -1,41 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 import EditJobDetail from './EditJobDetail';
 import { Link } from 'react-router-dom';
 
 const EmployerDetails = () => {
-  const empdetails = useSelector(state => state.emp.empdetails);
-  if(empdetails){
-    console.log(empdetails);
-  }else{
-    console.log("empdetails not found!!!");
-  }
   const [details, setDetails] = useState({
-    username: empdetails.userName,
-    contactPerson: empdetails.contactPerson,
-    state: empdetails.state || 'not set',
-    country: empdetails.country || 'india',
-    phoneNumber: empdetails.phone,
-    email: empdetails.email,
-    address: empdetails.address,
-    companyName: empdetails.companyName,
-    companyUrl: empdetails.companyUrl,
-    city: empdetails.city,
-    zipCode: empdetails.zipcode || '400101',
-    numberofship: '10',
-    companyprofile: 'N/A',
-    termandcondition: 'N/A',
-    typeofship: 'tanker'
+    username: '',
+    contactPerson: '',
+    country: '',
+    phoneNumber: '',
+    email: '',
+    address: '',
+    companyName: '',
+    companyUrl: '',
+    city: '',
   });
-
+  let cmp;
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const id = localStorage.getItem('cmpid');
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:3000/company/getcmp/${id}`, {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": token,
+          }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          if (data && data.companies) {
+            cmp = data.companies[0];
+            setDetails({
+              username: cmp.userName || '',
+              contactPerson: cmp.contactPerson || '',
+              // state: cmp.state || '',
+              country: cmp.country || 'india',
+              phoneNumber: cmp.phone || '',
+              email: cmp.email || '',
+              address: cmp.address || '',
+              companyName: cmp.companyName || '',
+              companyUrl: cmp.companyUrl || '',
+              city: cmp.city || '',
+              // zipCode: cmp.zipCode || '',
+              // numberofship: data.companies.numberofship || '',
+              // companyprofile: data.companies.companyprofile || '',
+              // termandcondition: data.companies.termandcondition || '',
+              // typeofship: data.companies.typeofship || ''
+            });
+          }
+        } else {
+          console.log(data.error);
+        }
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+    fetchData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDetails({ ...details, [name]: value });
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission, e.g., send details to the backend
@@ -59,127 +90,19 @@ const EmployerDetails = () => {
 
       {isEditing ? (
         <form onSubmit={handleSubmit} className="p-4 flex flex-wrap gap-4">
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Username:</label>
-            <input
-              type="text"
-              name="username"
-              value={details.username}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Contact Person:</label>
-            <input
-              type="text"
-              name="contactPerson"
-              value={details.contactPerson}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>State:</label>
-            <input
-              type="text"
-              name="state"
-              value={details.state}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Country:</label>
-            <input
-              type="text"
-              name="country"
-              value={details.country}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Phone Number:</label>
-            <input
-              type="tel"
-              name="phoneNumber"
-              value={details.phoneNumber}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={details.email}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Address:</label>
-            <input
-              type="text"
-              name="address"
-              value={details.address}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Company Name:</label>
-            <input
-              type="text"
-              name="companyName"
-              value={details.companyName}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Company URL:</label>
-            <input
-              type="url"
-              name="companyUrl"
-              value={details.companyUrl}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>City:</label>
-            <input
-              type="text"
-              name="city"
-              value={details.city}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Zip Code:</label>
-            <input
-              type="text"
-              name="zipCode"
-              value={details.zipCode}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
+          {Object.keys(details).map((key) => (
+            <div key={key} className="flex flex-col w-full md:w-1/2 lg:w-1/3">
+              <label>{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
+              <input
+                type={key === "email" ? "email" : key === "phoneNumber" ? "tel" : "text"}
+                name={key}
+                value={details[key]}
+                onChange={handleChange}
+                required
+                className="w-full"
+              />
+            </div>
+          ))}
           <button
             type="submit"
             className="w-full md:w-auto bg-buttonColor text-white py-2 px-4 rounded-lg mt-4"
@@ -189,66 +112,17 @@ const EmployerDetails = () => {
         </form>
       ) : (
         <div className="p-4 flex flex-wrap gap-4">
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Username:</strong> {details.username}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Contact Person:</strong> {details.contactPerson}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>State:</strong> {details.state}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Country:</strong> {details.country}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Phone Number:</strong> {details.phoneNumber}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Email:</strong> {details.email}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Address:</strong> {details.address}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Company Name:</strong> {details.companyName}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Company URL:</strong>{' '}
-              <a href={details.companyUrl}>{details.companyUrl}</a>
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>City:</strong> {details.city}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Zip Code:</strong> {details.zipCode}
-            </p>
-          </div>
+          {Object.keys(details).map((key) => (
+            <div key={key} className="flex flex-col w-full md:w-1/2 lg:w-1/3">
+              <p>
+                <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {details[key]}
+              </p>
+            </div>
+          ))}
         </div>
       )}
 
-      <EditJobDetail />
+      <EditJobDetail data={cmp}/>
 
       <div className="bg-customSky1 h-24 mt-32 flex items-center justify-between p-4">
         <p className='w-4/6'>

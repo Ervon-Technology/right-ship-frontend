@@ -1,26 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa';
 
-const EditJobDetail = () => {
+const EditJobDetail = ({ data }) => {
   const [empdetails, setEmpDetails] = useState({
-    numberofship: '10',
+    numberofship: '',
     companyprofile: 'N/A',
     termandcondition: 'N/A',
     typeofship: 'tanker',
   });
 
-  const [isEmpEditing, setIsEmpEditing] = useState(false);
+  const [isEmpEditing, setIsEmpEditing] = useState(true);
+  const [companyProfileFile, setCompanyProfileFile] = useState(null);
+  const [termsAndConditionsFile, setTermsAndConditionsFile] = useState(null);
+
+  useEffect(() => {
+    if (data && data.company_detail) {
+      setEmpDetails(data.company_detail);
+      setIsEmpEditing(false);
+    }
+  }, [data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmpDetails({ ...empdetails, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (name === 'companyprofile') {
+      setCompanyProfileFile(files[0]);
+    } else if (name === 'termandcondition') {
+      setTermsAndConditionsFile(files[0]);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission, e.g., send empdetails to the backend
-    console.log('Form submitted:', empdetails);
-    setIsEmpEditing(false);
+    try {
+      const formData = new FormData();
+      formData.append('numberOfShip', empdetails.numberofship);
+      if (companyProfileFile) {
+        formData.append('company_profile', companyProfileFile);
+      }
+      if (termsAndConditionsFile) {
+        formData.append('terms_and_conditions', termsAndConditionsFile);
+      }
+      const id = localStorage.getItem("cmpid");
+      const response = await fetch(`http://localhost:3000/company/basicdetails/${id}`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": localStorage.getItem('token'),
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Form submitted:', result);
+      setIsEmpEditing(false);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   const handleEdit = () => {
@@ -55,10 +99,9 @@ const EditJobDetail = () => {
           <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
             <label>Company Profile:</label>
             <input
-              type="text"
+              type="file"
               name="companyprofile"
-              value={empdetails.companyprofile}
-              onChange={handleChange}
+              onChange={handleFileChange}
               required
               className="w-full"
             />
@@ -66,21 +109,9 @@ const EditJobDetail = () => {
           <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
             <label>Term & Condition:</label>
             <input
-              type="text"
+              type="file"
               name="termandcondition"
-              value={empdetails.termandcondition}
-              onChange={handleChange}
-              required
-              className="w-full"
-            />
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <label>Type Of Ship:</label>
-            <input
-              type="text"
-              name="typeofship"
-              value={empdetails.typeofship}
-              onChange={handleChange}
+              onChange={handleFileChange}
               required
               className="w-full"
             />
@@ -107,11 +138,6 @@ const EditJobDetail = () => {
           <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
             <p>
               <strong>Term & Condition:</strong> {empdetails.termandcondition}
-            </p>
-          </div>
-          <div className="flex flex-col w-full md:w-1/2 lg:w-1/3">
-            <p>
-              <strong>Type Of Ship:</strong> {empdetails.typeofship}
             </p>
           </div>
         </div>

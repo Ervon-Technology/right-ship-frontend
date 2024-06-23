@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {ArrowDown } from 'lucide-react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'tailwindcss/tailwind.css';
@@ -107,8 +108,8 @@ const RegistrationForm = () => {
             <button className="px-3 py-1 text-blue-600 border border-blue-600 rounded hover:bg-blue-50">Login</button>
             <button className="px-3 py-1 text-white bg-red-600 rounded hover:bg-red-700">Register</button>
             <div className="relative" ref={dropdownRef}>
-              <button onClick={handleDropdownClick} className="px-3 py-1 text-blue-600 border border-blue-600 rounded hover:bg-blue-50">
-                Company Account
+              <button onClick={handleDropdownClick} className="px-3 py-1 text-black-600  rounded hover:bg-blue-50">
+                For employers 
               </button>
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
