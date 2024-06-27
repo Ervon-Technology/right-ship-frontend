@@ -1,0 +1,39 @@
+@keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .scrolling-companies {
+    display: flex;
+    width: calc(250px * 14); /* Adjust this based on the number of companies and their width */
+    animation: scroll 3s linear infinite;
+  }
+  
+  .min-w-max {
+    min-width: 250px; /* Adjust this to match the width of your company divs */
+  }
+  .glossy-bg {
+    position: relative;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+    backdrop-filter: blur(10px);
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  
+  .glossy-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: inherit;
+    opacity: 0.6;
+    pointer-events: none;
+  }

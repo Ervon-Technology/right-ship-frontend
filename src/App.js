@@ -16,6 +16,7 @@ import JobDescription from './company/JobDescription';
 import Login from './company/Login';
 import OtpVerify from './company/Otpverify';
 import RegistrationForm from './company/RegistrationForm';
+import Home from './job_seeker/home';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -53,6 +54,7 @@ const App = () => {
             )
           }
         />
+        <Route path='/jobs_home' element={<Home />} />
         <Route path="/employeer-dashboard" element={<DefaultLayout><EmployeerDashboard /></DefaultLayout>} />
         <Route path="/preview-edit-job-detail" element={<DefaultLayout><EmployerDetails /></DefaultLayout>} />
         <Route path="/emp" element={<DefaultLayout><Empteam /></DefaultLayout>} />
