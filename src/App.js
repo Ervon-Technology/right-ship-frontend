@@ -17,6 +17,8 @@ import Login from './company/Login';
 import OtpVerify from './company/Otpverify'
 import Header from './company/Header';
 import RegistrationForm from './company/RegistrationForm';
+// import Nav from './jobseekres/Nav';
+import Home from './jobseekres/Home';
 
 
 
@@ -149,6 +151,7 @@ const App = () => {
           <Route path="/" element={<RegistrationForm/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/otpverify" element={<OtpVerify/>} />
+        <Route path="/jobnav" element={<Home/>} />
       </Routes>
     </BrowserRouter>
   );
