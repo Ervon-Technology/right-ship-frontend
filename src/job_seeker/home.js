@@ -3,6 +3,7 @@ import './Home.css';
 import worldmap from "./Assets/world map.png";
 import shipvideo from "./Assets/shipvideo.mp4";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
+import { Link } from "react-router-dom"
 
 function Home() {
   const [visitorCount, setVisitorCount] = useState(0);
@@ -45,7 +46,7 @@ function Home() {
         <div className="relative flex flex-col items-center justify-center h-full bg-black bg-opacity-50 text-white">
           <h1 className="text-5xl mb-4 font-bold">CHARTING CAREERS, SEA TO SHORE</h1>
           <div className="flex space-x-4">
-            <ButtonWithHoverEffect text="I Want a Job" img="job-seeker.jpg" />
+            <Link to="/candidate_login"><ButtonWithHoverEffect text="I Want a Job" img="job-seeker.jpg" /></Link>
             <ButtonWithHoverEffect text="I Want to Hire" img="employer.jpg" />
           </div>
           <div className="absolute -left-6 top-32 bg-white bg-opacity-75 text-black rounded-full px-7 py-0">

@@ -17,6 +17,9 @@ import Login from './company/Login';
 import OtpVerify from './company/Otpverify';
 import RegistrationForm from './company/RegistrationForm';
 import Home from './job_seeker/home';
+import CandidateLogin from './job_seeker/CandidateLogin';
+import CandidateOtpverify from './job_seeker/CandidateOtpverify'
+import JobDashboard from './job_seeker/Job_Dashboard';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -54,6 +57,9 @@ const App = () => {
             )
           }
         />
+        <Route path='/job_dashboard' element={<JobDashboard />} />
+        <Route path='/candidate_Otpverify' element={<CandidateOtpverify />} />
+        <Route path='/candidate_login' element={<CandidateLogin />}/>
         <Route path='/jobs_home' element={<Home />} />
         <Route path="/employeer-dashboard" element={<DefaultLayout><EmployeerDashboard /></DefaultLayout>} />
         <Route path="/preview-edit-job-detail" element={<DefaultLayout><EmployerDetails /></DefaultLayout>} />
