@@ -20,6 +20,12 @@ import Home from './job_seeker/home';
 import CandidateLogin from './job_seeker/CandidateLogin';
 import CandidateOtpverify from './job_seeker/CandidateOtpverify'
 import JobDashboard from './job_seeker/Job_Dashboard';
+import About from './job_seeker/About'
+import Details from './job_seeker/Details';
+import Experience from './job_seeker/Experience';
+import Resume from './job_seeker/Resume';
+import Profile from './job_seeker/Profile';
+import Congratulations from './job_seeker/Congratulations';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -57,6 +63,12 @@ const App = () => {
             )
           }
         />
+        <Route path='/congratulations' element={<Congratulations />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/resume' element={<Resume />} />
+        <Route path='/experience' element={<Experience />} />
+        <Route path='/details' element={<Details />} />
+        <Route path='/about' element={<About />} />
         <Route path='/job_dashboard' element={<JobDashboard />} />
         <Route path='/candidate_Otpverify' element={<CandidateOtpverify />} />
         <Route path='/candidate_login' element={<CandidateLogin />}/>

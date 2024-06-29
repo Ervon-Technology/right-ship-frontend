@@ -9,3 +9,42 @@
     border-bottom: 10px solid transparent;
     transform: translateY(-50%);
 }
+.list-square-left {
+    list-style: none; /* Remove default list style */
+    padding-left: 24px; /* Add padding to accommodate the custom marker */
+}
+
+.list-square-left li {
+    position: relative; /* Set position to relative to use absolute positioning for the pseudo-element */
+    margin-bottom: 8px; /* Add some space between list items */
+}
+
+.list-square-left li::before {
+    content: ''; /* Generate an empty content */
+    position: absolute; /* Absolute positioning to place the marker */
+    left: -20px; /* Position marker to the left of the list item */
+    top: 7.5px; /* Adjust the vertical position */
+    width: 6px; /* Set the width of the square marker */
+    height: 6px; /* Set the height of the square marker */
+    background-color: black; /* Set the color of the square marker */
+}
+
+.list-square-right {
+    list-style: none; /* Remove default list style */
+    padding-left: 24px; /* Add padding to accommodate the custom marker */
+}
+
+.list-square-right li {
+    position: relative; /* Set position to relative to use absolute positioning for the pseudo-element */
+    margin-bottom: 8px; /* Add some space between list items */
+}
+
+.list-square-right li::before {
+    content: ''; /* Generate an empty content */
+    position: absolute; /* Absolute positioning to place the marker */
+    left: -20px; /* Position marker to the left of the list item */
+    top: 7.5px; /* Adjust the vertical position */
+    width: 8px; /* Set the width of the square marker */
+    height: 8px; /* Set the height of the square marker */
+    background-color: black; /* Set the color of the square marker */
+}

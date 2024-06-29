@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import './Job_Dashboard.css'
-import { Share2, Bookmark } from 'lucide-react';
+import './Job_Dashboard.css';
+import { Share2, Bookmark, Flag } from 'lucide-react';
+
 const dummyJobs = [
     {
         id: 1,
@@ -101,7 +102,7 @@ const JobDashboard = () => {
                                     <div className="triangle-right"></div>
                                 )}
                                 <div className="border-t border-gray-300 mt-2"></div>
-                                <ul className="list-disc ml-5 mt-3 text-sm">
+                                <ul className="list-square-left mt-3 text-sm">
                                     {job.shipTypes.map((type, index) => (
                                         <li key={index}>{type}</li>
                                     ))}
@@ -132,41 +133,41 @@ const JobDashboard = () => {
                                     <p>Email: {selectedJob.email}</p>
                                 </div>
                                 <div className="mb-4 py-4 px-2">
-                                    <h4 className="font-bold mb-2">Job description</h4>
+                                    <h4 className="font-bold text-customBlue2 text-sm bg-blue-100 w-40 ps-7 py-1.5 rounded mb-2">Job description</h4>
                                     <div className="flex justify-between mb-4">
-                                        <div>
+                                        <div className='my-3 mx-7'>
                                             <h5 className="font-bold">Ship Type</h5>
-                                            <ul className="list-disc ml-5">
+                                            <ul className="list-square-right text-sm mt-3">
                                                 {selectedJob.shipTypes.map((type, index) => (
-                                                    <li key={index}>{type}</li>
+                                                    <li className='-mt-1.5' key={index}>{type}</li>
                                                 ))}
                                             </ul>
                                         </div>
-                                        <div>
+                                        <div className='my-3 mx-7'>
                                             <h5 className="font-bold">Rank</h5>
-                                            <ul className="list-disc ml-5">
+                                            <ul className="list-square-right text-sm mt-3 ">
                                                 {selectedJob.ranks.map((rank, index) => (
-                                                    <li key={index}>{rank}</li>
+                                                    <li className='-mt-1.5' key={index}>{rank}</li>
                                                 ))}
                                             </ul>
                                         </div>
-                                        <div>
+                                        <div className='my-3'>
                                             <h5 className="font-bold">Benefits</h5>
-                                            <ul className='flex flex-wrap w-80'>
+                                            <ul className='flex flex-wrap w-80 text-sm mt-2'>
                                                 {selectedJob.benefits.map((benefit, index) => (
                                                     <li className='bg-gray-300 font-semibold px-2 py-0.5 me-2 mb-1.5' key={index}>{benefit}</li>
                                                 ))}
                                             </ul>
                                         </div>
                                     </div>
-                                    <pre className="whitespace-pre-wrap font-poppins text-sm font-semibold">{selectedJob.description}</pre>
+                                    <pre className="whitespace-pre-wrap font-poppins text-sm font-semibold my-3 mx-7 leading-loose" >{selectedJob.description}</pre>
                                 </div>
                                 <div className="border-t-2 border-slate-100 mt-10 mb-4"></div>
                                 <div className="flex justify-between items-center ">
-                                    <p className='text-sm text-slate-400'>Job ID: 81659885</p>
-                                    <div>
-                                        <button className="mr-2 bg-white border-customBlue hover:bg-customBlue2 text-customBlue font-semibold py-2 px-4 rounded">Save</button>
-                                        <button className="bg-white border-customBlue hover:bg-customBlue2 text-customBlue font-semibold py-2 px-4 rounded">Report</button>
+                                    <p className='text-sm text-slate-400 my-3 mx-9'>Job ID: 81659885</p>
+                                    <div className='flex'>
+                                        <button className="mr-2 bg-white border border-customBlue hover:bg-customBlue2 hover:text-white w-32 text-customBlue font-semibold py-2 px-4 rounded-md flex justify-evenly"><Bookmark size={20} className='mt-1'/>Save</button>
+                                        <button className="bg-white border border-customBlue hover:bg-customBlue2 hover:text-white w-32 text-customBlue font-semibold py-2 px-4 rounded-md flex justify-evenly"><Flag size={20} className='mt-1'/>Report</button>
                                     </div>
                                 </div>
                             </>
