@@ -11,7 +11,7 @@ const Congratulations = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
             </svg>
           </div>
-          <h1 className="text-4xl font-bold text-green-500">congratulations</h1>
+          <h1 className="text-4xl font-semibold text-green-600 font-aclonica">congratulations</h1>
           <p className="text-lg text-gray-700">your profile is created</p>
         </div>
         <Link to="/candidate_login" className="bg-customBlue hover:bg-customBlue2 text-white py-2 px-8 rounded-lg">Login</Link>

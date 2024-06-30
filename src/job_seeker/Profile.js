@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import ProfileImage from './Assets/Profile.jpg'
 const Profile = () => {
   return (
     <div className="flex h-screen">
-      <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: "url('/mnt/data/Screenshot (361).png')" }}>
+      <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${ProfileImage})` }}>
         <div className="flex items-center justify-center h-full bg-blue-900 bg-opacity-50">
           <h1 className="text-white text-4xl font-bold">Let's reveal your <span className="text-blue-300">Face</span></h1>
         </div>
@@ -12,29 +12,29 @@ const Profile = () => {
       <div className="w-1/2 p-8">
         <div className="flex items-center justify-center mb-8">
           {/* Stepper */}
-          <div className="flex items-center">
-            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white">1</div>
-            <span className="mx-2 text-blue-600">About me</span>
+          <div className="flex items-center flex-col">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-customBlue3 border-4 border-customBlue text-white">1</div>
+            <span className="mx-2 text-black">About me</span>
           </div>
-          <div className="w-8 h-0.5 bg-blue-600"></div>
-          <div className="flex items-center">
-            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white">2</div>
-            <span className="mx-2 text-blue-600">Basic Details</span>
+          <div className="w-16 h-0.5 bg-customBlue -mt-5"></div>
+          <div className="flex items-center flex-col">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-customBlue3 border-4 border-customBlue text-white">2</div>
+            <span className="mx-2 text-black">Basic Details</span>
           </div>
-          <div className="w-8 h-0.5 bg-blue-600"></div>
-          <div className="flex items-center">
-            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white">3</div>
-            <span className="mx-2 text-blue-600">Experience</span>
+          <div className="w-16 h-0.5 bg-customBlue -mt-5"></div>
+          <div className="flex items-center flex-col">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-customBlue3 border-4 border-customBlue text-white">3</div>
+            <span className="mx-2 text-black">Experience</span>
           </div>
-          <div className="w-8 h-0.5 bg-blue-600"></div>
-          <div className="flex items-center">
-            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white">4</div>
-            <span className="mx-2 text-blue-600">Resume</span>
+          <div className="w-16 h-0.5 bg-customBlue -mt-5"></div>
+          <div className="flex items-center flex-col">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-customBlue3 border-4 border-customBlue text-white">4</div>
+            <span className="mx-2 text-black">Resume</span>
           </div>
-          <div className="w-8 h-0.5 bg-blue-600"></div>
-          <div className="flex items-center">
-            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 text-white">5</div>
-            <span className="mx-2 text-blue-600">Profile</span>
+          <div className="w-16 h-0.5 bg-customBlue -mt-5"></div>
+          <div className="flex items-center flex-col">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-customBlue3 border-4 border-customBlue text-white">5</div>
+            <span className="mx-2 text-black">Profile</span>
           </div>
         </div>
         <div className="text-center mb-4">
