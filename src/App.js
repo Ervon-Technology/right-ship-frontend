@@ -19,6 +19,14 @@ import Header from './company/Header';
 import RegistrationForm from './company/RegistrationForm';
 // import Nav from './jobseekres/Nav';
 import Home from './jobseekres/Home';
+import Help from './admin/Help';
+import SubscriptionPlans from './admin/Adminrole';
+import Createplan from './admin/Createplan';
+import SubscriptionDashboard from './admin/SubscriptionDashboard';
+import CandidatePage from './admin/Candidate';
+import CompanyList from './admin/CompanyList';
+import Planlist from './admin/Planlist';
+import Dashboard from './admin/Dashboard';
 
 
 
@@ -152,9 +160,20 @@ const App = () => {
         <Route path="/login" element={<Login/>} />
         <Route path="/otpverify" element={<OtpVerify/>} />
         <Route path="/jobnav" element={<Home/>} />
+        <Route path="/help" element={<Help/>} />
+        <Route path="/adminrole" element={<SubscriptionPlans/>} />
+        <Route path="/createplan" element={<Createplan/>} />
+        <Route path="/subscriptiondashboard" element={<SubscriptionDashboard/>} />
+        <Route path="/candidatelist" element={<CandidatePage/>} />
+        <Route path="/companylist" element={<CompanyList/>} />
+        <Route path="/planlist" element={<Planlist/>} />
+        <Route path="/dashboard" element={<Dashboard/>} />
       </Routes>
     </BrowserRouter>
   );
 };
 
 export default App;
+
+
+
