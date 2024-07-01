@@ -60,9 +60,26 @@ const dummyJobs = [
 const JobDashboard = () => {
     const [jobs, setJobs] = useState(dummyJobs);
     const [selectedJob, setSelectedJob] = useState(dummyJobs[0]);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+    const [reportOtherText, setReportOtherText] = useState('');
 
     const handleJobClick = (job) => {
         setSelectedJob(job.id === selectedJob?.id ? null : job);
+    };
+
+    const handleReportClick = () => {
+        setIsReportModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setIsReportModalOpen(false);
+        setReportOtherText('');
+    };
+
+    const handleReportSubmit = () => {
+        // Handle report submission logic here
+        console.log('Report submitted:', reportOtherText);
+        handleModalClose();
     };
 
     return (
@@ -72,18 +89,28 @@ const JobDashboard = () => {
                     <h1 className="text-sm text-customBlue2 font-semibold">Find the jobs you're looking for</h1>
                 </div>
                 <div className="flex justify-center mb-4">
-                    <div className="flex border rounded-lg overflow-hidden w-full max-w-2xl">
+                    <div className="flex border border-gray-300 rounded-lg overflow-hidden w-full max-w-2xl">
+                        <div className="flex items-center px-2 border-r border-gray-300 bg-gray-100">
+                            <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M10 20a8 8 0 100-16 8 8 0 000 16zm-6 2a9.97 9.97 0 01-4-8C0 6.477 4.477 2 10 2s10 4.477 10 10-4.477 10-10 10a9.97 9.97 0 01-8-4l-2 2a1 1 0 01-1.415-1.415l2-2z" />
+                            </svg>
+                        </div>
                         <input
                             type="text"
                             placeholder="Job title, keywords, or company"
-                            className="flex-1 px-4 py-2 border-r focus:outline-none"
+                            className="flex-1 px-4 py-2 focus:outline-none"
                         />
+                        <div className="flex items-center px-2 border-r border-l border-gray-300 bg-gray-100">
+                            <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M10 20a8 8 0 100-16 8 8 0 000 16zm-6 2a9.97 9.97 0 01-4-8C0 6.477 4.477 2 10 2s10 4.477 10 10-4.477 10-10 10a9.97 9.97 0 01-8-4l-2 2a1 1 0 01-1.415-1.415l2-2z" />
+                            </svg>
+                        </div>
                         <input
                             type="text"
                             placeholder="Search by Company name"
                             className="flex-1 px-4 py-2 focus:outline-none"
                         />
-                        <button className="px-4 py-2 bg-blue-500 text-white">Search</button>
+                        <button className="px-4 py-2 bg-customBlue text-white">Search</button>
                     </div>
                 </div>
                 <div className="border-t-2 border-blue-200 mb-4"></div>
@@ -167,7 +194,7 @@ const JobDashboard = () => {
                                     <p className='text-sm text-slate-400 my-3 mx-9'>Job ID: 81659885</p>
                                     <div className='flex'>
                                         <button className="mr-2 bg-white border border-customBlue hover:bg-customBlue2 hover:text-white w-32 text-customBlue font-semibold py-2 px-4 rounded-md flex justify-evenly"><Bookmark size={20} className='mt-1'/>Save</button>
-                                        <button className="bg-white border border-customBlue hover:bg-customBlue2 hover:text-white w-32 text-customBlue font-semibold py-2 px-4 rounded-md flex justify-evenly"><Flag size={20} className='mt-1'/>Report</button>
+                                        <button onClick={handleReportClick} className="bg-white border border-customBlue hover:bg-customBlue2 hover:text-white w-32 text-customBlue font-semibold py-2 px-4 rounded-md flex justify-evenly"><Flag size={20} className='mt-1'/>Report</button>
                                     </div>
                                 </div>
                             </>
@@ -180,6 +207,34 @@ const JobDashboard = () => {
                     <button className="ml-2 px-4 py-2 bg-gray-200 rounded">&gt;</button>
                 </div>
             </div>
+
+            {isReportModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                    <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-md">
+                        <h2 className="text-lg font-bold mb-4">Report Job</h2>
+                        <textarea
+                            className="w-full p-2 border border-gray-300 rounded-lg"
+                            placeholder="Enter your reason for reporting this job"
+                            value={reportOtherText}
+                            onChange={(e) => setReportOtherText(e.target.value)}
+                        />
+                        <div className="flex justify-end mt-4">
+                            <button
+                                onClick={handleModalClose}
+                                className="px-4 py-2 mr-2 border border-gray-300 rounded-lg"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleReportSubmit}
+                                className="px-4 py-2 bg-customBlue text-white rounded-lg"
+                            >
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
