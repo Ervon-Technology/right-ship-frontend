@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ResumeImage from './Assets/Resume.jpg';
-
+import File from './Assets/File img.png'
 const Resume = () => {
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    console.log('File uploaded:', selectedFile);
+  };
+
   return (
     <div className="flex h-screen">
       <div className="w-2/5 h-screen bg-cover bg-center" style={{ backgroundImage: `url(${ResumeImage})` }}>
-        <div className="flex items-center justify-center h-full bg-blue-900 bg-opacity-50">
+        <div className="flex items-center justify-center h-full bg-blue-900 bg-opacity-20">
           <h1 className="text-white text-4xl font-bold">Let's see your <span className="text-blue-300">Resume</span></h1>
         </div>
       </div>
@@ -48,13 +56,17 @@ const Resume = () => {
             <div className="mb-4">
               <div className="flex justify-center items-center border-2 border-dashed border-gray-300 p-8 rounded-lg">
                 <div>
-                  <svg className="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 0 1 4-4h.3a5.6 5.6 0 0 1 0-8 5.5 5.5 0 0 1 11 0 5.6 5.6 0 0 1 0 8H17a4 4 0 0 1-4 4H7z"></path>
-                  </svg>
-                  <input type="file" className="hidden" />
-                  <p className="mt-2 text-sm text-gray-500">Upload .pdf & .docx file only, max file size 5MB</p>
+                  <img className='ms-16' src={File} alt="file" height={180} width={180} />
+                  <input type="file" className="hidden" id="file-upload" onChange={handleFileChange} />
+                  <label htmlFor="file-upload" className="cursor-pointer mt-2 text-sm text-gray-500">Upload .pdf & .docx file only, max file size 5MB</label><br/>
+                  <label htmlFor="file-upload" className="cursor-pointer mt-2 text-sm text-red-600">max file size 5MB only</label>
                 </div>
               </div>
+              {file && (
+                <div className="mt-4">
+                  <p className="text-gray-700">Selected file: {file.name}</p>
+                </div>
+              )}
             </div>
           </form>
         </div>
