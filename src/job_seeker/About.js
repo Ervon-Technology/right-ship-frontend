@@ -5,12 +5,12 @@ import AboutImage from './Assets/About.jpg';
 const About = () => {
   return (
     <div className="flex h-screen">
-      <div className="w-2/5 bg-cover bg-center" style={{ backgroundImage: `url(${AboutImage})` }}>
-        <div className="flex items-center justify-center h-full bg-blue-900 bg-opacity-50">
-          <h1 className="text-white text-4xl font-bold">Tell us <span className="text-blue-300">About <span className="bg-white text-blue-900 px-2">you</span></span></h1>
+      <div className="w-2/5 h-screen bg-cover bg-center" style={{ backgroundImage: `url(${AboutImage})` }}>
+        <div className="flex items-center justify-center h-full bg-blue-500 bg-opacity-20">
+          <h1 className="text-white text-3xl font-bold">Tell us <br/> <span className="text-white text-7xl">About <span className="bg-white text-customBlue text-7xl px-2 pb-1">you</span></span></h1>
         </div>
       </div>
-      <div className="w-3/5 p-8 px-14 bg-white">
+      <div className="w-3/5 p-8 px-14 h-screen overflow-y-auto bg-white">
         <div className="flex items-center justify-center mb-8">
           <div className="flex items-center flex-col">
             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-customBlue3 text-white border-4 border-customBlue">1</div>
@@ -18,22 +18,22 @@ const About = () => {
           </div>
           <div className="w-20 h-0.5 -mt-5 bg-customBlue"></div>
           <div className="flex items-center flex-col">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 border-4 border-customBlue">2</div>
+            <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 border-4 border-customBlue"></div>
             <span className="text-black">Basic Details</span>
           </div>
           <div className="w-20 h-0.5 -mt-5 bg-gray-300"></div>
           <div className="flex items-center flex-col">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 border-4 border-customBlue">3</div>
+            <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 border-4 border-customBlue"></div>
             <span className="mx-1 text-black">Experience</span>
           </div>
           <div className="w-20 h-0.5 -mt-5 bg-gray-300"></div>
           <div className="flex items-center flex-col">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 border-4 border-customBlue">4</div>
+            <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 border-4 border-customBlue"></div>
             <span className="mx-3 text-black">Resume</span>
           </div>
           <div className="w-20 h-0.5 -mt-5 bg-gray-300"></div>
           <div className="flex items-center flex-col">
-            <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 border-4 border-customBlue">5</div>
+            <div className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 border-4 border-customBlue"></div>
             <span className="mx-4 text-black">Profile</span>
           </div>
         </div>
@@ -94,7 +94,7 @@ const About = () => {
             </div>
           </div>
           <div className="flex justify-center">
-            <Link to="/details" className="bg-customBlue text-white py-2 px-20 rounded">NEXT</Link>
+            <Link to="/details" className="bg-customBlue text-white py-2 px-20 rounded font-bold">NEXT</Link>
           </div>
         </form>
       </div>
