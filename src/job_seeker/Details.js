@@ -68,6 +68,7 @@ const Details = () => {
             <span className="mx-4 text-black">Profile</span>
           </div>
         </div>
+        <div className='w-full border border-blue-200 -mt-6 mb-10 '></div>
 
         {/* Form Section */}
         <form className="px-16">

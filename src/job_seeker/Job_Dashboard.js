@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Job_Dashboard.css';
-import { Share2, Bookmark, Flag } from 'lucide-react';
+import { Share2, Bookmark, Flag, SquareArrowOutUpRight, MoveLeft, MoveRight, Search, Ship } from 'lucide-react';
 
 const dummyJobs = [
     {
@@ -86,34 +86,29 @@ const JobDashboard = () => {
         <div className="min-h-screen bg-gray-100 p-4">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-4">
-                    <h1 className="text-sm text-customBlue2 font-semibold">Find the jobs you're looking for</h1>
+                    <h1 className="text-sm text-customBlue2 font-medium -mb-2">Find the jobs you're looking for</h1>
                 </div>
-                <div className="flex justify-center mb-4">
-                    <div className="flex border border-gray-300 rounded-lg overflow-hidden w-full max-w-2xl">
-                        <div className="flex items-center px-2 border-r border-gray-300 bg-gray-100">
-                            <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M10 20a8 8 0 100-16 8 8 0 000 16zm-6 2a9.97 9.97 0 01-4-8C0 6.477 4.477 2 10 2s10 4.477 10 10-4.477 10-10 10a9.97 9.97 0 01-8-4l-2 2a1 1 0 01-1.415-1.415l2-2z" />
-                            </svg>
+                <div className="flex justify-center mb-6">
+                    <div className="flex border-4 border-customBlue border-t-0 rounded-b-md bg-customSky3 overflow-hidden w-full max-w-2xl px-8 py-2">
+                        <div className="flex items-center px-2  bg-customSky3">
+                            <Search size={18} />
                         </div>
                         <input
                             type="text"
                             placeholder="Job title, keywords, or company"
-                            className="flex-1 px-4 py-2 focus:outline-none"
+                            className="flex-1 px-4 py-2 focus:outline-none bg-customSky3"
                         />
-                        <div className="flex items-center px-2 border-r border-l border-gray-300 bg-gray-100">
-                            <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M10 20a8 8 0 100-16 8 8 0 000 16zm-6 2a9.97 9.97 0 01-4-8C0 6.477 4.477 2 10 2s10 4.477 10 10-4.477 10-10 10a9.97 9.97 0 01-8-4l-2 2a1 1 0 01-1.415-1.415l2-2z" />
-                            </svg>
+                        <div className="flex items-center px-2 bg-customSky3">
+                            <Ship size={18} />
                         </div>
                         <input
                             type="text"
                             placeholder="Search by Company name"
-                            className="flex-1 px-4 py-2 focus:outline-none"
+                            className="flex-1 px-4 py-2 focus:outline-none bg-customSky3"
                         />
-                        <button className="px-4 py-2 bg-customBlue text-white">Search</button>
                     </div>
                 </div>
-                <div className="border-t-2 border-blue-200 mb-4"></div>
+                <div className="border-t-2 border-blue-200 mb-6"></div>
                 <div className="flex flex-col md:flex-row">
                     <div className="w-full md:w-1/3 pr-0 md:pr-4 mb-4 md:mb-0">
                         {jobs.map(job => (
@@ -143,7 +138,7 @@ const JobDashboard = () => {
                             <>
                                 <div className="flex justify-between items-center mb-4">
                                     <div className='py-4 px-2'>
-                                        <h3 className="text-2xl font-bold">{selectedJob.title}</h3>
+                                        <h3 className="flex text-2xl font-bold">{selectedJob.title} <SquareArrowOutUpRight className='mt-1.5 ms-3' color='#1F5882' /></h3>
                                         <p className="text-gray-900 font-medium">{selectedJob.company}</p>
                                         <p className="text-sm text-gray-600">Valid till {selectedJob.validTill}</p>
                                     </div>
@@ -151,7 +146,7 @@ const JobDashboard = () => {
                                         <p className='text-sm'>Phone: <span className='font-semibold text-base'>{selectedJob.phone}</span></p>
                                         <p className='text-sm'>Email: <span className='font-semibold text-base'>{selectedJob.email}</span></p>
                                     </div>
-                                    <div className='px-12'>
+                                    <div className='px-6'>
                                         <button className="bg-customBlue hover:bg-customBlue2 text-white font-bold py-3 px-6 rounded-lg">Quick Apply</button>
                                     </div>
                                 </div>
@@ -160,7 +155,7 @@ const JobDashboard = () => {
                                     <p>Email: {selectedJob.email}</p>
                                 </div>
                                 <div className="mb-4 py-4 px-2">
-                                    <h4 className="font-bold text-customBlue2 text-sm bg-blue-100 w-40 ps-7 py-1.5 rounded mb-2">Job description</h4>
+                                    <h4 className="font-bold text-customBlue2 text-sm bg-blue-100 w-40 ps-7 py-2 rounded mb-2">Job description</h4>
                                     <div className="flex justify-between mb-4">
                                         <div className='my-3 mx-7'>
                                             <h5 className="font-bold">Ship Type</h5>
@@ -192,7 +187,7 @@ const JobDashboard = () => {
                                 <div className="border-t-2 border-slate-100 mt-10 mb-4"></div>
                                 <div className="flex justify-between items-center ">
                                     <p className='text-sm text-slate-400 my-3 mx-9'>Job ID: 81659885</p>
-                                    <div className='flex'>
+                                    <div className='flex px-6'>
                                         <button className="mr-2 bg-white border border-customBlue hover:bg-customBlue2 hover:text-white w-32 text-customBlue font-semibold py-2 px-4 rounded-md flex justify-evenly"><Bookmark size={20} className='mt-1'/>Save</button>
                                         <button onClick={handleReportClick} className="bg-white border border-customBlue hover:bg-customBlue2 hover:text-white w-32 text-customBlue font-semibold py-2 px-4 rounded-md flex justify-evenly"><Flag size={20} className='mt-1'/>Report</button>
                                     </div>
@@ -202,9 +197,9 @@ const JobDashboard = () => {
                     </div>
                 </div>
                 <div className="flex justify-center mt-4">
-                    <button className="mr-2 px-4 py-2 bg-gray-200 rounded">&lt;</button>
-                    <span className="px-4 py-2">Page 1 of 25</span>
-                    <button className="ml-2 px-4 py-2 bg-gray-200 rounded">&gt;</button>
+                    <button className="mr-2 px-2 rounded"><MoveLeft /></button>
+                    <span className="px-4 py-2 bg-gray-200">Page 1 of 25</span>
+                    <button className="ml-2 px-2 rounded"><MoveRight /></button>
                 </div>
             </div>
 
@@ -218,7 +213,7 @@ const JobDashboard = () => {
                             value={reportOtherText}
                             onChange={(e) => setReportOtherText(e.target.value)}
                         />
-                        <div className="flex justify-end mt-4">
+                        <div className="flex justify-end mt-4 ">
                             <button
                                 onClick={handleModalClose}
                                 className="px-4 py-2 mr-2 border border-gray-300 rounded-lg"

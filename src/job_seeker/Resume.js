@@ -47,6 +47,7 @@ const Resume = () => {
               <span className="mx-4 text-black">Profile</span>
             </div>
           </div>
+          <div className='w-full border border-blue-200 -mt-6 mb-10 '></div>
           <div className="text-center mb-4 px-16">
             <h2 className="text-2xl font-semibold">Upload your resume!</h2>
             <p className="text-green-500 text-md">Receive 2x job offers after uploading</p>
