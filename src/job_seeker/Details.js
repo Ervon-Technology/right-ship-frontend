@@ -40,7 +40,7 @@ const Details = () => {
           </h1>
         </div>
       </div>
-      <div className="w-3/5 bg-white p-8 h-screen overflow-y-auto">
+      <div className="w-3/5 bg-white p-8 h-screen overflow-y-auto overflow-x-hidden">
         <div className="flex items-center justify-center mb-8">
           {/* Navigation Steps */}
           <div className="flex items-center flex-col">

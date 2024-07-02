@@ -91,7 +91,7 @@ const Experience = () => {
               />
             </div>
           </div>
-          <div className="absolute bottom-8 left-0 right-0 px-16">
+          <div className="absolute bottom-20 left-0 right-0 px-16">
             <div className="flex justify-center space-x-4">
               <Link to="/details" className="bg-white text-customBlue font-bold border border-customBlue py-2 px-4 rounded w-48 text-center">
                 BACK

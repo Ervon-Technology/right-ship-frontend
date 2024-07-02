@@ -47,14 +47,14 @@ const Resume = () => {
               <span className="mx-4 text-black">Profile</span>
             </div>
           </div>
-          <div className='w-full border border-blue-200 -mt-6 mb-10 '></div>
+          <div className='w-full border border-blue-200 -mt-6 mb-6 '></div>
           <div className="text-center mb-4 px-16">
             <h2 className="text-2xl font-semibold">Upload your resume!</h2>
             <p className="text-green-500 text-md">Receive 2x job offers after uploading</p>
             <p><span className="bg-blue-100 px-2 text-black">Takes less than a minute to upload</span></p>
           </div>
           <form className="text-center px-16">
-            <div className="mb-4">
+            <div>
               <div className="flex justify-center items-center border-2 border-dashed border-gray-300 p-8 rounded-lg">
                 <div>
                   <img className='ms-16' src={File} alt="file" height={180} width={180} />
@@ -71,13 +71,13 @@ const Resume = () => {
             </div>
           </form>
         </div>
-        <div className="text-center mt-4">
+        <div className="text-center -mt-6">
           <ul className="list-none">
             <li className="text-gray-700 font-medium">Unlock jobs from top companies faster.</li>
             <li className="text-gray-700 font-medium">Get jobs specifically suited for your rank.</li>
           </ul>
         </div>
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-4 mb-6">
           <Link to="/experience" className="bg-white text-customBlue font-bold border border-customBlue py-2 px-4 rounded w-48 text-center">BACK</Link>
           <Link to="/profile" className="bg-customBlue text-white font-bold py-2 px-4 rounded w-48 text-center">NEXT</Link>
         </div>
