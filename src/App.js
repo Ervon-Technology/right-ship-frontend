@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './company/Sidebar';
 import Header from './company/Header';
+import Header2 from './job_seeker/Header2';
 import Footer from './company/Footer';
 import EmployeerDashboard from './company/EmployeerDashboard';
 import EmployerDetails from './company/Preview&EditJobDetail/EmployerDetails';
@@ -48,6 +49,15 @@ const App = () => {
     </div>
   );
 
+  const DefaultLayout2 = ({ children }) => (
+    <div className="flex min-h-screen">
+      <div className='flex flex-col flex-1'>
+        <Header2 />
+        {children}
+      </div>
+    </div>
+  )
+
   return (
     <Router>
       <Routes>
@@ -68,7 +78,7 @@ const App = () => {
         <Route path='/resume' element={<Resume />} />
         <Route path='/experience' element={<Experience />} />
         <Route path='/details' element={<Details />} />
-        <Route path='/about' element={<About />} />
+        <Route path='/about' element={<DefaultLayout2><About /></DefaultLayout2>} />
         <Route path='/job_dashboard' element={<JobDashboard />} />
         <Route path='/candidate_Otpverify' element={<CandidateOtpverify />} />
         <Route path='/candidate_login' element={<CandidateLogin />}/>
