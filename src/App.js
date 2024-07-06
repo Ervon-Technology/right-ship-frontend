@@ -27,6 +27,10 @@ import CandidatePage from './admin/Candidate';
 import CompanyList from './admin/CompanyList';
 import Planlist from './admin/Planlist';
 import Dashboard from './admin/Dashboard';
+import AdminRole from './admin/AdminRole2';
+import DeletePage from './admin/Deletepage';
+import SuspendPage from './admin/Suspend';
+import EditMember from './admin/Editrole';
 
 
 
@@ -168,6 +172,10 @@ const App = () => {
         <Route path="/companylist" element={<CompanyList/>} />
         <Route path="/planlist" element={<Planlist/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/adminrole2" element={<AdminRole/>} />
+        <Route path="/DeletePage" element={<DeletePage/>} />
+        <Route path="/suspendpage" element={<SuspendPage/>} />
+        <Route path="/editmember" element={<EditMember/>} />
       </Routes>
     </BrowserRouter>
   );
