@@ -16,6 +16,7 @@ import JobDescription from './company/JobDescription';
 import Login from './company/Login';
 import OtpVerify from './company/Otpverify';
 import RegistrationForm from './company/RegistrationForm';
+import Header3 from './job_seeker/Header3';
 import Header2 from './job_seeker/Header2';
 import Home from './job_seeker/home';
 import CandidateLogin from './job_seeker/CandidateLogin';
@@ -27,6 +28,9 @@ import Experience from './job_seeker/Experience';
 import Resume from './job_seeker/Resume';
 import Profile from './job_seeker/Profile';
 import Congratulations from './job_seeker/Congratulations';
+import CandidateProfile from './job_seeker/CandidateProfile/CandidateProfile';
+import MyJobs from './job_seeker/MyJobs';
+import Settings from './job_seeker/Settings';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -57,6 +61,15 @@ const App = () => {
       </div>
     </div>
   )
+
+  const DefaultLayout3 = ({children}) => (
+    <div className="flex min-h-screen">
+      <div className="flex flex-col flex-1">
+        <Header3 />
+        {children}
+      </div>
+    </div>
+  )
   return (
     <Router>
       <Routes>
@@ -72,13 +85,18 @@ const App = () => {
             )
           }
         />
+        <Route path='/settings' element={<DefaultLayout3><Settings /></DefaultLayout3>} />
+        <Route path='/my_jobs' element={<DefaultLayout3><MyJobs /></DefaultLayout3>} />
+        <Route path='/candidate_profile' element={<DefaultLayout3><CandidateProfile /></DefaultLayout3>} />
         <Route path='/congratulations' element={<Congratulations />} />
         <Route path='/profile' element={<DefaultLayout2><Profile /></DefaultLayout2>} />
         <Route path='/resume' element={<DefaultLayout2><Resume /></DefaultLayout2>} />
         <Route path='/experience' element={<DefaultLayout2><Experience /></DefaultLayout2>} />
         <Route path='/details' element={<DefaultLayout2><Details /></DefaultLayout2>} />
         <Route path='/about' element={<DefaultLayout2><About /></DefaultLayout2>} />
-        <Route path='/job_dashboard' element={<JobDashboard />} />
+
+        <Route path='/job_dashboard' element={<DefaultLayout3><JobDashboard /></DefaultLayout3>} />
+        
         <Route path='/candidate_Otpverify' element={<CandidateOtpverify />} />
         <Route path='/candidate_login' element={<CandidateLogin />}/>
         <Route path='/jobs_home' element={<Home />} />

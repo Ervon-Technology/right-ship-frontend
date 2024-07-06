@@ -87,7 +87,7 @@ const Profile = () => {
             </p>
             <p className="text-xs text-red-500">max file size 10MB only</p>
           </div>
-          <div className="absolute bottom-8 px-52">
+          <div className="absolute bottom-2 px-52">
             <div className="flex justify-center space-x-4">
               <Link to="/resume" className="bg-white text-customBlue font-bold border border-customBlue py-2 px-4 rounded w-48 text-center">BACK</Link>
               <Link to="/congratulations" className="bg-customBlue text-white font-bold py-2 px-4 rounded w-48 text-center">SAVE</Link>

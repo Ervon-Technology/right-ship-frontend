@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from './CandidateLoader'
+import Loader from './CandidateLoader';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const CandidateLogin = () => {
     const [phone, setPhone] = useState('');
     const [loading, setLoading] = useState(false); // State for loader
+    const navigate = useNavigate();
 
     const handleotp = async () => { 
         try {
@@ -25,7 +27,7 @@ const Login = () => {
                 toast.success(`OTP sent to ${data.email}`);
                 localStorage.setItem('email', data.email);
                 setTimeout(() => {
-                    window.location = '/otpverify';
+                    navigate('/otpverify'); // Redirect to OTP verification page
                 }, 1000);
             } else {
                 // Handle non-successful response
@@ -43,7 +45,7 @@ const Login = () => {
     return (
         <div>
             <ToastContainer />
-            {loading &&<Loader/>}
+            {loading && <Loader />}
             <div className="flex items-center justify-center min-h-screen bg-gray-100">
                 <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                     <h2 className="text-2xl font-bold mb-4">Enter Phone Number</h2>
@@ -60,12 +62,15 @@ const Login = () => {
                         <input
                             type="text"
                             className="flex-1 px-2 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="0000000000" 
+                            placeholder="0000000000"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                         />
                     </div>
-                    <button className="w-full bg-customBlue hover:bg-customBlue2 text-white font-bold py-2 px-4 rounded" onClick={handleotp}>
+                    <button
+                        className="w-full bg-customBlue hover:bg-customBlue2 text-white font-bold py-2 px-4 rounded"
+                        onClick={handleotp}
+                    >
                         {loading ? 'Sending OTP...' : 'Send OTP'}
                     </button>
                 </div>
@@ -74,4 +79,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default CandidateLogin;
