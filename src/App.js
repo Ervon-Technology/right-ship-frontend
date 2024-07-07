@@ -80,6 +80,7 @@ const App = () => {
     <div className="flex min-h-screen">
       <AdminSidebar />
       <div className="flex flex-col flex-1">
+        <Header3 />
         {children}
       </div>
     </div>
@@ -89,7 +90,6 @@ const App = () => {
     <div className="flex min-h-screen">
       <AdminSidebar />
       <div className="flex flex-col flex-1">
-      
         {children}
       </div>
     </div>
