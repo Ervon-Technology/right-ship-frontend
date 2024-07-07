@@ -32,7 +32,7 @@ const Modal5 = ({ isOpen, onClose, height, setHeight, weight, setWeight, sidCard
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg shadow-md w-full md:w-1/3">
-        <h2 className="text-lg font-bold mb-4">Edit Details</h2>
+        
         <div className="space-y-4">
           <div>
             <label>Height (in CM):</label>

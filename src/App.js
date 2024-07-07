@@ -31,6 +31,20 @@ import Congratulations from './job_seeker/Congratulations';
 import CandidateProfile from './job_seeker/CandidateProfile/CandidateProfile';
 import MyJobs from './job_seeker/MyJobs';
 import Settings from './job_seeker/Settings';
+import AdminSidebar from './Admin/AdminSidebar';
+
+import AdminDashboard from './Admin/AdminDashboard';
+import AdminTeamManagement from './Admin/Team_Management/AdminTeamManagement';
+import EditMember from './Admin/Team_Management/EditMember';
+import DeleteMember from './Admin/Team_Management/DeleteMember';
+import SuspendMember from './Admin/Team_Management/SuspendMember';
+
+import AdminCandidates from './Admin/AdminCandidates';
+import Company from './Admin/Company';
+import HelpSupport from './Admin/HelpSupport';
+import Plans from './Admin/Plans';
+import Subscriptions from './Admin/Subscriptions/Subscriptions';
+import Createplan from './Admin/Subscriptions/CreatePlan';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -64,8 +78,18 @@ const App = () => {
 
   const DefaultLayout3 = ({children}) => (
     <div className="flex min-h-screen">
+      <AdminSidebar />
       <div className="flex flex-col flex-1">
-        <Header3 />
+        {children}
+      </div>
+    </div>
+  )
+
+  const DefaultLayout4 = ({children}) => (
+    <div className="flex min-h-screen">
+      <AdminSidebar />
+      <div className="flex flex-col flex-1">
+      
         {children}
       </div>
     </div>
@@ -85,6 +109,19 @@ const App = () => {
             )
           }
         />
+        <Route path='/create_plan' element={<DefaultLayout4><Createplan/></DefaultLayout4>} />
+        <Route path='/subscriptions' element={<DefaultLayout4><Subscriptions/></DefaultLayout4>} />
+        <Route path='/plans' element={<DefaultLayout4><Plans/></DefaultLayout4>} />
+        <Route path='/help_support' element={<DefaultLayout4><HelpSupport/></DefaultLayout4>} />
+        <Route path='/company' element={<DefaultLayout4><Company/></DefaultLayout4>} />
+
+        <Route path='/suspendmember' element={<SuspendMember/>} />          
+        <Route path='/deleteMember' element={<DeleteMember/>} />          
+        <Route path='/editmember' element={<EditMember/>} />          
+        <Route path='/admin_team_management' element={<DefaultLayout4><AdminTeamManagement/></DefaultLayout4>} />
+
+        <Route path='//admin_candidates' element={<DefaultLayout4><AdminCandidates/></DefaultLayout4>} />
+        <Route path='/admin_dashboard' element={<DefaultLayout4><AdminDashboard/></DefaultLayout4>} />
         <Route path='/settings' element={<DefaultLayout3><Settings /></DefaultLayout3>} />
         <Route path='/my_jobs' element={<DefaultLayout3><MyJobs /></DefaultLayout3>} />
         <Route path='/candidate_profile' element={<DefaultLayout3><CandidateProfile /></DefaultLayout3>} />
