@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTeamMember } from '../../slice/teammember'; // Adjust path as needed
 
-const AddMemberModal = ({ onClose, onSave }) => {
+const AddMemberModal = ({ onClose }) => {
+  const dispatch = useDispatch();
+
   const [newMember, setNewMember] = useState({
     name: '',
     email: '',
@@ -10,13 +14,24 @@ const AddMemberModal = ({ onClose, onSave }) => {
     description: ''
   });
 
+  const [saving, setSaving] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewMember((prevMember) => ({ ...prevMember, [name]: value }));
   };
 
-  const handleSave = () => {
-    onSave(newMember);
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      await dispatch(addTeamMember(newMember));
+      setSaving(false);
+      onClose(); // Close the modal on successful save
+    } catch (error) {
+      console.error('Failed to add team member:', error);
+      setSaving(false);
+      // Handle error as needed
+    }
   };
 
   return (
@@ -65,20 +80,23 @@ const AddMemberModal = ({ onClose, onSave }) => {
             value={newMember.description}
             onChange={handleChange}
           />
-        </div>
-        <div className="flex justify-end">
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded mr-2"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleSave}
-          >
-            Save
-          </button>
+          <div className="flex justify-center mt-4 gap-4">
+            <button
+              type="button"
+              className="bg-gray-500 text-white px-6 py-2 rounded"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className={`bg-blue-500 text-white px-6 py-2 rounded ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
+              onClick={handleSave}
+              disabled={saving}
+            >
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,41 +1,34 @@
-import React, { useState } from 'react';
-import Createplan from './CreatePlan';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchPlans } from '../../slice/planSlice'; // Import fetchPlans async thunk
 
 const Subscriptions = () => {
-  const [plans, setPlans] = useState([
-    { id: 1, name: 'Premium Plan', price: '599/-', startDate: '-', expireDate: '-' },
-    { id: 2, name: 'Basic Plan', price: '299/-', startDate: '-', expireDate: '-' },
-    { id: 3, name: 'Enterprise Plan', price: '999/-', startDate: '-', expireDate: '-' },
-  ]);
+  const dispatch = useDispatch();
+  const { plans, loading, error } = useSelector((state) => state.plans);
 
-  const [activePlans] = useState([
-    { id: 1, name: 'Premium Plan', description: 'Includes all features' },
-    { id: 2, name: 'Basic Plan', description: 'Limited features' },
-  ]);
+  useEffect(() => {
+    dispatch(fetchPlans());
+  }, [dispatch]);
 
-  const [expiredPlans] = useState([
-    { id: 1, name: 'Starter Plan', description: 'Basic features only' },
-  ]);
+  if (loading) {
+    return <div>Loading...</div>; // Handle loading state
+  }
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  if (error) {
+    return <div>Error: {error}</div>; // Handle error state
+  }
 
-  const handleCreatePlan = (newPlan) => {
-    setPlans((prevPlans) => [
-      ...prevPlans,
-      { ...newPlan, id: prevPlans.length + 1, startDate: '-', expireDate: '-' },
-    ]);
-  };
+  const activePlans = plans.filter((plan) => plan.status === 'active');
+  const expiredPlans = plans.filter((plan) => plan.status === 'expired');
 
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Subscription Plan</h1>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={() => setIsCreateModalOpen(true)}
-        >
-          Create Plan
-        </button>
+        <Link to="/create_plan">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded">Create Plan</button>
+        </Link>
       </div>
       <hr className="mb-4" />
 
@@ -70,8 +63,12 @@ const Subscriptions = () => {
             ))}
             <tr>
               <td colSpan="6" className="text-right py-10 mt-44">
-                <button className="bg-blue-500 text-white px-4 py-2 rounded mr-2">Activate All Plans</button>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">Activate Selected Plans</button>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded mr-2">
+                  Activate All Plans
+                </button>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded">
+                  Activate Selected Plans
+                </button>
               </td>
             </tr>
           </tbody>
@@ -86,7 +83,7 @@ const Subscriptions = () => {
           {plans.map((plan, index) => (
             <div key={index} className="w-1/4 p-4 border rounded bg-blue-300">
               <h3 className="text-lg font-bold">{plan.name}</h3>
-              <p>{/* Placeholder for description */}</p>
+              <p>{plan.description}</p>
             </div>
           ))}
         </div>
