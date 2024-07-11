@@ -32,13 +32,8 @@ import CandidateProfile from './job_seeker/CandidateProfile/CandidateProfile';
 import MyJobs from './job_seeker/MyJobs';
 import Settings from './job_seeker/Settings';
 import AdminSidebar from './Admin/AdminSidebar';
-
 import AdminDashboard from './Admin/AdminDashboard';
 import AdminTeamManagement from './Admin/Team_Management/AdminTeamManagement';
-import EditMember from './Admin/Team_Management/EditMember';
-import DeleteMember from './Admin/Team_Management/DeleteMember';
-import SuspendMember from './Admin/Team_Management/SuspendMember';
-
 import AdminCandidates from './Admin/AdminCandidates';
 import Company from './Admin/Company';
 import HelpSupport from './Admin/HelpSupport';
@@ -113,13 +108,8 @@ const App = () => {
         <Route path='/subscriptions' element={<DefaultLayout4><Subscriptions/></DefaultLayout4>} />
         <Route path='/plans' element={<DefaultLayout4><Plans/></DefaultLayout4>} />
         <Route path='/help_support' element={<DefaultLayout4><HelpSupport/></DefaultLayout4>} />
-        <Route path='/company' element={<DefaultLayout4><Company/></DefaultLayout4>} />
-
-        <Route path='/suspendmember' element={<SuspendMember/>} />          
-        <Route path='/deleteMember' element={<DeleteMember/>} />          
-        <Route path='/editmember' element={<EditMember/>} />          
+        <Route path='/company' element={<DefaultLayout4><Company/></DefaultLayout4>} />                  
         <Route path='/admin_team_management' element={<DefaultLayout4><AdminTeamManagement/></DefaultLayout4>} />
-
         <Route path='//admin_candidates' element={<DefaultLayout4><AdminCandidates/></DefaultLayout4>} />
         <Route path='/admin_dashboard' element={<DefaultLayout4><AdminDashboard/></DefaultLayout4>} />
         <Route path='/settings' element={<DefaultLayout3><Settings /></DefaultLayout3>} />
@@ -131,9 +121,7 @@ const App = () => {
         <Route path='/experience' element={<DefaultLayout2><Experience /></DefaultLayout2>} />
         <Route path='/details' element={<DefaultLayout2><Details /></DefaultLayout2>} />
         <Route path='/about' element={<DefaultLayout2><About /></DefaultLayout2>} />
-
-        <Route path='/job_dashboard' element={<DefaultLayout3><JobDashboard /></DefaultLayout3>} />
-        
+        <Route path='/job_dashboard' element={<DefaultLayout3><JobDashboard /></DefaultLayout3>} />        
         <Route path='/candidate_Otpverify' element={<CandidateOtpverify />} />
         <Route path='/candidate_login' element={<CandidateLogin />}/>
         <Route path='/jobs_home' element={<Home />} />
