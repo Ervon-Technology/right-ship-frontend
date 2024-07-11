@@ -5,19 +5,31 @@ import DeleteMemberModal from './DeleteMemberModal';
 import SuspendMemberModal from './SuspendMemberModal';
 
 const AdminTeamManagement = () => {
-  const [teamMembers, setTeamMembers] = useState([
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Manager', status: 'Active', joinedDate: '1 May, 2024', description: 'Team member description' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Employee', status: 'Active', joinedDate: '2 May, 2024', description: 'Team member description' },
-    { id: 3, name: 'Alice Johnson', email: 'alice@example.com', role: 'Employee', status: 'Active', joinedDate: '3 May, 2024', description: 'Team member description' },
-    { id: 4, name: 'Bob Brown', email: 'bob@example.com', role: 'Employee', status: 'Active', joinedDate: '4 May, 2024', description: 'Team member description' },
-    { id: 5, name: 'Charlie Davis', email: 'charlie@example.com', role: 'Employee', status: 'Active', joinedDate: '5 May, 2024', description: 'Team member description' },
-  ]);
-
+  const [teamMembers, setTeamMembers] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [currentMember, setCurrentMember] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchTeamMembers();
+  }, []);
+
+  const fetchTeamMembers = async () => {
+    try {
+      const response = await fetch('http://65.0.167.98/team/get');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch team members: ${response.status} ${response.statusText}`);
+      }
+      const data = await response.json();
+      setTeamMembers(data.members);
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+      setError('Failed to fetch team members. Please try again later.');
+    }
+  };
 
   const handleAddMember = () => {
     setShowAddModal(true);
@@ -39,26 +51,80 @@ const AdminTeamManagement = () => {
   };
 
   const handleSaveNewMember = (newMember) => {
-    setTeamMembers((prevMembers) => [...prevMembers, { ...newMember, id: prevMembers.length + 1 }]);
-    setShowAddModal(false);
+    fetch('http://65.0.167.98/team/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newMember)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to add new member: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setTeamMembers(prevMembers => [...prevMembers, { ...newMember, id: data.id }]);
+        setShowAddModal(false);
+      })
+      .catch(error => {
+        console.error('Error adding new member:', error);
+        setError('Failed to add new member. Please try again.');
+      });
   };
 
   const handleSaveEditedMember = (updatedMember) => {
-    setTeamMembers((prevMembers) =>
-      prevMembers.map((member) => (member.id === updatedMember.id ? updatedMember : member))
-    );
-    setShowEditModal(false);
+    fetch('http://65.0.167.98/team/edit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedMember)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to edit member: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        setTeamMembers(prevMembers => prevMembers.map(member => (member.id === updatedMember.id ? updatedMember : member)));
+        setShowEditModal(false);
+      })
+      .catch(error => {
+        console.error('Error editing member:', error);
+        setError('Failed to edit member. Please try again.');
+      });
   };
 
   const handleConfirmDelete = (id) => {
-    setTeamMembers((prevMembers) => prevMembers.filter((member) => member.id !== id));
-    setShowDeleteModal(false);
+    fetch('http://65.0.167.98/team/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ user_id: id })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to delete member: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        setTeamMembers(prevMembers => prevMembers.filter(member => member.id !== id));
+        setShowDeleteModal(false);
+      })
+      .catch(error => {
+        console.error('Error deleting member:', error);
+        setError('Failed to delete member. Please try again.');
+      });
   };
 
   const handleSuspendMember = (updatedMember) => {
-    setTeamMembers((prevMembers) =>
-      prevMembers.map((member) => (member.id === updatedMember.id ? updatedMember : member))
-    );
+    // Add API call for suspending the member here
+    setTeamMembers(prevMembers => prevMembers.map(member => (member.id === updatedMember.id ? updatedMember : member)));
     setShowSuspendModal(false);
   };
 
@@ -75,9 +141,18 @@ const AdminTeamManagement = () => {
       </div>
       <hr className="border-black w-full mb-4" />
       <div className="flex mb-4 gap-3 flex-wrap">
-        <div className="w-full sm:w-80 p-2 bg-blue-100 text-blue-700 h-20 rounded-lg"><span className='font-bold'> Total Team Members</span><br/><span className='text-xl'> 150</span></div>
-        <div className="w-full sm:w-80 p-2 bg-green-100 text-green-700 h-20 rounded-lg "> <span className='font-bold'>Active Members</span><br/> <span className='text-xl'>145</span></div>
-        <div className="w-full sm:w-80 p-2 bg-red-100 text-red-700 h-20 rounded-lg"> <span className='font-bold'>Suspended Members</span><br/><span className='text-xl'>5</span></div>
+        <div className="w-full sm:w-80 p-2 bg-blue-100 text-blue-700 h-20 rounded-lg">
+          <span className='font-bold'>Total Team Members</span><br/>
+          <span className='text-xl'>{teamMembers.length}</span>
+        </div>
+        <div className="w-full sm:w-80 p-2 bg-green-100 text-green-700 h-20 rounded-lg">
+          <span className='font-bold'>Active Members</span><br/>
+          <span className='text-xl'>{teamMembers.filter(member => member.status === 'active').length}</span>
+        </div>
+        <div className="w-full sm:w-80 p-2 bg-red-100 text-red-700 h-20 rounded-lg">
+          <span className='font-bold'>Suspended Members</span><br/>
+          <span className='text-xl'>{teamMembers.filter(member => member.status === 'suspended').length}</span>
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
@@ -124,6 +199,8 @@ const AdminTeamManagement = () => {
           </tbody>
         </table>
       </div>
+      {error && (<div className="mt-4 text-red-600">{error}</div>
+      )}
       {showAddModal && (
         <AddMemberModal
           onClose={() => setShowAddModal(false)}
@@ -156,3 +233,4 @@ const AdminTeamManagement = () => {
 };
 
 export default AdminTeamManagement;
+

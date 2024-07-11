@@ -49,13 +49,15 @@ const AddMemberModal = ({ onClose, onSave }) => {
             onChange={handleChange}
           />
           <label className="mb-2 font-bold">Status</label>
-          <input
+          <select
             className="mb-4 p-2 border bg-gray-200 rounded"
-            type="text"
             name="status"
             value={newMember.status}
             onChange={handleChange}
-          />
+          >
+            <option value="Active">Active</option>
+            <option value="Suspended">Suspended</option>
+          </select>
           <label className="mb-2 font-bold">Description</label>
           <textarea
             className="mb-4 p-2 border bg-gray-200 rounded"
@@ -63,22 +65,20 @@ const AddMemberModal = ({ onClose, onSave }) => {
             value={newMember.description}
             onChange={handleChange}
           />
-          <div className="flex justify-center mt-4 gap-4">
-            <button
-              type="button"
-              className="bg-gray-500 text-white px-6 py-2 rounded"
-              onClick={onClose}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="bg-blue-500 text-white px-6 py-2 rounded"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-          </div>
+        </div>
+        <div className="flex justify-end">
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={handleSave}
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
