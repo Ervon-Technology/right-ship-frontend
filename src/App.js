@@ -120,7 +120,7 @@ const App = () => {
         <Route path='/editmember' element={<EditMember/>} />          
         <Route path='/admin_team_management' element={<DefaultLayout4><AdminTeamManagement/></DefaultLayout4>} />
 
-        <Route path='//admin_candidates' element={<DefaultLayout4><AdminCandidates/></DefaultLayout4>} />
+        <Route path='/admin_candidates' element={<DefaultLayout4><AdminCandidates/></DefaultLayout4>} />
         <Route path='/admin_dashboard' element={<DefaultLayout4><AdminDashboard/></DefaultLayout4>} />
         <Route path='/settings' element={<DefaultLayout3><Settings /></DefaultLayout3>} />
         <Route path='/my_jobs' element={<DefaultLayout3><MyJobs /></DefaultLayout3>} />
