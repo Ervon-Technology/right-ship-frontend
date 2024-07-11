@@ -116,10 +116,6 @@ const Subscriptions = () => {
           ))}
         </div>
       </div>
-
-      {isCreateModalOpen && (
-        <Createplan onClose={() => setIsCreateModalOpen(false)} onCreate={handleCreatePlan} />
-      )}
     </div>
   );
 };
