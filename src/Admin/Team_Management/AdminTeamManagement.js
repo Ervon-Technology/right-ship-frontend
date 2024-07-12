@@ -7,8 +7,9 @@ import DeleteMemberModal from './DeleteMemberModal';
 import SuspendMemberModal from './SuspendMemberModal';
 
 const AdminTeamManagement = () => {
-  const dispatch = useDispatch();
-  const { teamMembers, loading, error } = useSelector((state) => state.teamMembers);
+  const [teamMembers, setTeamMembers] = useState([
+    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Manager', status: 'Active', joinedDate: '1 May, 2024', description: 'Team member description' }
+  ]);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
