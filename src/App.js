@@ -43,6 +43,16 @@ import Createplan from './Admin/Subscriptions/CreatePlan';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [plans, setPlans] = useState([
+    { id: 1, name: 'Premium Plan', price: '599/-', startDate: '-', expireDate: '-', status: 'active' },
+    { id: 2, name: 'Basic Plan', price: '299/-', startDate: '-', expireDate: '-', status: 'expired' },
+    { id: 3, name: 'Enterprise Plan', price: '999/-', startDate: '-', expireDate: '-', status: 'active' },
+  ]);
+  
+
+  const addPlan = (newPlan) => {
+    setPlans([...plans, newPlan]);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -104,8 +114,8 @@ const App = () => {
             )
           }
         />
-        <Route path='/create_plan' element={<DefaultLayout4><Createplan/></DefaultLayout4>} />
-        <Route path='/subscriptions' element={<DefaultLayout4><Subscriptions/></DefaultLayout4>} />
+        <Route path='/subscriptions' element={<DefaultLayout4><Subscriptions plans={plans} /></DefaultLayout4>} />
+        <Route path='/create_plan' element={<DefaultLayout4><Createplan addPlan={addPlan}/></DefaultLayout4>} />
         <Route path='/plans' element={<DefaultLayout4><Plans/></DefaultLayout4>} />
         <Route path='/help_support' element={<DefaultLayout4><HelpSupport/></DefaultLayout4>} />
         <Route path='/company' element={<DefaultLayout4><Company/></DefaultLayout4>} />                  

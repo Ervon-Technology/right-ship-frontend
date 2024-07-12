@@ -1,10 +1,15 @@
+// src/redux/store.js
+
 import { configureStore } from '@reduxjs/toolkit';
-import empreducer from './slice/Empslice'; // Replace with your root reducer file
+import planSlice from './slice/planSlice';
+import teamMembersReducer from './slice/teammember';
 
 const store = configureStore({
-    reducer: {
-        emp: empreducer,
-      },
+  reducer: {
+    plans: planSlice,
+    teamMembers: teamMembersReducer,
+    // Add other reducers here if any
+  },
 });
 
 export default store;

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTeamMember } from '../../slice/teammember'; // Adjust path as needed
 
-const AddMemberModal = ({ onClose, onSave }) => {
+const AddMemberModal = ({ onClose }) => {
+  const dispatch = useDispatch();
+
   const [newMember, setNewMember] = useState({
     name: '',
     email: '',
@@ -10,13 +14,24 @@ const AddMemberModal = ({ onClose, onSave }) => {
     description: ''
   });
 
+  const [saving, setSaving] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewMember((prevMember) => ({ ...prevMember, [name]: value }));
   };
 
-  const handleSave = () => {
-    onSave(newMember);
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      await dispatch(addTeamMember(newMember));
+      setSaving(false);
+      onClose(); // Close the modal on successful save
+    } catch (error) {
+      console.error('Failed to add team member:', error);
+      setSaving(false);
+      // Handle error as needed
+    }
   };
 
   return (
@@ -73,10 +88,11 @@ const AddMemberModal = ({ onClose, onSave }) => {
             </button>
             <button
               type="button"
-              className="bg-blue-500 text-white px-6 py-2 rounded"
+              className={`bg-blue-500 text-white px-6 py-2 rounded ${saving ? 'opacity-50 cursor-not-allowed' : ''}`}
               onClick={handleSave}
+              disabled={saving}
             >
-              Save
+              {saving ? 'Saving...' : 'Save'}
             </button>
           </div>
         </div>
