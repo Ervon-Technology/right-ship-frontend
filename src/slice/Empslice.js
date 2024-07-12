@@ -13,7 +13,7 @@ const empSlice = createSlice({
     },
   },
 });
- 
-export const { setempdetails } = empSlice.actions; 
 
-export default empSlice.reducer; 
+export const { setempdetails } = empSlice.actions;
+
+export default empSlice.reducer;

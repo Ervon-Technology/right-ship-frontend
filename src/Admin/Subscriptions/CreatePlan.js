@@ -1,50 +1,29 @@
-// src/Admin/Subscriptions/CreatePlan.js
+// src/components/Createplan.js
+
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createPlan } from '../../store/planSlice';
 
-const CreatePlan = () => {
-  const navigate = useNavigate();
+const Createplan = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
     duration: '',
-    features: ''
+    features: '',
   });
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    const startDate = new Date();
-    const expireDate = new Date();
-    const [months] = formData.duration.split('-').map(Number);
-    expireDate.setMonth(startDate.getMonth() + months);
-
-    const data = {
-      name: formData.name,
-      description: formData.description,
-      price: formData.price,
-      start_date: startDate.toISOString().split('T')[0],
-      expire_date: expireDate.toISOString().split('T')[0],
-      features: formData.features,
-    };
-
-    try {
-      await dispatch(createPlan(data));
-      navigate('/subscriptions');
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    navigate('/subscriptions');
   };
 
   return (
@@ -58,9 +37,9 @@ const CreatePlan = () => {
             <input
               type="text"
               name="name"
+              placeholder="Booster Plan"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Booster Plan"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
           </div>
@@ -69,9 +48,9 @@ const CreatePlan = () => {
             <input
               type="text"
               name="description"
+              placeholder="Get high recommend"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Get high recommend"
               className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"
             />
           </div>
@@ -91,9 +70,9 @@ const CreatePlan = () => {
               <input
                 type="text"
                 name="duration"
+                placeholder="0-3 months"
                 value={formData.duration}
                 onChange={handleChange}
-                placeholder="0-3 months"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               />
             </div>
@@ -103,14 +82,14 @@ const CreatePlan = () => {
             <input
               type="text"
               name="features"
+              placeholder="Plan feature"
               value={formData.features}
               onChange={handleChange}
-              placeholder="Plan feature"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="flex justify-end space-x-4 mt-6">
-            <button type="button" className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Cancel</button>
+            <button type="button" className="px-4 py-2 me-12 bg-gray-300 text-gray-700 rounded-md" onClick={() => navigate('/')}>Cancel</button>
             <button type="button" className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Preview</button>
             <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">Create</button>
           </div>
@@ -120,4 +99,4 @@ const CreatePlan = () => {
   );
 };
 
-export default CreatePlan;
+export default Createplan;
