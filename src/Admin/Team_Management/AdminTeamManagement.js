@@ -3,17 +3,44 @@ import AddMemberModal from './AddMemberModal';
 import EditMemberModal from './EditMemberModal';
 import DeleteMemberModal from './DeleteMemberModal';
 import SuspendMemberModal from './SuspendMemberModal';
+import axios from 'axios';
 
 const AdminTeamManagement = () => {
-  const [teamMembers, setTeamMembers] = useState([
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Manager', status: 'Active', joinedDate: '1 May, 2024', description: 'Team member description' }
-  ]);
-
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [totalMembers, setTotalMembers] = useState(0);
+  const [activeMembers, setActiveMembers] = useState(0);
+  const [suspendedMembers, setSuspendedMembers] = useState(0);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [currentMember, setCurrentMember] = useState(null);
+
+  // Fetch team members from the API
+  const fetchTeamMembers = async () => {
+    try {
+      const response = await axios.post('http://65.0.167.98/team/get', {});
+      console.log('API Response:', response.data); // Log the response data
+      const members = await response.data.data || [];
+    //  await console.log('Data',response.data.data)
+      setTeamMembers(members)
+
+      // Calculate counts
+      const total = members.length;
+      const active = members.filter(member => member.status === 'Active').length;
+      const suspended = members.filter(member => member.status === 'Suspended').length;
+
+      setTotalMembers(total);
+      setActiveMembers(active);
+      setSuspendedMembers(suspended);
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeamMembers();
+  }, []);
 
   const handleAddMember = () => {
     setShowAddModal(true);
@@ -34,29 +61,125 @@ const AdminTeamManagement = () => {
     setShowSuspendModal(true);
   };
 
-  const handleSaveNewMember = (newMember) => {
-    setTeamMembers((prevMembers) => [...prevMembers, { ...newMember, id: prevMembers.length + 1 }]);
-    setShowAddModal(false);
+  const handleSaveNewMember = async (newMember) => {
+    try {
+      await axios.post('http://65.0.167.98/team/create', newMember);
+      fetchTeamMembers(); // Fetch updated team members after adding a new member
+      setShowAddModal(false);
+    } catch (error) {
+      console.error('Error saving new member:', error);
+    }
   };
 
-  const handleSaveEditedMember = (updatedMember) => {
-    setTeamMembers((prevMembers) =>
-      prevMembers.map((member) => (member.id === updatedMember.id ? updatedMember : member))
-    );
-    setShowEditModal(false);
+  const handleSaveEditedMember = async (updatedMember) => {
+    try {
+      // Make a POST request to update the member
+      await axios.post(
+        'http://65.0.167.98/team/edit',
+        {
+          user_id: updatedMember.user_id,
+          name: updatedMember.name,
+          role: updatedMember.role,
+          status: updatedMember.status,
+        },
+        {
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      // Optionally, you can fetch updated team members after editing
+      fetchTeamMembers(); // Assuming this function fetches and updates team members
+  
+      setShowEditModal(false); // Close the edit modal after successful update
+    } catch (error) {
+      console.error('Error saving edited member:', error);
+      // Handle error state or display a notification to the user
+    }
   };
+  
+  
 
-  const handleConfirmDelete = (id) => {
-    setTeamMembers((prevMembers) => prevMembers.filter((member) => member.id !== id));
-    setShowDeleteModal(false);
-  };
+  
 
-  const handleSuspendMember = (updatedMember) => {
-    setTeamMembers((prevMembers) =>
-      prevMembers.map((member) => (member.id === updatedMember.id ? updatedMember : member))
-    );
-    setShowSuspendModal(false);
+  
+
+
+
+
+
+  const handleConfirmDelete = async (userId) => {
+    try {
+      // Make a POST request to delete the member
+      const response = await axios.post(
+        'http://65.0.167.98/team/delete',
+        { "user_id": userId },
+        {
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      // Assuming fetchTeamMembers() fetches and updates team members list
+      await fetchTeamMembers(); // Fetch updated team members
+  
+      // Assuming setShowDeleteModal(false) closes the delete modal
+      setShowDeleteModal(false);
+  
+      console.log('Response:', response.data.data); // Optional: Log response data
+  
+    } catch (error) {
+      console.error('Error deleting member:', error);
+      // Handle error state or display a notification to the user
+    }
   };
+  
+  
+  const handleSuspendMember = async (updatedMember) => {
+    try {
+      // Update member status to "suspended" if not already
+      const updatedStatusMember = {
+        ...updatedMember,
+        status: 'Suspended',
+      };
+  
+      // Make a POST request to update the member with the new status
+      await axios.post(
+        'http://65.0.167.98/team/edit',
+        {
+          user_id: updatedStatusMember.user_id,
+          name: updatedStatusMember.name,
+          role: updatedStatusMember.role,
+          status: updatedStatusMember.status,
+        },
+        {
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      // Get suspension duration from updated member data
+      const suspensionDuration = updatedStatusMember.suspensionDuration;
+  
+      // Schedule notification after suspension duration (in milliseconds)
+      setTimeout(() => {
+        console.log(`Notification: ${updatedStatusMember.name} has been suspended for ${suspensionDuration} milliseconds.`);
+      }, suspensionDuration);
+  
+      // Refresh the list after suspending
+      fetchTeamMembers();
+      setShowSuspendModal(false); // Close suspension modal
+    } catch (error) {
+      console.error('Error suspending member:', error);
+    }
+  };
+  
 
   return (
     <div className="flex flex-col p-4 overflow-x-auto">
@@ -71,9 +194,21 @@ const AdminTeamManagement = () => {
       </div>
       <hr className="border-black w-full mb-4" />
       <div className="flex mb-4 gap-3 flex-wrap">
-        <div className="w-full sm:w-80 p-2 bg-blue-100 text-blue-700 h-20 rounded-lg"><span className='font-bold'> Total Team Members</span><br/><span className='text-xl'> 150</span></div>
-        <div className="w-full sm:w-80 p-2 bg-green-100 text-green-700 h-20 rounded-lg "> <span className='font-bold'>Active Members</span><br/> <span className='text-xl'>145</span></div>
-        <div className="w-full sm:w-80 p-2 bg-red-100 text-red-700 h-20 rounded-lg"> <span className='font-bold'>Suspended Members</span><br/><span className='text-xl'>5</span></div>
+        <div className="w-full sm:w-80 p-2 bg-blue-100 text-blue-700 h-20 rounded-lg">
+          <span className='font-bold'>Total Team Members</span>
+          <br/>
+          <span className='text-xl'>{totalMembers}</span>
+        </div>
+        <div className="w-full sm:w-80 p-2 bg-green-100 text-green-700 h-20 rounded-lg">
+          <span className='font-bold'>Active Members</span>
+          <br/>
+          <span className='text-xl'>{activeMembers}</span>
+        </div>
+        <div className="w-full sm:w-80 p-2 bg-red-100 text-red-700 h-20 rounded-lg">
+          <span className='font-bold'>Suspended Members</span>
+          <br/>
+          <span className='text-xl'>{suspendedMembers}</span>
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
@@ -88,9 +223,9 @@ const AdminTeamManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {teamMembers.map((member) => (
+            {teamMembers.map((member, index) => (
               <tr key={member.id}>
-                <td className="py-2 px-4 border">{member.id}</td>
+                <td className="py-2 px-4 border">{index + 1}</td>
                 <td className="py-2 px-4 border">{member.name}</td>
                 <td className="py-2 px-4 border">{member.role}</td>
                 <td className="py-2 px-4 border">{member.status}</td>
@@ -137,7 +272,7 @@ const AdminTeamManagement = () => {
         <DeleteMemberModal
           member={currentMember}
           onClose={() => setShowDeleteModal(false)}
-          onDelete={handleConfirmDelete}
+          onDelete={() => handleConfirmDelete(currentMember.id)}
         />
       )}
       {showSuspendModal && (
