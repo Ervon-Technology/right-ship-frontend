@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTeamMembers, addTeamMember, editTeamMember, suspendTeamMember, deleteTeamMember } from '../../slice/teammember';
 import AddMemberModal from './AddMemberModal';
 import EditMemberModal from './EditMemberModal';
 import DeleteMemberModal from './DeleteMemberModal';
 import SuspendMemberModal from './SuspendMemberModal';
 
 const AdminTeamManagement = () => {
-  const [teamMembers, setTeamMembers] = useState([
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Manager', status: 'Active', joinedDate: '1 May, 2024', description: 'Team member description' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Employee', status: 'Active', joinedDate: '2 May, 2024', description: 'Team member description' },
-    { id: 3, name: 'Alice Johnson', email: 'alice@example.com', role: 'Employee', status: 'Active', joinedDate: '3 May, 2024', description: 'Team member description' },
-    { id: 4, name: 'Bob Brown', email: 'bob@example.com', role: 'Employee', status: 'Active', joinedDate: '4 May, 2024', description: 'Team member description' },
-    { id: 5, name: 'Charlie Davis', email: 'charlie@example.com', role: 'Employee', status: 'Active', joinedDate: '5 May, 2024', description: 'Team member description' },
-  ]);
+  const dispatch = useDispatch();
+  const { teamMembers, loading, error } = useSelector((state) => state.teamMembers);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [currentMember, setCurrentMember] = useState(null);
+
+  useEffect(() => {
+    dispatch(fetchTeamMembers());
+  }, [dispatch]);
 
   const handleAddMember = () => {
     setShowAddModal(true);
@@ -39,28 +40,32 @@ const AdminTeamManagement = () => {
   };
 
   const handleSaveNewMember = (newMember) => {
-    setTeamMembers((prevMembers) => [...prevMembers, { ...newMember, id: prevMembers.length + 1 }]);
+    dispatch(addTeamMember(newMember));
     setShowAddModal(false);
   };
 
   const handleSaveEditedMember = (updatedMember) => {
-    setTeamMembers((prevMembers) =>
-      prevMembers.map((member) => (member.id === updatedMember.id ? updatedMember : member))
-    );
+    dispatch(editTeamMember(updatedMember));
     setShowEditModal(false);
   };
 
   const handleConfirmDelete = (id) => {
-    setTeamMembers((prevMembers) => prevMembers.filter((member) => member.id !== id));
+    dispatch(deleteTeamMember(id));
     setShowDeleteModal(false);
   };
 
   const handleSuspendMember = (updatedMember) => {
-    setTeamMembers((prevMembers) =>
-      prevMembers.map((member) => (member.id === updatedMember.id ? updatedMember : member))
-    );
+    dispatch(suspendTeamMember(updatedMember));
     setShowSuspendModal(false);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="flex flex-col p-4 overflow-x-auto">
@@ -75,9 +80,9 @@ const AdminTeamManagement = () => {
       </div>
       <hr className="border-black w-full mb-4" />
       <div className="flex mb-4 gap-3 flex-wrap">
-        <div className="w-full sm:w-80 p-2 bg-blue-100 text-blue-700 h-20 rounded-lg"><span className='font-bold'> Total Team Members</span><br/><span className='text-xl'> 150</span></div>
-        <div className="w-full sm:w-80 p-2 bg-green-100 text-green-700 h-20 rounded-lg "> <span className='font-bold'>Active Members</span><br/> <span className='text-xl'>145</span></div>
-        <div className="w-full sm:w-80 p-2 bg-red-100 text-red-700 h-20 rounded-lg"> <span className='font-bold'>Suspended Members</span><br/><span className='text-xl'>5</span></div>
+        <div className="w-full sm:w-80 p-2 bg-blue-100 text-blue-700 h-20 rounded-lg"><span className='font-bold'> Total Team Members</span><br/><span className='text-xl'> {teamMembers.length}</span></div>
+        <div className="w-full sm:w-80 p-2 bg-green-100 text-green-700 h-20 rounded-lg "> <span className='font-bold'>Active Members</span><br/> <span className='text-xl'>{teamMembers.filter(member => member.status === 'Active').length}</span></div>
+        <div className="w-full sm:w-80 p-2 bg-red-100 text-red-700 h-20 rounded-lg"> <span className='font-bold'>Suspended Members</span><br/><span className='text-xl'>{teamMembers.filter(member => member.status === 'Suspended').length}</span></div>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
