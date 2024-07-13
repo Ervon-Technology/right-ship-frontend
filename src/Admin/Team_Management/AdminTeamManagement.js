@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchTeamMembers, addTeamMember, editTeamMember, suspendTeamMember, deleteTeamMember } from '../../slice/teammember';
+import React, { useState } from 'react';
 import AddMemberModal from './AddMemberModal';
 import EditMemberModal from './EditMemberModal';
 import DeleteMemberModal from './DeleteMemberModal';
@@ -16,10 +14,6 @@ const AdminTeamManagement = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [currentMember, setCurrentMember] = useState(null);
-
-  useEffect(() => {
-    dispatch(fetchTeamMembers());
-  }, [dispatch]);
 
   const handleAddMember = () => {
     setShowAddModal(true);
@@ -41,32 +35,24 @@ const AdminTeamManagement = () => {
   };
 
   const handleSaveNewMember = (newMember) => {
-    dispatch(addTeamMember(newMember));
+    setTeamMembers([...teamMembers, newMember]);
     setShowAddModal(false);
   };
 
   const handleSaveEditedMember = (updatedMember) => {
-    dispatch(editTeamMember(updatedMember));
+    setTeamMembers(teamMembers.map(member => member.id === updatedMember.id ? updatedMember : member));
     setShowEditModal(false);
   };
 
   const handleConfirmDelete = (id) => {
-    dispatch(deleteTeamMember(id));
+    setTeamMembers(teamMembers.filter(member => member.id !== id));
     setShowDeleteModal(false);
   };
 
   const handleSuspendMember = (updatedMember) => {
-    dispatch(suspendTeamMember(updatedMember));
+    setTeamMembers(teamMembers.map(member => member.id === updatedMember.id ? { ...member, status: 'Suspended' } : member));
     setShowSuspendModal(false);
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <div className="flex flex-col p-4 overflow-x-auto">
