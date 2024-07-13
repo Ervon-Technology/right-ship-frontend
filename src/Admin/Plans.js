@@ -8,11 +8,13 @@ const Plans = () => {
     // Add more demo data here as needed
   ]);
   const [searchResult, setSearchResult] = useState(null); // State to store search result
+  const [currentPage, setCurrentPage] = useState(1);
+  const plansPerPage = 5; // Number of plans per page
 
   useEffect(() => {
     // Initialize the table with all plans when component mounts
     setSearchResult(plans);
-  }, []);
+  }, [plans]);
 
   // Function to handle search
   const handleSearch = () => {
@@ -20,15 +22,19 @@ const Plans = () => {
     setSearchResult(foundPlan);
   };
 
-  // Pagination functions and state
-  const [currentPage, setCurrentPage] = useState(1);
-  const plansPerPage = 5; // Number of plans per page
-
+  // Pagination logic
   const indexOfLastPlan = currentPage * plansPerPage;
   const indexOfFirstPlan = indexOfLastPlan - plansPerPage;
   const currentPlans = searchResult && searchResult.length > 0 ? searchResult.slice(indexOfFirstPlan, indexOfLastPlan) : [];
+  const totalPages = Math.ceil(searchResult ? searchResult.length / plansPerPage : 0);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div className="flex flex-col items-center mx-4">
@@ -92,11 +98,25 @@ const Plans = () => {
             ))}
           </tbody>
         </table>
-        <div className="flex  items-center mt-10 ms-80">
-        <button className="p-2 bg-blue-300 rounded ms-44"><IoIosArrowBack /></button>
-        <span className='bg-blue-300 ms-5 p-1 px-7 rounded-md font-bold'>pages 1 of 1</span>
-        <button className="p-2 bg-blue-300 rounded ms-5"><IoIosArrowForward /></button>
-      </div>
+        <div className="flex justify-center items-center mt-4">
+          <button
+            className="bg-sky-200 text-black font-bold px-4 py-3 rounded"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
+            <IoIosArrowBack />
+          </button>
+          <div className="mx-2 px-4 py-2 bg-sky-200 text-black font-bold rounded">
+            Page {currentPage} of {totalPages}
+          </div>
+          <button
+            className="bg-sky-200 text-black font-bold px-4 py-3 rounded"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages || totalPages === 0}
+          >
+            <IoIosArrowForward />
+          </button>
+        </div>
       </div>
     </div>
   );
