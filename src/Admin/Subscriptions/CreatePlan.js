@@ -1,21 +1,14 @@
-// src/components/Createplan.js
-
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addPlan } from '../../slice/planSlice';
-import { fetchPlans   } from '../../slice/planSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Createplan = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
     price: '',
-    duration: '',
-    features: '',
+    start_date: '',
+    expire_date: '',
   });
 
   const handleChange = (e) => {
@@ -23,29 +16,39 @@ const Createplan = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newPlan = {
-      name: formData.name,
-      description: formData.description,
-      price: formData.price,
-      duration: formData.duration,
-      features: formData.features,
-      startDate: '-',
-      expireDate: '-',
-      
-    };
-    dispatch(addPlan(newPlan)) // Dispatch addPlan action to add new plan
-    .then(() => {
-      dispatch(fetchPlans()); // Fetch updated plans after adding new plan
-      navigate('/subscriptions');
-    })
-    .catch((error) => {
-      console.error('Failed to add plan:', error);
-      // Handle error if needed
-    });
 
-    navigate('/subscriptions');
+    const url = 'http://65.0.167.98/subscription/create';
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'application/json',
+        'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        price: formData.price,
+        start_date: formData.start_date,
+        expire_date: formData.expire_date,
+      }),
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        throw new Error('Failed to create plan');
+      }
+
+      // If successful, navigate to subscriptions page
+      navigate('/subscriptions');
+      // console.log('response is ')
+    } catch (error) {
+      console.error('Failed to create plan:', error);
+      // Handle error if needed
+    }
   };
 
   return (
@@ -59,59 +62,48 @@ const Createplan = () => {
             <input
               type="text"
               name="name"
-              placeholder="Booster Plan"
+              placeholder="Premium Plan"
               value={formData.name}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Description</label>
+            <label className="block text-sm font-medium mb-2">Price</label>
             <input
               type="text"
-              name="description"
-              placeholder="Get high recommend"
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Price</label>
-              <input
-                type="text"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Duration</label>
-              <input
-                type="text"
-                name="duration"
-                placeholder="0-3 months"
-                value={formData.duration}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Features</label>
-            <input
-              type="text"
-              name="features"
-              placeholder="Plan feature"
-              value={formData.features}
+              name="price"
+              value={formData.price}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Start Date</label>
+            <input
+              type="date"
+              name="start_date"
+              value={formData.start_date}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Expire Date</label>
+            <input
+              type="date"
+              name="expire_date"
+              value={formData.expire_date}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              required
             />
           </div>
           <div className="flex justify-end space-x-4 mt-6">
-            <button type="button" className="px-4 py-2 me-12 bg-gray-300 text-gray-700 rounded-md" onClick={() => navigate('/')}>Cancel</button>
+            <button type="button" className="px-4 py-2 me-12 bg-gray-300 text-gray-700 rounded-md" onClick={() => navigate('/subscriptions')}>Cancel</button>
             <button type="button" className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">Preview</button>
             <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">Create</button>
           </div>

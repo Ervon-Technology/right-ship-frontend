@@ -3,17 +3,44 @@ import AddMemberModal from './AddMemberModal';
 import EditMemberModal from './EditMemberModal';
 import DeleteMemberModal from './DeleteMemberModal';
 import SuspendMemberModal from './SuspendMemberModal';
+import axios from 'axios';
 
 const AdminTeamManagement = () => {
-  const [teamMembers, setTeamMembers] = useState([
-    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Manager', status: 'Active', joinedDate: '1 May, 2024', description: 'Team member description' }
-  ]);
-
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [totalMembers, setTotalMembers] = useState(0);
+  const [activeMembers, setActiveMembers] = useState(0);
+  const [suspendedMembers, setSuspendedMembers] = useState(0);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [currentMember, setCurrentMember] = useState(null);
+
+  // Fetch team members from the API
+  const fetchTeamMembers = async () => {
+    try {
+      const response = await axios.post('http://65.0.167.98/team/get', {});
+      console.log('API Response:', response.data); // Log the response data
+      const members = await response.data.data || [];
+    //  await console.log('Data',response.data.data)
+      setTeamMembers(members)
+
+      // Calculate counts
+      const total = members.length;
+      const active = members.filter(member => member.status === 'Active').length;
+      const suspended = members.filter(member => member.status === 'Suspended').length;
+
+      setTotalMembers(total);
+      setActiveMembers(active);
+      setSuspendedMembers(suspended);
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeamMembers();
+  }, []);
 
   const handleAddMember = () => {
     setShowAddModal(true);
@@ -34,23 +61,32 @@ const AdminTeamManagement = () => {
     setShowSuspendModal(true);
   };
 
-  const handleSaveNewMember = (newMember) => {
-    setTeamMembers([...teamMembers, newMember]);
-    setShowAddModal(false);
+  const handleSaveNewMember = async (newMember) => {
+    try {
+      await axios.post('http://65.0.167.98/team/create', newMember);
+      fetchTeamMembers(); // Fetch updated team members after adding a new member
+      setShowAddModal(false);
+    } catch (error) {
+      console.error('Error saving new member:', error);
+    }
   };
 
   const handleSaveEditedMember = (updatedMember) => {
-    setTeamMembers(teamMembers.map(member => member.id === updatedMember.id ? updatedMember : member));
+    setTeamMembers((prevMembers) =>
+      prevMembers.map((member) => (member.id === updatedMember.id ? updatedMember : member))
+    );
     setShowEditModal(false);
   };
 
   const handleConfirmDelete = (id) => {
-    setTeamMembers(teamMembers.filter(member => member.id !== id));
+    setTeamMembers((prevMembers) => prevMembers.filter((member) => member.id !== id));
     setShowDeleteModal(false);
   };
 
   const handleSuspendMember = (updatedMember) => {
-    setTeamMembers(teamMembers.map(member => member.id === updatedMember.id ? { ...member, status: 'Suspended' } : member));
+    setTeamMembers((prevMembers) =>
+      prevMembers.map((member) => (member.id === updatedMember.id ? updatedMember : member))
+    );
     setShowSuspendModal(false);
   };
 
@@ -67,9 +103,9 @@ const AdminTeamManagement = () => {
       </div>
       <hr className="border-black w-full mb-4" />
       <div className="flex mb-4 gap-3 flex-wrap">
-        <div className="w-full sm:w-80 p-2 bg-blue-100 text-blue-700 h-20 rounded-lg"><span className='font-bold'> Total Team Members</span><br/><span className='text-xl'> {teamMembers.length}</span></div>
-        <div className="w-full sm:w-80 p-2 bg-green-100 text-green-700 h-20 rounded-lg "> <span className='font-bold'>Active Members</span><br/> <span className='text-xl'>{teamMembers.filter(member => member.status === 'Active').length}</span></div>
-        <div className="w-full sm:w-80 p-2 bg-red-100 text-red-700 h-20 rounded-lg"> <span className='font-bold'>Suspended Members</span><br/><span className='text-xl'>{teamMembers.filter(member => member.status === 'Suspended').length}</span></div>
+        <div className="w-full sm:w-80 p-2 bg-blue-100 text-blue-700 h-20 rounded-lg"><span className='font-bold'> Total Team Members</span><br/><span className='text-xl'> 150</span></div>
+        <div className="w-full sm:w-80 p-2 bg-green-100 text-green-700 h-20 rounded-lg "> <span className='font-bold'>Active Members</span><br/> <span className='text-xl'>145</span></div>
+        <div className="w-full sm:w-80 p-2 bg-red-100 text-red-700 h-20 rounded-lg"> <span className='font-bold'>Suspended Members</span><br/><span className='text-xl'>5</span></div>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border">
@@ -84,9 +120,9 @@ const AdminTeamManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {teamMembers.map((member) => (
+            {teamMembers.map((member, index) => (
               <tr key={member.id}>
-                <td className="py-2 px-4 border">{member.id}</td>
+                <td className="py-2 px-4 border">{index + 1}</td>
                 <td className="py-2 px-4 border">{member.name}</td>
                 <td className="py-2 px-4 border">{member.role}</td>
                 <td className="py-2 px-4 border">{member.status}</td>
@@ -133,7 +169,7 @@ const AdminTeamManagement = () => {
         <DeleteMemberModal
           member={currentMember}
           onClose={() => setShowDeleteModal(false)}
-          onDelete={handleConfirmDelete}
+          onDelete={() => handleConfirmDelete(currentMember.id)}
         />
       )}
       {showSuspendModal && (

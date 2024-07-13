@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addTeamMember } from '../../slice/teammember'; // Adjust path as needed
+import axios from 'axios';
 
-const AddMemberModal = ({ onClose }) => {
-  const dispatch = useDispatch();
-
+const AddMemberModal = ({ onClose, onSave }) => {
   const [newMember, setNewMember] = useState({
     name: '',
     email: '',
     role: '',
     status: 'Active',
     joinedDate: new Date().toLocaleDateString(),
-    description: ''
+    description: '',
+    permissions: ['admin', 'user'] // Assuming these are default permissions
   });
 
   const [saving, setSaving] = useState(false);
@@ -24,7 +22,7 @@ const AddMemberModal = ({ onClose }) => {
   const handleSave = async () => {
     try {
       setSaving(true);
-      await dispatch(addTeamMember(newMember));
+      await onSave(newMember);
       setSaving(false);
       onClose(); // Close the modal on successful save
     } catch (error) {
