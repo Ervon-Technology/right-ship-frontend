@@ -10,20 +10,20 @@ const Login = () => {
     const handleotp = async () => { 
         try {
             setLoading(true); // Show loader
-            const response = await fetch('http://localhost:3000/company/login', {
+            const response = await fetch('https://api.rightships.com/otp/send_otp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    phone: `+91${phone}`
+                    mobile_no: `${phone}`
                 })
             });
             const data = await response.json();
 
             if (response.ok) {
-                toast.success(`OTP sent to ${data.email}`);
-                localStorage.setItem('email', data.email);
+                toast.success(`OTP sent to ${phone}`);
+                localStorage.setItem('phone', phone);
                 setTimeout(() => {
                     window.location = '/otpverify';
                 }, 1000);

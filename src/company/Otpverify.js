@@ -54,31 +54,30 @@ const OtpVerify = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const otpString = otp.join("");
-    const email = localStorage.getItem("email");
+    const phone = localStorage.getItem("phone");
 
-    if (otpString.length === 6 && email) {
+    if (otpString.length === 6 && phone) {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/company/loginotp", {
+        const response = await fetch("https://api.rightships.com/otp/verify_otp", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ email, otp: otpString })
+          body: JSON.stringify({ mobile_no:phone, otp: otpString })
         });
-
-        if (response.ok) {
-          const data = await response.json();
+        const data = await response.json();
+        if (data.code === 200) {
           console.log("OTP verified successfully:", data);
-          localStorage.setItem('token',data.token);
-          localStorage.setItem('cmpid',data.company.id);
-          dispatch(setempdetails(data.company))
+          // localStorage.setItem('token',data.token);
+          localStorage.setItem('cmpid',data);
+          // dispatch(setempdetails(data.company))
           toast.success("OTP verify success");
           setTimeout(() => {
             navigate('/employeer-dashboard');
           }, 1000);
         } else {
-          setError("Failed to verify OTP. Please try again.");
+         console.log(data)
         }
       } catch (error) {
         console.error("Error verifying OTP:", error);
