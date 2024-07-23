@@ -9,11 +9,9 @@ const Header = () => {
           <a href="#help-support" className="text-black flex "> <CircleUserRound size={20}/>&nbsp; Help & Support &nbsp;<ChevronDown /></a>
           <a href="#notification" className="text-black flex "> <Bell size={20}/>&nbsp; Notification &nbsp;<ChevronDown /></a>
           <Link to="/edit-job-details">
-            <a href="#user" className="text-black flex pe-8"><CircleUserRound size={20}/>&nbsp; User &nbsp;<ChevronDown /></a>
+            <a href="#user" className="text-black flex pe-8"><CircleUserRound size={20}/>{localStorage.getItem('phone')}<ChevronDown /></a>
           </Link>
-          
         </div>
-          
       </nav>
     </header>
   );

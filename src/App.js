@@ -31,29 +31,10 @@ import Congratulations from './job_seeker/Congratulations';
 import CandidateProfile from './job_seeker/CandidateProfile/CandidateProfile';
 import MyJobs from './job_seeker/MyJobs';
 import Settings from './job_seeker/Settings';
-import AdminSidebar from './Admin/AdminSidebar';
-import AdminDashboard from './Admin/AdminDashboard';
-import AdminTeamManagement from './Admin/Team_Management/AdminTeamManagement';
-import AdminCandidates from './Admin/AdminCandidates';
-import Company from './Admin/Company';
-import HelpSupport from './Admin/HelpSupport';
-import Plans from './Admin/Plans';
-import Subscriptions from './Admin/Subscriptions/Subscriptions';
-import Createplan from './Admin/Subscriptions/CreatePlan';
+import Mailsendpopup from './company/helper/mailsendpopup';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [plans, setPlans] = useState([
-    { id: 1, name: 'Premium Plan', price: '599/-', startDate: '-', expireDate: '-', status: 'active' },
-    { id: 2, name: 'Basic Plan', price: '299/-', startDate: '-', expireDate: '-', status: 'expired' },
-    { id: 3, name: 'Enterprise Plan', price: '999/-', startDate: '-', expireDate: '-', status: 'active' },
-  ]);
-  
-
-  const addPlan = (newPlan) => {
-    setPlans([...plans, newPlan]);
-  };
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -83,18 +64,9 @@ const App = () => {
 
   const DefaultLayout3 = ({children}) => (
     <div className="flex min-h-screen">
-      <AdminSidebar />
+      {/* <AdminSidebar /> */}
       <div className="flex flex-col flex-1">
         <Header3 />
-        {children}
-      </div>
-    </div>
-  )
-
-  const DefaultLayout4 = ({children}) => (
-    <div className="flex min-h-screen">
-      <AdminSidebar />
-      <div className="flex flex-col flex-1">
         {children}
       </div>
     </div>
@@ -114,14 +86,7 @@ const App = () => {
             )
           }
         />
-        <Route path='/subscriptions' element={<DefaultLayout4><Subscriptions plans={plans} /></DefaultLayout4>} />
-        <Route path='/create_plan' element={<DefaultLayout4><Createplan addPlan={addPlan}/></DefaultLayout4>} />
-        <Route path='/plans' element={<DefaultLayout4><Plans/></DefaultLayout4>} />
-        <Route path='/help_support' element={<DefaultLayout4><HelpSupport/></DefaultLayout4>} />
-        <Route path='/company' element={<DefaultLayout4><Company/></DefaultLayout4>} />                  
-        <Route path='/admin_team_management' element={<DefaultLayout4><AdminTeamManagement/></DefaultLayout4>} />
-        <Route path='//admin_candidates' element={<DefaultLayout4><AdminCandidates/></DefaultLayout4>} />
-        <Route path='/admin_dashboard' element={<DefaultLayout4><AdminDashboard/></DefaultLayout4>} />
+        <Route path='mail' element={<Mailsendpopup/>}/>                
         <Route path='/settings' element={<DefaultLayout3><Settings /></DefaultLayout3>} />
         <Route path='/my_jobs' element={<DefaultLayout3><MyJobs /></DefaultLayout3>} />
         <Route path='/candidate_profile' element={<DefaultLayout3><CandidateProfile /></DefaultLayout3>} />

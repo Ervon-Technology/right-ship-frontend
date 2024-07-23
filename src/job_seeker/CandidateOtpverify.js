@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-import { setempdetails } from '../slice/Empslice';
+import { setempdetails } from '../company/Slice/Empslice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from './CandidateLoader';

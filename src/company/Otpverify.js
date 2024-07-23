@@ -1,12 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
-import {setempdetails} from '../slice/Empslice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from './Loader';
 const OtpVerify = () => {
-  const dispatch = useDispatch();
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [resendTimer, setResendTimer] = useState(120);
   const [error, setError] = useState("");
@@ -67,23 +64,29 @@ const OtpVerify = () => {
           body: JSON.stringify({ mobile_no:phone, otp: otpString })
         });
         const data = await response.json();
-        if (data.code === 200) {
-          console.log("OTP verified successfully:", data);
-          // localStorage.setItem('token',data.token);
-          localStorage.setItem('cmpid',data);
-          // dispatch(setempdetails(data.company))
-          toast.success("OTP verify success");
-          setTimeout(() => {
-            navigate('/employeer-dashboard');
-          }, 1000);
-        } else {
-         console.log(data)
-        }
+          if(response.ok){
+            if (data.code === 200) {
+              console.log("OTP verified successfully:", data);
+              toast.success("OTP verify success");
+              setTimeout(() => {
+                navigate('/employeer-dashboard');
+              }, 1000);
+            } else if(data.code === 400) {
+              toast.error("Invalid OTP");
+            }
+            else if(data.code === 201) {
+              toast.error(data.message);
+            }
+          }
+          else{
+            toast.error("An error occurred. Please try again.");
+            setError("An error occurred. Please try again.");
+          }
       } catch (error) {
         console.error("Error verifying OTP:", error);
         setError("An error occurred. Please try again.");
       }finally {
-        setLoading(false); // Stop loading
+        setLoading(false); 
       }
     } else {
       setError("Please enter the complete 6-digit OTP.");
@@ -96,7 +99,7 @@ const OtpVerify = () => {
         {loading &&<Loader/>}
       <div className="p-4 shadow-md bg-white rounded-md">
         <h1 className="text-2xl font-semibold mb-4 text-black">Verify with OTP</h1>
-        <p className="text-gray-500">OTP sent to {localStorage.getItem("email")} </p>
+        <p className="text-gray-500">OTP sent to {localStorage.getItem("phone")} </p>
         <form onSubmit={handleSubmit} className="space-y-3 flex flex-col items-center">
           <div className="flex space-x-2 mt-2">
             {otp.map((digit, index) => (
