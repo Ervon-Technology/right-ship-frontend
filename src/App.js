@@ -5,7 +5,7 @@ import Header from './company/Header';
 import Footer from './company/Footer';
 import EmployeerDashboard from './company/EmployeerDashboard';
 import EmployerDetails from './company/Preview&EditJobDetail/EmployerDetails';
-import Empteam from './company/Manageemp';
+import Empteam from './company/ManageUsers';
 import AddJobBasics from './company/AddJobBasics';
 import AddPayAndBenefits from './company/AddPayAndBenefits';
 import EditJobs from './company/EditJobs/EditJobs';
