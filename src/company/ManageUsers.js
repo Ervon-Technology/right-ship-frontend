@@ -46,8 +46,8 @@ const ManageUsers = () => {
   useEffect(() => {
     if (Array.isArray(data)) {
       const result = data.filter(user =>
-        user.name.toLowerCase().includes(searchQuery) ||
-        user.email.toLowerCase().includes(searchQuery)
+        user.name.includes(searchQuery) ||
+        user.email.includes(searchQuery)
       );
       setFilteredData(result);
     }
