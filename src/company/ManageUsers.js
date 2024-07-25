@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import React from 'react';
-import { EllipsisVertical } from 'lucide-react';
 
 const ManageUsers = () => {
   const [data, setData] = useState([]);
@@ -45,19 +44,15 @@ const ManageUsers = () => {
 
   useEffect(() => {
     if (Array.isArray(data)) {
-      const result = data.filter(user =>
-        user.name.includes(searchQuery) ||
-        user.email.includes(searchQuery)
-      );
+      const result = data.filter(user => {
+        const name = user.name || '';
+        const email = user.email || '';
+        return name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+               email.toLowerCase().includes(searchQuery.toLowerCase());
+      });
       setFilteredData(result);
     }
   }, [searchQuery, data]);
-
-  const handleDropdownToggle = (index) => {
-    const newData = [...filteredData];
-    newData[index].expanded = !newData[index].expanded;
-    setFilteredData(newData);
-  };
 
   const handleAddUserClick = () => {
     setShowPopup(true);
@@ -200,29 +195,19 @@ const ManageUsers = () => {
                     <td className="px-4 py-2">{user.mobile_no}</td>
                     <td className="px-4 py-2">{user.status}</td>
                     <td className="px-4 py-2">{user.role}</td>
-                    <td className="px-4 py-2 relative">
+                    <td className="px-4 py-2 flex space-x-2">
                       <button
-                        className="focus:outline-none p-2"
-                        onClick={() => handleDropdownToggle(index)}
+                        className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                        onClick={() => handleEditUserClick(user)}
                       >
-                        <EllipsisVertical />
+                        Edit
                       </button>
-                      {user.expanded && (
-                        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 shadow-lg rounded-lg py-1 z-10">
-                          <div
-                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200 cursor-pointer"
-                            onClick={() => handleEditUserClick(user)}
-                          >
-                            Edit
-                          </div>
-                          <div
-                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200 cursor-pointer"
-                            onClick={() => handleDeleteUserClick(user._id)}
-                          >
-                            Delete
-                          </div>
-                        </div>
-                      )}
+                      <button
+                        className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        onClick={() => handleDeleteUserClick(user._id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
