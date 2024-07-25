@@ -140,9 +140,9 @@ const ManageUsers = () => {
     }
   };
 
-  if (!Array.isArray(data) || data.length === 0) {
-    return <p>Loading...</p>;
-  }
+  // if (!Array.isArray(data) || data.length === 0) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <div className="main-container p-4">
@@ -196,15 +196,17 @@ const ManageUsers = () => {
                     <td className="px-4 py-2">{user.status}</td>
                     <td className="px-4 py-2">{user.role}</td>
                     <td className="px-4 py-2 flex space-x-2">
-                      <button
+                      <button 
                         className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                         onClick={() => handleEditUserClick(user)}
+                        disabled={!user.name}
                       >
                         Edit
                       </button>
                       <button
                         className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         onClick={() => handleDeleteUserClick(user._id)}
+                        disabled={!user.name} 
                       >
                         Delete
                       </button>
