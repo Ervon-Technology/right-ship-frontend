@@ -67,10 +67,27 @@ const OtpVerify = () => {
           if(response.ok){
             if (data.code === 200) {
               console.log("OTP verified successfully:", data);
-              toast.success("OTP verify success");
-              setTimeout(() => {
-                navigate('/employeer-dashboard');
-              }, 1000);
+              const response = await fetch("https://api.rightships.com/company/login", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ "mobile_no": phone})
+              });
+              const result = await response.json();
+              if(response.ok){
+                if(result.code===200){
+                    localStorage.setItem('company_id',result.data.company_id)
+                    toast.success("OTP verify success");
+                    setTimeout(() => {
+                      navigate('/employeer-dashboard');
+                    }, 1000);
+                }else{
+                  toast.error("Some internal problem");
+                }
+              }else{
+                toast.error("Some internal problem");
+              }
             } else if(data.code === 400) {
               toast.error("Invalid OTP");
             }
