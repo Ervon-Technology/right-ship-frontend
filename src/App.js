@@ -20,9 +20,9 @@ import Header3 from './job_seeker/Header3';
 import Header2 from './job_seeker/Header2';
 import Home from './job_seeker/home';
 import CandidateLogin from './job_seeker/CandidateLogin';
-import CandidateOtpverify from './job_seeker/CandidateOtpverify'
+import CandidateOtpverify from './job_seeker/CandidateOtpverify';
 import JobDashboard from './job_seeker/Job_Dashboard';
-import About from './job_seeker/About'
+import About from './job_seeker/About';
 import Details from './job_seeker/Details';
 import Experience from './job_seeker/Experience';
 import Resume from './job_seeker/Resume';
@@ -36,6 +36,7 @@ import Supports from './company/Supports';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -44,34 +45,42 @@ const App = () => {
   }, []);
 
   const DefaultLayout = ({ children }) => (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex flex-col flex-1">
-        <Header />
-        {children}
-        <Footer />
+    <div className="flex flex-col min-h-screen">
+      <div className="flex flex-1">
+        <Sidebar />
+        <div className="flex flex-col flex-1">
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </div>
       </div>
     </div>
   );
 
-  const DefaultLayout2 = ({children}) => (
-    <div className="flex min-h-screen">
+  const DefaultLayout2 = ({ children }) => (
+    <div className="flex flex-col min-h-screen">
       <div className="flex flex-col flex-1">
         <Header2 />
-        {children}
+        <main className="flex-grow">
+          {children}
+        </main>
       </div>
     </div>
-  )
+  );
 
-  const DefaultLayout3 = ({children}) => (
-    <div className="flex min-h-screen">
-      {/* <AdminSidebar /> */}
+  const DefaultLayout3 = ({ children }) => (
+    <div className="flex flex-col min-h-screen">
       <div className="flex flex-col flex-1">
         <Header3 />
-        {children}
+        <main className="flex-grow">
+          {children}
+        </main>
       </div>
     </div>
-  )
+  );
+
   return (
     <Router>
       <Routes>
@@ -87,7 +96,7 @@ const App = () => {
             )
           }
         />
-        <Route path='mail' element={<Mailsendpopup/>}/>                
+        <Route path='mail' element={<Mailsendpopup />} />
         <Route path='/settings' element={<DefaultLayout3><Settings /></DefaultLayout3>} />
         <Route path='/my_jobs' element={<DefaultLayout3><MyJobs /></DefaultLayout3>} />
         <Route path='/candidate_profile' element={<DefaultLayout3><CandidateProfile /></DefaultLayout3>} />
@@ -97,9 +106,9 @@ const App = () => {
         <Route path='/experience' element={<DefaultLayout2><Experience /></DefaultLayout2>} />
         <Route path='/details' element={<DefaultLayout2><Details /></DefaultLayout2>} />
         <Route path='/about' element={<DefaultLayout2><About /></DefaultLayout2>} />
-        <Route path='/job_dashboard' element={<DefaultLayout3><JobDashboard /></DefaultLayout3>} />        
+        <Route path='/job_dashboard' element={<DefaultLayout3><JobDashboard /></DefaultLayout3>} />
         <Route path='/candidate_Otpverify' element={<CandidateOtpverify />} />
-        <Route path='/candidate_login' element={<CandidateLogin />}/>
+        <Route path='/candidate_login' element={<CandidateLogin />} />
         <Route path='/jobs_home' element={<Home />} />
         <Route path="/employeer-dashboard" element={<DefaultLayout><EmployeerDashboard /></DefaultLayout>} />
         <Route path="/preview-edit-job-detail" element={<DefaultLayout><EmployerDetails /></DefaultLayout>} />

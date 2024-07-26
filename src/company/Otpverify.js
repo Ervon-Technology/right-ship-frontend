@@ -78,6 +78,7 @@ const OtpVerify = () => {
               if(response.ok){
                 if(result.code===200){
                     localStorage.setItem('company_id',result.data.company_id)
+                    localStorage.setItem('user_id',result.data._id)
                     toast.success("OTP verify success");
                     setTimeout(() => {
                       navigate('/employeer-dashboard');

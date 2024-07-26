@@ -147,10 +147,11 @@ const ManageUsers = () => {
   return (
     <div className="main-container p-4">
       <div className="container mx-auto h-full">
-        <div className="border border-gray-300 p-4 rounded-lg shadow-md">
+      <h1 className="text-3xl font-semibold mb-6">Team</h1>
+        <div className="border border-gray-300 p-4">
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center">
-              <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+              <button className="px-4 py-2 bg-customBlue text-white rounded hover:bg-blue-600">
                 Show All
               </button>
               <input
@@ -162,7 +163,7 @@ const ManageUsers = () => {
               />
             </div>
             <button
-              className="border border-gray-300 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="border border-gray-300 px-4 py-2 bg-customBlue text-white rounded hover:bg-blue-600"
               onClick={handleAddUserClick}
             >
               Add User

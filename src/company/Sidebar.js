@@ -9,7 +9,7 @@ const Sidebar = () => {
     localStorage.clear();
     console.log("logout clicked!!");
     window.location.href = '/';
-  };
+  }; 
 
   const SidebarItem = ({ icon, text, to }) => (
     <li className='relative flex items-center p-3 my-1 font-medium rounded-md cursor-pointer hover:bg-slate-500'>
