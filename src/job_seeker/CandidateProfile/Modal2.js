@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const Modal2 = ({ isOpen, onClose, coc, setCoc, cop, setCop, watchKeeping, setWatchKeeping }) => {
   if (!isOpen) return null;

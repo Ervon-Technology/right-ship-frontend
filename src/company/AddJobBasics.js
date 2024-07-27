@@ -1,7 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import Ship from '../company/Assets/Ship.png';
-import { Link } from 'react-router-dom';
-function AddJobBasics() {
+import { addShipType, removeShipType, addRank, removeRank } from './Slice/Empslice';
+
+const AddJobBasics = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [selectedShipTypes, setSelectedShipTypes] = useState([]);
+  const [selectedRanks, setSelectedRanks] = useState([]);
+
+  const handleShipTypeChange = (e) => {
+    const { id, checked } = e.target;
+    if (checked) {
+      setSelectedShipTypes([...selectedShipTypes, id]);
+      dispatch(addShipType(id));
+    } else {
+      setSelectedShipTypes(selectedShipTypes.filter((type) => type !== id));
+      dispatch(removeShipType(id));
+    }
+  };
+
+  const handleRankChange = (e) => {
+    const { id, checked } = e.target;
+    if (checked) {
+      setSelectedRanks([...selectedRanks, id]);
+      dispatch(addRank(id));
+    } else {
+      setSelectedRanks(selectedRanks.filter((rank) => rank !== id));
+      dispatch(removeRank(id));
+    }
+  };
+
+  const handleContinue = () => {
+    if (selectedShipTypes.length === 0 || selectedRanks.length === 0) {
+      alert('Please select at least one item from both Ship Types and Ranks.');
+    } else {
+      navigate('/add-pay-and-benefits');
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen my-6">
       <div className="py-10 bg-customSky1 flex justify-around items-center w-full max-w-4xl px-6">
@@ -12,86 +50,30 @@ function AddJobBasics() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 w-full">
           <div className="space-y-4 p-4 border rounded-md w-full bg-white">
             <h2 className="text-xl font-semibold">Ship Type</h2>
-            <div>
-              <input type="checkbox" id="small" />
-              <label htmlFor="small" className="ml-2 text-sm font-medium">Small</label>
-            </div>
-            <div>
-              <input type="checkbox" id="tanker" />
-              <label htmlFor="tanker" className="ml-2 text-sm font-medium">Tanker</label>
-            </div>
-            <div>
-              <input type="checkbox" id="high" />
-              <label htmlFor="high" className="ml-2 text-sm font-medium">High</label>
-            </div>
-            <div>
-              <input type="checkbox" id="passengerShip" />
-              <label htmlFor="passengerShip" className="ml-2 text-sm font-medium">Passenger Ship</label>
-            </div>
-            <div>
-              <input type="checkbox" id="bulkCarrier" />
-              <label htmlFor="bulkCarrier" className="ml-2 text-sm font-medium">Bulk Carrier</label>
-            </div>
-            <div>
-              <input type="checkbox" id="fishingVessel" />
-              <label htmlFor="fishingVessel" className="ml-2 text-sm font-medium">Fishing Vessel</label>
-            </div>
+            {["small", "tanker", "high", "passengerShip", "bulkCarrier", "fishingVessel"].map((type) => (
+              <div key={type}>
+                <input type="checkbox" id={type} onChange={handleShipTypeChange} />
+                <label htmlFor={type} className="ml-2 text-sm font-medium">{type.charAt(0).toUpperCase() + type.slice(1)}</label>
+              </div>
+            ))}
           </div>
           <div className="space-y-4 p-4 border rounded-md w-full bg-white">
             <h2 className="text-xl font-semibold">Rank</h2>
-            <div>
-              <input type="checkbox" id="captain" />
-              <label htmlFor="captain" className="ml-2 text-sm font-medium">Captain</label>
-            </div>
-            <div>
-              <input type="checkbox" id="chiefOfficer" />
-              <label htmlFor="chiefOfficer" className="ml-2 text-sm font-medium">Chief Officer</label>
-            </div>
-            <div>
-              <input type="checkbox" id="secondOfficer" />
-              <label htmlFor="secondOfficer" className="ml-2 text-sm font-medium">Second Officer</label>
-            </div>
-            <div>
-              <input type="checkbox" id="thirdOfficer" />
-              <label htmlFor="thirdOfficer" className="ml-2 text-sm font-medium">Third Officer</label>
-            </div>
-            <div>
-              <input type="checkbox" id="chiefEngineer" />
-              <label htmlFor="chiefEngineer" className="ml-2 text-sm font-medium">Chief Engineer</label>
-            </div>
-            <div>
-              <input type="checkbox" id="secondEngineer" />
-              <label htmlFor="secondEngineer" className="ml-2 text-sm font-medium">Second Engineer</label>
-            </div>
-            <div>
-              <input type="checkbox" id="thirdEngineer" />
-              <label htmlFor="thirdEngineer" className="ml-2 text-sm font-medium">Third Engineer</label>
-            </div>
-            <div>
-              <input type="checkbox" id="fourthEngineer" />
-              <label htmlFor="fourthEngineer" className="ml-2 text-sm font-medium">Fourth Engineer</label>
-            </div>
-            <div>
-              <input type="checkbox" id="electricalOfficer" />
-              <label htmlFor="electricalOfficer" className="ml-2 text-sm font-medium">Electrical Officer</label>
-            </div>
-            <div>
-              <input type="checkbox" id="deckCadet" />
-              <label htmlFor="deckCadet" className="ml-2 text-sm font-medium">Deck Cadet</label>
-            </div>
-            <div>
-              <input type="checkbox" id="engineCadet" />
-              <label htmlFor="engineCadet" className="ml-2 text-sm font-medium">Engine Cadet</label>
-            </div>
+            {["captain", "chiefOfficer", "secondOfficer", "thirdOfficer", "chiefEngineer", "secondEngineer", "thirdEngineer", "fourthEngineer", "electricalOfficer", "deckCadet", "engineCadet"].map((rank) => (
+              <div key={rank}>
+                <input type="checkbox" id={rank} onChange={handleRankChange} />
+                <label htmlFor={rank} className="ml-2 text-sm font-medium">{rank.charAt(0).toUpperCase() + rank.slice(1)}</label>
+              </div>
+            ))}
           </div>
         </div>
         <div className="flex justify-between mt-8">
           <Link to="/emp" className="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             &larr; Back
           </Link>
-          <Link to="/add-pay-and-benefits" className="bg-customBlue hover:bg-customBlue2 text-white font-bold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700">
+          <div onClick={handleContinue} className="bg-customBlue hover:bg-customBlue2 text-white font-bold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700">
             Continue &rarr;
-          </Link>
+          </div>
         </div>
       </div>
     </div>

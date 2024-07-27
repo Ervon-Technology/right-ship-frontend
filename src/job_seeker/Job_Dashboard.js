@@ -58,7 +58,7 @@ const dummyJobs = [
 ];
 
 const JobDashboard = () => {
-    const [jobs, setJobs] = useState(dummyJobs);
+    const [jobs] = useState(dummyJobs);
     const [selectedJob, setSelectedJob] = useState(dummyJobs[0]);
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
     const [reportOtherText, setReportOtherText] = useState('');

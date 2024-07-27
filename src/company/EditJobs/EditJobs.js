@@ -4,7 +4,6 @@ import ships from '../Assets/Ship.png'
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import './editjob.css';
-
 // Setting the root element for react-modal
 Modal.setAppElement('#root');
 

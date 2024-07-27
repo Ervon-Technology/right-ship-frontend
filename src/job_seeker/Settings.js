@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 const Settings = () => {
-  const [accountType, setAccountType] = useState('Professional');
-  const [email, setEmail] = useState('demo@gmail.com');
-  const [password, setPassword] = useState('********');
-  const [mobileNumber, setMobileNumber] = useState('+91 86983935363');
-  const [accountActivation, setAccountActivation] = useState('Not Activated');
+  const [accountType, ] = useState('Professional');
+  const [email, ] = useState('demo@gmail.com');
+  const [password, ] = useState('********');
+  const [mobileNumber, ] = useState('+91 86983935363');
+  const [accountActivation, ] = useState('Not Activated');
 
   const handleAccountTypeChange = () => {
     // Functionality to change account type

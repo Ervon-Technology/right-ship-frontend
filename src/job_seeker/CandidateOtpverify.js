@@ -1,13 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
-import { setempdetails } from '../company/Slice/Empslice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from './CandidateLoader';
 
 const CandidateOtpVerify = () => {
-    const dispatch = useDispatch();
     const [otp, setOtp] = useState(Array(6).fill(""));
     const [resendTimer, setResendTimer] = useState(120);
     const [error, setError] = useState("");
@@ -73,7 +70,6 @@ const CandidateOtpVerify = () => {
                     console.log("OTP verified successfully:", data);
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('cmpid', data.company.id);
-                    dispatch(setempdetails(data.company));
                     toast.success("OTP verify success");
                     setTimeout(() => {
                         navigate('/jobdashboard'); // Redirect to job dashboard
