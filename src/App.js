@@ -33,6 +33,7 @@ import MyJobs from './job_seeker/MyJobs';
 import Settings from './job_seeker/Settings';
 import Mailsendpopup from './company/helper/mailsendpopup';
 import Supports from './company/Supports';
+import JobsPage from './company/JobsPage';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -117,13 +118,14 @@ const App = () => {
         <Route path="/add-pay-and-benefits" element={<DefaultLayout><AddPayAndBenefits /></DefaultLayout>} />
         <Route path="/edit-jobs" element={<DefaultLayout><EditJobs /></DefaultLayout>} />
         <Route path="/candidates" element={<DefaultLayout><Candidates /></DefaultLayout>} />
-        <Route path="/jobs" element={<DefaultLayout><JobDescription /></DefaultLayout>} />
+        <Route path="/jobs" element={<DefaultLayout><JobsPage/></DefaultLayout>} />
         <Route path="/candidate-details" element={<DefaultLayout><CandidatesDetails /></DefaultLayout>} />
         <Route path="/edit-job-details" element={<DefaultLayout><EmployerDetails /></DefaultLayout>} />
         <Route path="/manage-users" element={<DefaultLayout><ManageUsers /></DefaultLayout>} />
         <Route path="/support" element={<DefaultLayout><Supports /></DefaultLayout>} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} /> 
         <Route path="/otpverify" element={<OtpVerify />} />
+        <Route path="/Jobsdesc" element={<DefaultLayout><JobDescription /></DefaultLayout>} />
       </Routes>
     </Router>
   );
