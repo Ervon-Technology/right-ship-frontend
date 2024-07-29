@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { FaSearch, FaDownload } from 'react-icons/fa';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import './candidate.css'
 
 const Candidates = () => {
+  const navigate = useNavigate();
   const [candidates, setCandidates] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  const handleJobPost = () => {
+    navigate('/add-job-basics');
+  };
 
 
         //Api fetching// if u want fetch api then just commentout the use-effect part and exchange your backend api.
@@ -30,7 +34,7 @@ const Candidates = () => {
         <div className='border-solid border-2 rounded p-2.5  mr-3'>
           <FaSearch />
           </div>
-          <button className="bg-customBlue text-white p-2 px-4 rounded mr-14">Post Jobs</button>
+          <button onClick={handleJobPost} className="bg-customBlue text-white p-2 px-4 rounded mr-14">Post Jobs</button>
         </div>
       </div>
       <div className="flex items-center mb-0 text-sm">

@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 function EmployeerDashboard() {
   const [data, setData] = useState({
-    totalAppliedCandidates: 100,
-    thisMonthAppliedCandidates: 20,
-    totalShortlisted: 50,
-    yesterdayAppliedCandidates: 5,
-    totalActiveJobPost: 10,
-    totalContactViewList: 30,
+    totalAppliedCandidates: 0,
+    thisMonthAppliedCandidates: 0,
+    totalShortlisted: 0,
+    yesterdayAppliedCandidates: 0,
+    totalActiveJobPost: 0,
+    totalContactViewList: 0,
   });
   const [verificationMessage, setVerificationMessage] = useState(null);
   const [error, setError] = useState(null);

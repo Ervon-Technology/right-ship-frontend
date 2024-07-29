@@ -37,7 +37,7 @@ const Sidebar = () => {
             <SidebarItem icon={<UsersRound size={20} />} text="Candidates" to="/candidates" />
             <SidebarItem icon={<MessagesSquare size={20} />} text="Manage Team" to="/manage-users" />
             <SidebarItem icon={<MessagesSquare size={20} />} text="Support" to="/support" />
-            <SidebarItem icon={<Settings size={20} />} text="Settings" to="/setting" />
+            {/* <SidebarItem icon={<Settings size={20} />} text="Settings" to="/setting" /> */}
             <li className='relative flex items-center p-3 my-1 font-medium rounded-md cursor-pointer hover:bg-slate-500' onClick={handleLogout}>
               <LogOut color='white' size={20}/>
               <span className={`overflow-hidden text-sm text-white transition-all ${expanded ? "w-52 ml-3 text-nowrap py-1" : " w-0 text-nowrap"}`}>Sign Out</span>

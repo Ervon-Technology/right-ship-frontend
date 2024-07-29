@@ -206,8 +206,8 @@ const EditJobs = () => {
         </div>
         <div className="button-group flex justify-between">
           <button className="border-solid border-2 text-blue-700 font-semibold rounded py-2 px-4 w-48" onClick={handlePreview}>Preview</button>
-          <button onClick={() => handlesave('save')} className="bg-customBlue text-white py-2 px-6 hover:bg-customBlue2 rounded w-44">Save</button>
-          <button onClick={() => handlesave('publish')} className="bg-green-500 text-white py-2 px-6 hover:bg-green-600 rounded w-44 ml-4">Publish</button>
+          <button onClick={() => handlesave('saved')} className="bg-customBlue text-white py-2 px-6 hover:bg-customBlue2 rounded w-44">Save</button>
+          <button onClick={() => handlesave('public')} className="bg-green-500 text-white py-2 px-6 hover:bg-green-600 rounded w-44 ml-4">Publish</button>
         </div>
       </div>
 
