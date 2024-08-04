@@ -47,6 +47,10 @@ export const verifyOtp = createAsyncThunk(
       }
 
       const data = await response.json();
+      if(!data.code===200){
+        console.log('error')
+        
+      }
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

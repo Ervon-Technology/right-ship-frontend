@@ -2,10 +2,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendOtp } from '../../features/otpSlice';
+import { setContactInfo } from '../../features/contactSlice';
 import logo from "../../images/logo.png";
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
   const [phoneNumber, setPhoneNumber] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -14,6 +16,8 @@ const Login = () => {
 
   const handleSendOtp = () => {
     dispatch(sendOtp(phoneNumber));
+    dispatch(setContactInfo(phoneNumber));
+    navigate('/login-verify')
   };
 
   return (

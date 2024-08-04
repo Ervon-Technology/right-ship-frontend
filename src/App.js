@@ -44,6 +44,9 @@ import Footer from './job_seeker/footer/Footer';
 import Login from './job_seeker/login/Login';
 import VerifyLogin from './job_seeker/login/Verify-login';
 import { ToastContainer } from 'react-toastify';
+import About from './job_seeker/Resgistraion/About';
+import Experience from './job_seeker/Resgistraion/ExpInfo';
+import Resume from './job_seeker/Resgistraion/Resume';
 
 const App = () => {
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -145,6 +148,9 @@ const App = () => {
         <Route path="/verify-phone" element={<VerifyWithPhone/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/login-verify" element={<VerifyLogin/>}/>
+        <Route path="/personalDetails" element={<About/>}/>
+        <Route path="/experinceDetails" element={<Experience/>}/>
+        <Route path="/resume&profile" element={<Resume/>}/>
       </Routes>
       <ToastContainer/>
     </BrowserRouter>

@@ -1,7 +1,5 @@
-// src/components/VerifyWithPhone.js
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { verifyOtp, sendOtp } from '../../features/otpSlice'; // Import verifyOtp
 import logo from '../../images/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -10,7 +8,6 @@ const VerifyLogin = () => {
   const [otp, setOtp] = useState('');
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
-  const dispatch = useDispatch();
   const otpStatus = useSelector((state) => state.otp.status);
   const otpError = useSelector((state) => state.otp.error);
   const contactInfo = useSelector((state) => state.contact.contactInfo);
@@ -34,21 +31,58 @@ const VerifyLogin = () => {
   }, [timer]);
 
   const handleSendOtp = () => {
-    dispatch(sendOtp(contactInfo));
+    // Call an API or handle OTP sending if needed
+    // If using Redux or another method to send OTP, dispatch it here
     setTimer(30);
     setCanResend(false);
+    // Navigate or handle resend logic
+    navigate('/signup-number');
   };
 
-  const handleVerifyOtp = () => {
-    dispatch(verifyOtp({ contactInfo, otp }));
-  };
+  const handleVerifyOtp = async () => {
+    try {
+      const verifyResponse = await fetch('https://api.rightships.com/otp/verify_otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ mobile_no: contactInfo, otp }),
+      });
 
-  useEffect(() => {
-    if (otpStatus === 'succeeded') {
-      console.log('OTP verified successfully for:', contactInfo);
-      navigate('/home'); // Redirect to the desired page after successful OTP verification
+      if (!verifyResponse.ok) {
+        const errorData = await verifyResponse.json();
+        throw new Error(errorData.message || 'Failed to verify OTP');
+      }
+
+      const verifyData = await verifyResponse.json();
+      if (verifyData.code === 200) {
+        console.log('OTP verified successfully:', verifyData);
+
+        // Call login API after successful OTP verification
+        const loginResponse = await fetch('https://api.rightships.com/employee/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ mobile_no: contactInfo }),
+        });
+
+        if (!loginResponse.ok) {
+          const errorData = await loginResponse.json();
+          throw new Error(errorData.message || 'Failed to log in');
+        }
+
+        const loginData = await loginResponse.json();
+        console.log('Login successful:', loginData);
+        navigate('/home'); // Redirect to the desired page after successful login
+      } else {
+        throw new Error(verifyData.msg || 'Failed to verify OTP');
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      // Handle error (e.g., show a toast notification)
     }
-  }, [otpStatus, contactInfo, navigate]);
+  };
 
   return (
     <>
