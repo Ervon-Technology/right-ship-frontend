@@ -1,91 +1,105 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './company/Sidebar';
-import Header from './company/Header';
-import Footer from './company/Footer';
-import EmployeerDashboard from './company/EmployeerDashboard';
-import EmployerDetails from './company/Preview&EditJobDetail/EmployerDetails';
-import Empteam from './company/ManageUsers';
-import AddJobBasics from './company/AddJobBasics';
-import AddPayAndBenefits from './company/AddPayAndBenefits';
-import EditJobs from './company/EditJobs/EditJobs';
-import ManageUsers from './company/ManageUsers';
-import Candidates from './company/Candidates';
-import CandidatesDetails from './company/CandidatesDetails';
-import JobDescription from './company/JobDescription';
-import Login from './company/Login';
-import OtpVerify from './company/Otpverify';
-import RegistrationForm from './company/RegistrationForm';
-import Header3 from './job_seeker/Header3';
-import Header2 from './job_seeker/Header2';
-import Home from './job_seeker/home';
-import CandidateLogin from './job_seeker/CandidateLogin';
-import CandidateOtpverify from './job_seeker/CandidateOtpverify';
-import JobDashboard from './job_seeker/Job_Dashboard';
-import About from './job_seeker/About';
-import Details from './job_seeker/Details';
-import Experience from './job_seeker/Experience';
-import Resume from './job_seeker/Resume';
-import Profile from './job_seeker/Profile';
-import Congratulations from './job_seeker/Congratulations';
-import CandidateProfile from './job_seeker/CandidateProfile/CandidateProfile';
-import MyJobs from './job_seeker/MyJobs';
-import Settings from './job_seeker/Settings';
-import Mailsendpopup from './company/helper/mailsendpopup';
-import Supports from './company/Supports';
-import JobsPage from './company/JobsPage';
+// import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+// import Sidebar from './company/Sidebar';
+// import Header from './company/Header';
+// import Footer from './company/Footer';
+// import EmployeerDashboard from './company/EmployeerDashboard';
+// import EmployerDetails from './company/Preview&EditJobDetail/EmployerDetails';
+// import Empteam from './company/ManageUsers';
+// import AddJobBasics from './company/AddJobBasics';
+// import AddPayAndBenefits from './company/AddPayAndBenefits';
+// import EditJobs from './company/EditJobs/EditJobs';
+// import ManageUsers from './company/ManageUsers';
+// import Candidates from './company/Candidates';
+// import CandidatesDetails from './company/CandidatesDetails';
+// import JobDescription from './company/JobDescription';
+// import Login from './company/Login';
+// import OtpVerify from './company/Otpverify';
+// import RegistrationForm from './company/RegistrationForm';
+// import Header3 from './job_seeker/Header3';
+// import Header2 from './job_seeker/Header2';
+// import Home from './job_seeker/home';
+// // import CandidateLogin from './job_seeker/CandidateLogin';
+// // import CandidateOtpverify from './job_seeker/CandidateOtpverify';
+// import JobDashboard from './job_seeker/Job_Dashboard';
+// import About from './job_seeker/About';
+// import Details from './job_seeker/Details';
+// import Experience from './job_seeker/Experience';
+// import Resume from './job_seeker/Resume';
+// import Profile from './job_seeker/Profile';
+// import Congratulations from './job_seeker/Congratulations';
+// import CandidateProfile from './job_seeker/CandidateProfile/CandidateProfile';
+// import MyJobs from './job_seeker/MyJobs';
+// import Settings from './job_seeker/Settings';
+// import Mailsendpopup from './company/helper/mailsendpopup';
+// import Supports from './company/Supports';
+// import JobsPage from './company/JobsPage';
+// import Navbar from './job_seeker/Navbar/Navbar';
+
+import Navbar from "./job_seeker/Navbar/Navbar";
+import Signup from "./job_seeker/signup/Signup";
+import SignupWithEmail from './job_seeker/signup/SignupWithEmail';
+import VerifyWithPhone from './job_seeker/signup/VerifyWithPhone';
+import Footer from './job_seeker/footer/Footer';
+import Login from './job_seeker/login/Login';
+import VerifyLogin from './job_seeker/login/Verify-login';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  // const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setLoggedIn(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     setLoggedIn(true);
+  //   }
+  // }, []);
 
-  const DefaultLayout = ({ children }) => (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex flex-1">
-        <Sidebar />
-        <div className="flex flex-col flex-1">
-          <Header />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </div>
-      </div>
-    </div>
-  );
+  // const DefaultLayout = ({ children }) => (
+  //   <div className="flex flex-col min-h-screen">
+  //     <div className="flex flex-1">
+  //       <Sidebar />
+  //       <div className="flex flex-col flex-1">
+  //         <Header />
+  //         <main className="flex-grow">
+  //           {children}
+  //         </main>
+  //         <Footer />
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
-  const DefaultLayout2 = ({ children }) => (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex flex-col flex-1">
-        <Header2 />
-        <main className="flex-grow">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
+  // const DefaultLayout2 = ({ children }) => (
+  //   <div className="flex flex-col min-h-screen">
+  //     <div className="flex flex-col flex-1">
+  //       <Header2 />
+  //       <main className="flex-grow">
+  //         {children}
+  //       </main>
+  //     </div>
+  //   </div>
+  // );
 
-  const DefaultLayout3 = ({ children }) => (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex flex-col flex-1">
-        <Header3 />
-        <main className="flex-grow">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
+  // const DefaultLayout3 = ({ children }) => (
+  //   <div className="flex flex-col min-h-screen">
+  //     <div className="flex flex-col flex-1">
+  //       <Header3 />
+  //       <main className="flex-grow">
+  //         {children}
+  //       </main>
+  //     </div>
+  //   </div>
+  // );
 
   return (
-    <Router>
+    <>
+    <Navbar/>
+    
+    <BrowserRouter>
+    
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={
             loggedIn ? (
@@ -96,8 +110,8 @@ const App = () => {
               <RegistrationForm />
             )
           }
-        />
-        <Route path='mail' element={<Mailsendpopup />} />
+        /> */}
+        {/* <Route path='mail' element={<Mailsendpopup />} />
         <Route path='/settings' element={<DefaultLayout3><Settings /></DefaultLayout3>} />
         <Route path='/my_jobs' element={<DefaultLayout3><MyJobs /></DefaultLayout3>} />
         <Route path='/candidate_profile' element={<DefaultLayout3><CandidateProfile /></DefaultLayout3>} />
@@ -125,9 +139,17 @@ const App = () => {
         <Route path="/support" element={<DefaultLayout><Supports /></DefaultLayout>} />
         <Route path="/login" element={<Login />} /> 
         <Route path="/otpverify" element={<OtpVerify />} />
-        <Route path="/Jobsdesc" element={<DefaultLayout><JobDescription /></DefaultLayout>} />
+        <Route path="/Jobsdesc" element={<DefaultLayout><JobDescription /></DefaultLayout>} /> */}
+        <Route path="/signup-number" element={<Signup/>} />
+        <Route path="/signup-email" element={<SignupWithEmail/>}/>
+        <Route path="/verify-phone" element={<VerifyWithPhone/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/login-verify" element={<VerifyLogin/>}/>
       </Routes>
-    </Router>
+      <ToastContainer/>
+    </BrowserRouter>
+    <Footer/>
+    </>
   );
 };
 

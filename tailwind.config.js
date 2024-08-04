@@ -17,6 +17,7 @@ module.exports = {
         customSky2: '#F7F8FE',
         customSky3: '#EEF7FF',
         customGrey: '#484848',
+        btnColor:'#1e1b4b'
       },
     },
   },
