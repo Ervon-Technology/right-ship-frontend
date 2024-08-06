@@ -47,6 +47,13 @@ import { ToastContainer } from 'react-toastify';
 import About from './job_seeker/Resgistraion/About';
 import Experience from './job_seeker/Resgistraion/ExpInfo';
 import Resume from './job_seeker/Resgistraion/Resume';
+import  Home  from './job_seeker/landingpage/Home';
+import Setting from './job_seeker/setting/Setting';
+import ChangeMail from './job_seeker/setting/ChangeMail';
+import ChangeNumber from './job_seeker/setting/ChangeNumber';
+import VerifyMail from './job_seeker/setting/VerifyMail';
+import VerifyNumber from './job_seeker/setting/VerifyNumber';
+import Main from './job_seeker/Profile/Main';
 
 const App = () => {
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -151,6 +158,13 @@ const App = () => {
         <Route path="/personalDetails" element={<About/>}/>
         <Route path="/experinceDetails" element={<Experience/>}/>
         <Route path="/resume&profile" element={<Resume/>}/>
+        <Route path="/home" element={<Home/>}/>
+        <Route path="/setting" element={<Setting/>}/>
+        <Route path="/changemail" element={<ChangeMail/>}/>
+        <Route path="/changenumber" element={<ChangeNumber/>}/>
+        <Route path="/verifymail" element={<VerifyMail/>}/>
+        <Route path="/verifynumber" element={<VerifyNumber/>}/>
+        <Route path="/profile" element={<Main/>}/>
       </Routes>
       <ToastContainer/>
     </BrowserRouter>

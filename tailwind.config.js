@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'jit', // Enable JIT mode
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
   ],
@@ -16,8 +17,7 @@ module.exports = {
         customSky1: '#DDE5FF',
         customSky2: '#F7F8FE',
         customSky3: '#EEF7FF',
-        customGrey: '#484848',
-        btnColor:'#1e1b4b'
+        btnColor: '#1e1b4b'
       },
     },
   },
