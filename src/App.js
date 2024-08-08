@@ -106,10 +106,8 @@ const App = () => {
 
   return (
     <>
-    <Navbar/>
-    
-    <BrowserRouter>
-    
+    <Navbar/>    
+    <BrowserRouter>    
       <Routes>
         {/* <Route
           path="/"

@@ -86,7 +86,7 @@ const VerifyLogin = () => {
 
   return (
     <>
-      <section className="flex flex-col items-center py-10 signup">
+      <section className="flex flex-col items-center py-10 signup h-screen">
         <div className="text-2xl font-bold mb-4">
           <img src={logo} alt="Logo" height={70} width={70} />
         </div>
@@ -120,7 +120,7 @@ const VerifyLogin = () => {
               `Resend OTP in: ${formatTime(timer)}`
             )}
           </p>
-          <Link className="text-blue-600 mx-28 py-5 text-sm underline underline-offset-8" to="/login">Change Number</Link>
+          <Link className="text-blue-600 mx-36 py-5 text-sm underline underline-offset-8" to="/login">Change Number</Link>
         </div>
       </section>
       <footer className="bg-white"></footer>

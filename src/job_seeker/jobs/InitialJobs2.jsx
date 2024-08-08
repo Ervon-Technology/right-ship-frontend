@@ -259,8 +259,8 @@ const JobDashboard = () => {
             </div>
         </div>
     )}
-</div>
-
+                    </div>
+                    <div className="w-full md:max-w-xs bg-white"></div>
                 </div>
             </div>
         </div>

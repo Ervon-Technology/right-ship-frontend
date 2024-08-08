@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendOtp } from '../../features/otpSlice';
@@ -17,15 +16,15 @@ const Login = () => {
   const handleSendOtp = () => {
     dispatch(sendOtp(phoneNumber));
     dispatch(setContactInfo(phoneNumber));
-    navigate('/login-verify')
+    navigate('/login-verify');
   };
 
   return (
-    <section className="flex flex-col items-center py-10 signup h-screen">
+    <section className="flex flex-col items-center my-20 h-screen">
       <div className="text-2xl font-bold mb-4">
         <img src={logo} alt="Logo" height={70} width={70} />
       </div>
-      <div className="bg-white p-6 mt-3 rounded-lg shadow-2xl border w-100 max-w-md">
+      <div className="bg-white p-6 mt-3 rounded-lg shadow-2xl border w-full max-w-md">
         <h2 className="text-center text-xl font-bold mb-4">Login to Rightship</h2>
         <input
           type="text"
