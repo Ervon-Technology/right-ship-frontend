@@ -1,18 +1,19 @@
 import React, { useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Background from "../../images/background.jpg";
 import File from "../../images/File img.png";
 import ProfileImage from "../../images/upload.jpg";
-import { useDispatch, useSelector } from 'react-redux';
-import { registerEmployee } from '../../features/employeeRegistrationSlice';
 
 const Resume = () => {
-    const navigate=useNavigate()
-  const dispatch = useDispatch();
-  const { data, loading, success, error } = useSelector(state => state.employee);
+  const navigate = useNavigate();
+  const { data, about, experience } = useSelector(state => state.employee); // Access additional data
 
   const [profileFile, setProfileFile] = useState(null);
   const [resumeFile, setResumeFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
   const profileFileInputRef = useRef(null);
   const resumeFileInputRef = useRef(null);
@@ -21,14 +22,12 @@ const Resume = () => {
     const selectedFile = event.target.files[0];
     setProfileFile(selectedFile);
     console.log('Profile file uploaded:', selectedFile);
-    // You might want to update your state or dispatch an action here
   };
 
   const handleResumeFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setResumeFile(selectedFile);
     console.log('Resume file uploaded:', selectedFile);
-    // You might want to update your state or dispatch an action here
   };
 
   const triggerProfileFileUpload = () => {
@@ -39,15 +38,58 @@ const Resume = () => {
     resumeFileInputRef.current.click();
   };
 
-  const handleSubmit = () => {
-    // Include files in the data being sent to the server
-    const formData = new FormData();
-    formData.append('profileFile', profileFile);
-    formData.append('resumeFile', resumeFile);
-    Object.keys(data).forEach(key => formData.append(key, data[key]));
+  const toBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
 
-    dispatch(registerEmployee(formData));
-    navigate('/login')
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const profileBase64 = profileFile ? await toBase64(profileFile) : null;
+      const resumeBase64 = resumeFile ? await toBase64(resumeFile) : null;
+
+      const payload = {
+        name: data.name,
+        email: data.email,
+        mobile_no: data.mobile_no,
+        about,        // Include about data
+        experience,   // Include experience data
+        profilePicture: profileBase64,
+        resume: resumeBase64,
+      };
+
+      const response = await fetch('https://api.rightships.com/employee/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log('Employee registered successfully:', responseData);
+        setSuccess(true);
+        navigate('/login');
+      } else {
+        const errorText = await response.text();
+        setError('Registration failed');
+        console.error('Failed to register employee:', errorText);
+      }
+    } catch (error) {
+      setError(error.message || 'Error registering employee');
+      console.error('Error registering employee:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,7 +149,7 @@ const Resume = () => {
               <label className="text-xs text-red-600">max file size 5MB only</label>
             </div>
             <div className="flex space-x-2 mt-4">
-              <Link to="/experinceDetails" className="bg-white text-customBlue font-bold border border-customBlue py-2 px-6 rounded w-38 text-center">BACK</Link>
+              <Link to="/experienceDetails" className="bg-white text-customBlue font-bold border border-customBlue py-2 px-6 rounded w-38 text-center">BACK</Link>
               <button
                 onClick={handleSubmit}
                 disabled={loading}
@@ -118,7 +160,7 @@ const Resume = () => {
             </div>
           </div>
           {success && <p className="text-green-500">Registration Successful!</p>}
-          {error && <p className="text-red-500">Registration Failed: {error.message}</p>}
+          {error && <p className="text-red-500">Registration Failed: {error}</p>}
         </div>
       </div>
     </div>

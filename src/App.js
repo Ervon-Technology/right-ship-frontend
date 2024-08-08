@@ -54,6 +54,8 @@ import ChangeNumber from './job_seeker/setting/ChangeNumber';
 import VerifyMail from './job_seeker/setting/VerifyMail';
 import VerifyNumber from './job_seeker/setting/VerifyNumber';
 import Main from './job_seeker/Profile/Main';
+import MyJobs from './job_seeker/jobs/InitialJob';
+import JobDashboard from './job_seeker/jobs/InitialJobs2';
 
 const App = () => {
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -120,7 +122,7 @@ const App = () => {
               <RegistrationForm />
             )
           }
-        /> */}
+        /> 
         {/* <Route path='mail' element={<Mailsendpopup />} />
         <Route path='/settings' element={<DefaultLayout3><Settings /></DefaultLayout3>} />
         <Route path='/my_jobs' element={<DefaultLayout3><MyJobs /></DefaultLayout3>} />
@@ -158,13 +160,15 @@ const App = () => {
         <Route path="/personalDetails" element={<About/>}/>
         <Route path="/experinceDetails" element={<Experience/>}/>
         <Route path="/resume&profile" element={<Resume/>}/>
-        <Route path="/home" element={<Home/>}/>
+        <Route path="/" element={<Home/>}/>
         <Route path="/setting" element={<Setting/>}/>
         <Route path="/changemail" element={<ChangeMail/>}/>
         <Route path="/changenumber" element={<ChangeNumber/>}/>
         <Route path="/verifymail" element={<VerifyMail/>}/>
         <Route path="/verifynumber" element={<VerifyNumber/>}/>
         <Route path="/profile" element={<Main/>}/>
+        <Route path="/myjobs" element={<MyJobs/>}/>
+        <Route path="/jobdashboard" element={<JobDashboard/>}/>
       </Routes>
       <ToastContainer/>
     </BrowserRouter>

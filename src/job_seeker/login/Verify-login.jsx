@@ -74,7 +74,7 @@ const VerifyLogin = () => {
 
         const loginData = await loginResponse.json();
         console.log('Login successful:', loginData);
-        navigate('/home'); // Redirect to the desired page after successful login
+        navigate('/profile'); // Redirect to the desired page after successful login
       } else {
         throw new Error(verifyData.msg || 'Failed to verify OTP');
       }

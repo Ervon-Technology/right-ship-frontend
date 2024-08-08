@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateData } from '../../features/employeeRegistrationSlice';
 import Background from "../../images/background.jpg";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Experience = () => {
+
+  const navigate=useNavigate()
+  const handleNext = () => {
+    dispatch(updateData(formData)); // Update the Redux store with current page data
+    navigate('/resume&profile');
+  };
   const dispatch = useDispatch();
   const { data } = useSelector(state => state.employee);
 
@@ -160,12 +166,12 @@ const Experience = () => {
               </div>
             </div>
             <div className="flex justify-start space-x-4 mt-6">
-              <Link to="/personalDetails" className="bg-white text-customBlue border font-bold border-customBlue py-2 rounded w-24 text-center">
+              <button className="bg-white text-customBlue border font-bold border-customBlue py-2 rounded w-24 text-center">
                 BACK
-              </Link>
-              <Link to="/resume&profile" className="bg-customBlue text-white font-bold py-2 rounded w-24 text-center">
+              </button>
+              <button  className="bg-customBlue text-white font-bold py-2 rounded w-24 text-center">
                 NEXT
-              </Link>
+              </button>
             </div>
           </form>
         </div>

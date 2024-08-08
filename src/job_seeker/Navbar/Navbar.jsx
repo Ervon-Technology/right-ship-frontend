@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { Link} from 'react-router-dom';
 
 const Navbar = () => {
+  // let navigate=useNavigate()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+ 
 
   return (
     <>
@@ -10,13 +14,13 @@ const Navbar = () => {
         <div className="flex items-center space-x-4 px-10">
           <span className="font-semibold"><a href="#">Rightship</a></span>
           <div className="hidden md:flex space-x-4">
-            <span><a href="#">Jobs</a></span>
+            <span><a href="/myjobs">Jobs</a></span>
             <span><a href="#">Companies</a></span>
           </div>
         </div>
         <div className="hidden md:flex items-center space-x-4">
-          <button className="text-blue-700 border p-2 px-6 hover:bg-blue-800 hover:text-white rounded">Login</button>
-          <button className="bg-blue-800 text-white px-4 py-2 rounded">Register</button>
+        <a href='/login'> <button className="text-blue-700 border p-2 px-6 hover:bg-blue-800 hover:text-white rounded">Login</button></a>
+          <a href='/signup-number'> <button className="bg-blue-800 text-white px-4 py-2 rounded">Register</button></a>
           <div className="relative">
             <button
               className="flex items-center space-x-2"
@@ -29,8 +33,8 @@ const Navbar = () => {
             </button>
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg">
-                <a href="#" className="block px-4 py-2 hover:bg-gray-200">Option 1</a>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-200">Option 2</a>
+                <a href="#" className="block px-4 py-2 hover:bg-gray-200">For Company</a>
+                <a href="#" className="block px-4 py-2 hover:bg-gray-200">For Admin</a>
               </div>
             )}
           </div>
@@ -52,10 +56,10 @@ const Navbar = () => {
         <aside className="md:hidden bg-white border-t border-gray-200">
           <div className="p-4 flex flex-col space-y-4">
             <a href="#" className="block">Rightship </a>
-            <a href="#" className="block">Jobs</a>
+            <a href="/myjobs" className="block">Jobs</a>
             <a href="#" className="block">Companies</a>
-            <button className="text-blue-700 border p-2 px-6 hover:bg-indigo-900 hover:text-white rounded">Login</button>
-            <button className="bg-indigo-950 text-white px-4 py-2 rounded">Register</button>
+            <button className="text-blue-700 border p-2 px-6 hover:bg-indigo-900 hover:text-white rounded" ><a href='/login'>Login</a></button>
+            <button className="bg-indigo-950 text-white px-4 py-2 rounded"><a href='/signup-number'>Register</a></button>
             <div className="relative">
               <button
                 className="flex items-center space-x-2"
@@ -68,8 +72,8 @@ const Navbar = () => {
               </button>
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg">
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-200">Option 1</a>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-200">Option 2</a>
+                  <a href="#" className="block px-4 py-2 hover:bg-gray-200">For Company</a>
+                  <a href="#" className="block px-4 py-2 hover:bg-gray-200">For Admin</a>
                 </div>
               )}
             </div>

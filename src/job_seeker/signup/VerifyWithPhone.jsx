@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import logo from '../../images/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const VerifyWithPhone = () => {
   const navigate = useNavigate();
@@ -50,26 +52,49 @@ const VerifyWithPhone = () => {
         },
         body: JSON.stringify({ mobile_no: contactInfo, otp }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to verify OTP');
       }
-
+  
       const data = await response.json();
       if (data.code === 200) {
-        console.log('OTP verified successfully:', data);
-        navigate('/personalDetails'); // Redirect to the desired page after successful OTP verification
+        // Assuming the response has employeeId
+        const employeeId = data.employeeId;
+  
+        // Now register the employee
+        const registrationResponse = await fetch('https://api.rightships.com/employee/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ mobile_no: contactInfo }),
+        });
+  
+        if (!registrationResponse.ok) {
+          const registrationErrorData = await registrationResponse.json();
+          throw new Error(registrationErrorData.message || 'Failed to register employee');
+        }
+  
+        const registrationData = await registrationResponse.json();
+        if (registrationData.code === 200) {
+          toast.success('Number verified and employee registered successfully!');
+          
+          // Pass the employeeId and mobile_no to About component
+          navigate('/personalDetails', { state: { employeeId, mobile_no: contactInfo } });
+        } else {
+          throw new Error(registrationData.msg || 'Failed to register employee');
+        }
       } else {
         throw new Error(data.msg || 'Failed to verify OTP');
       }
-
     } catch (error) {
       console.error('Error:', error.message);
-      // Handle error (e.g., show a toast notification)
+      toast.error(`Error: ${error.message}`);
     }
   };
-
+  
   return (
     <>
       <section className="flex flex-col items-center py-10 signup">
@@ -110,6 +135,7 @@ const VerifyWithPhone = () => {
         </div>
       </section>
       <footer className="bg-white"></footer>
+      <ToastContainer />
     </>
   );
 };
