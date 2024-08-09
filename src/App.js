@@ -121,7 +121,7 @@ const App = () => {
         <Route path='/resume&profile' element={<DefaultLayout2><Resume/></DefaultLayout2>} />
         <Route path='/profile' element={<DefaultLayout3><Main /></DefaultLayout3>} />
         <Route path='/myjobs' element={<DefaultLayout3><MyJobs /></DefaultLayout3>} />
-        <Route path='/job_dashboard' element={<DefaultLayout3><JobDashboard /></DefaultLayout3>} />
+        <Route path='/jobdashboard' element={<DefaultLayout3><JobDashboard /></DefaultLayout3>} />
         <Route path='/settings' element={<DefaultLayout3><Setting /></DefaultLayout3>} />
         <Route path='/updateEmail' element={<DefaultLayout3><ChangeMail /></DefaultLayout3>} />
         <Route path='/updateNumber' element={<DefaultLayout3><ChangeNumber /></DefaultLayout3>} />

@@ -65,7 +65,7 @@ const Header3 = () => {
             <img src={Logo} alt="Logo" height={40} width={40} />
             <a href="#" className="font-bold text-gray-800 mt-2 px-4">RIGHTSHIP</a>
           </Link>
-          <Link to="/jobs_home">
+          <Link to="/jobdashboard">
             <a href="#" className="text-black font-bold hover:text-customBlue hover:font-bold mx-4">Jobs</a>
           </Link>
           <Link to="/companies">
@@ -93,8 +93,8 @@ const Header3 = () => {
             </button>
             {userDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg pt-1">
-                <Link to="/candidate_profile" className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex font-semibold"><MessageSquare size={20} className='mt-1 me-1'/>Profile</Link>
-                <Link to="/my_jobs" className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex font-semibold"><MessageSquare size={20} className='mt-1 me-1'/>My Jobs</Link>
+                <Link to="/profile" className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex font-semibold"><MessageSquare size={20} className='mt-1 me-1'/>Profile</Link>
+                <Link to="/myjobs" className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex font-semibold"><MessageSquare size={20} className='mt-1 me-1'/>My Jobs</Link>
                 <Link to="/settings" className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex font-semibold"><MessageSquare size={20} className='mt-1 me-1'/>Settings</Link>
                 <Link to="/" className="px-4 py-2 mt-1 text-gray-800 hover:bg-gray-100 flex  justify-center border border-t font-bold">Sign Out</Link>
               </div>

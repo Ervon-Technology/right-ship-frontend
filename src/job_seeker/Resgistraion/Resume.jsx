@@ -51,7 +51,7 @@ const Resume = () => {
     event.preventDefault();
     setLoading(true);
     setError(null);
-    navigate('/login')
+    navigate('/profile')
 
     try {
       const profileBase64 = profileFile ? await toBase64(profileFile) : null;

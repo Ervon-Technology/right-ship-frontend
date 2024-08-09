@@ -131,10 +131,10 @@ const VerifyWithPhone = () => {
               `Resend OTP in: ${formatTime(timer)}`
             )}
           </p>
-          <Link className="text-blue-600 mx-28 py-5 text-sm underline underline-offset-8" to="/signup-number">Change Number</Link>
+          <Link className="text-blue-600 mx-28 py-5 text-sm underline underline-offset-8" to="/singup-number">Change Number</Link>
         </div>
       </section>
-      <footer className="bg-white"></footer>
+     
       <ToastContainer />
     </>
   );
