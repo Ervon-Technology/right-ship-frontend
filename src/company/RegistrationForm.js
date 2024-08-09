@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'tailwindcss/tailwind.css';
 import Loader from './Loader';
 import MailSendPopup from './helper/mailsendpopup';
-import Logo from '../job_seeker/Assets/Right_Ship_Logo.png';
+import Logo from '../images/logo.png';
 
 const RegistrationForm = () => {
   const [loading, setLoading] = useState(false);
