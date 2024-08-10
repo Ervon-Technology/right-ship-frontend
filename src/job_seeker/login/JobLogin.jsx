@@ -29,13 +29,13 @@ const Login = () => {
         <input
           type="text"
           placeholder="Enter the phone number"
-          className="w-full px-5 py-5 mb-4 border border-gray-300 rounded-lg"
+          className="w-full px-5 py-4 mb-4 border border-gray-300 rounded-lg"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <button
           onClick={handleSendOtp}
-          className="w-full bg-indigo-900 text-white px-5 py-5 rounded-lg text-lg font-light"
+          className="w-full bg-indigo-900 text-white px-5 py-4 rounded-lg text-lg font-light"
           disabled={otpStatus === 'loading'}
         >
           {otpStatus === 'loading' ? 'Sending...' : 'Send OTP'}

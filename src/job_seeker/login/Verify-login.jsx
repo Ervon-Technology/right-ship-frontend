@@ -96,13 +96,13 @@ const VerifyLogin = () => {
           <input
             type="text"
             placeholder="Enter OTP"
-            className="w-full px-4 py-2 mb-4 border border-gray-300 rounded"
+            className="w-full px-5 py-4 mb-4 border border-gray-300 rounded"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
           />
           <button
             onClick={handleVerifyOtp}
-            className="w-full bg-indigo-900 text-white px-4 py-2 rounded"
+            className="w-full bg-indigo-900 text-white px-5 py-4 rounded"
             disabled={otpStatus === 'loading'}
           >
             {otpStatus === 'loading' ? 'Verifying...' : 'Verify OTP'}
