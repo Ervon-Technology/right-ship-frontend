@@ -31,11 +31,8 @@ const VerifyLogin = () => {
   }, [timer]);
 
   const handleSendOtp = () => {
-    // Call an API or handle OTP sending if needed
-    // If using Redux or another method to send OTP, dispatch it here
     setTimer(30);
     setCanResend(false);
-    // Navigate or handle resend logic
     navigate('/signup-number');
   };
 
@@ -58,7 +55,6 @@ const VerifyLogin = () => {
       if (verifyData.code === 200) {
         console.log('OTP verified successfully:', verifyData);
 
-        // Call login API after successful OTP verification
         const loginResponse = await fetch('https://api.rightships.com/employee/login', {
           method: 'POST',
           headers: {
@@ -74,35 +70,34 @@ const VerifyLogin = () => {
 
         const loginData = await loginResponse.json();
         console.log('Login successful:', loginData);
-        navigate('/jobdashboard'); // Redirect to the desired page after successful login
+        navigate('/jobdashboard');
       } else {
         throw new Error(verifyData.msg || 'Failed to verify OTP');
       }
     } catch (error) {
       console.error('Error:', error.message);
-      // Handle error (e.g., show a toast notification)
     }
   };
 
   return (
     <>
-      <section className="flex flex-col items-center py-10 signup h-screen">
-        <div className="text-2xl font-bold mb-4">
-          <img src={logo} alt="Logo" height={70} width={70} />
+      <section className="flex flex-col items-center py-20 h-screen bg-gray-100">
+        <div className="mb-4">
+          <img src={logo} alt="Logo" className="h-16 w-16" />
         </div>
-        <div className="bg-white p-6 mt-3 rounded-lg shadow-2xl w-100 max-w-md">
-          <h2 className="text-center text-xl font-bold mb-4">Verify OTP</h2>
+        <div className="bg-white p-10 mt-3 rounded-lg shadow-lg w-full max-w-md">
+          <h2 className="text-center text-2xl font-semibold mb-4">Verify OTP</h2>
           <p className="text-center text-sm mb-4">OTP sent to: {contactInfo}</p>
           <input
             type="text"
             placeholder="Enter OTP"
-            className="w-full px-5 py-4 mb-4 border border-gray-300 rounded"
+            className="w-full px-4 py-3 mb-4 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
           />
           <button
             onClick={handleVerifyOtp}
-            className="w-full bg-indigo-900 text-white px-5 py-4 rounded"
+            className={`w-full py-3 rounded text-white font-medium ${otpStatus === 'loading' ? 'bg-indigo-700' : 'bg-indigo-900 hover:bg-indigo-700'} transition duration-300`}
             disabled={otpStatus === 'loading'}
           >
             {otpStatus === 'loading' ? 'Verifying...' : 'Verify OTP'}
@@ -112,7 +107,7 @@ const VerifyLogin = () => {
             {canResend ? (
               <button
                 onClick={handleSendOtp}
-                className="text-blue-600 underline text-sm underline-offset-8"
+                className="text-indigo-600 underline text-sm"
               >
                 Resend OTP
               </button>
@@ -120,10 +115,10 @@ const VerifyLogin = () => {
               `Resend OTP in: ${formatTime(timer)}`
             )}
           </p>
-          <Link className="text-blue-600 mx-36 py-5 text-sm underline underline-offset-8" to="/login">Change Number</Link>
+          <Link className="text-indigo-600 block text-center text-sm underline mt-4" to="/login">Change Number</Link>
         </div>
       </section>
-      <footer className="bg-white"></footer>
+      <footer className="bg-white py-2"></footer>
     </>
   );
 };

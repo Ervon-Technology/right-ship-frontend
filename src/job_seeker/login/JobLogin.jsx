@@ -20,27 +20,27 @@ const Login = () => {
   };
 
   return (
-    <section className="flex flex-col items-center mt-20 h-screen">
+    <section className="flex flex-col items-center py-20 h-screen bg-gray-100">
       <div className="mb-4">
-        <img src={logo} alt="Logo" height={70} width={70} />
+        <img src={logo} alt="Logo" className="h-16 w-16" />
       </div>
-      <div className="bg-white p-11 mt-3 rounded-lg shadow-2xl border w-full max-w-md">
-        <h2 className="text-center text-xl font-bold mb-8">Login to Rightship</h2>
+      <div className="bg-white p-10 mt-3 rounded-lg shadow-lg border w-full max-w-md">
+        <h2 className="text-center text-2xl font-semibold mb-6">Log in to Rightship</h2>
         <input
           type="text"
           placeholder="Enter the phone number"
-          className="w-full px-5 py-4 mb-4 border border-gray-300 rounded-lg"
+          className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <button
           onClick={handleSendOtp}
-          className="w-full bg-indigo-900 text-white px-5 py-4 rounded-lg text-lg font-light"
+          className={`w-full py-3 rounded-lg text-white font-medium ${otpStatus === 'loading' ? 'bg-indigo-700' : 'bg-indigo-900 hover:bg-indigo-700'} transition duration-300`}
           disabled={otpStatus === 'loading'}
         >
           {otpStatus === 'loading' ? 'Sending...' : 'Send OTP'}
         </button>
-        {otpStatus === 'failed' && <p className="text-red-600 mt-4">{otpError}</p>}
+        {otpStatus === 'failed' && <p className="text-red-600 mt-4 text-center">{otpError}</p>}
       </div>
     </section>
   );
