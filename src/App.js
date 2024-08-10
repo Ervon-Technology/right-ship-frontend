@@ -24,7 +24,7 @@ import JobsPage from './company/JobsPage';
 
 import Header3 from './job_seeker/Navbar/Header3';
 import Main from './job_seeker/Profile/Main';
-import MyJobs from './job_seeker/jobs/InitialJob';
+import MyJobs from './job_seeker/jobs/MyJobs';
 import Setting from './job_seeker/setting/Setting';
 import Navbar from "./job_seeker/Navbar/Navbar";
 import JobFooter from './job_seeker/footer/JobFooter';
@@ -42,7 +42,7 @@ import ChangeMail from './job_seeker/setting/ChangeMail';
 import ChangeNumber from './job_seeker/setting/ChangeNumber';
 import VerifyMail from './job_seeker/setting/VerifyMail';
 import VerifyNumber from './job_seeker/setting/VerifyNumber';
-import JobDashboard from './job_seeker/jobs/InitialJobs2';
+import JobDashboard from './job_seeker/jobs/JobDashboard';
 
 
 const App = () => {
