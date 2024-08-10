@@ -5,7 +5,7 @@ import { setContactInfo } from '../../features/contactSlice';
 import logo from "../../images/logo.png";
 import { useNavigate } from 'react-router-dom';
 
-const JobLogin = () => {
+const Login = () => {
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const dispatch = useDispatch();
@@ -20,22 +20,22 @@ const JobLogin = () => {
   };
 
   return (
-    <section className="flex flex-col items-center my-20 h-screen">
-      <div className="text-2xl font-bold mb-4">
+    <section className="flex flex-col items-center mt-20 h-screen">
+      <div className="mb-4">
         <img src={logo} alt="Logo" height={70} width={70} />
       </div>
-      <div className="bg-white p-6 mt-3 rounded-lg shadow-2xl border w-full max-w-md">
-        <h2 className="text-center text-xl font-bold mb-4">Login to Rightship</h2>
+      <div className="bg-white p-11 mt-3 rounded-lg shadow-2xl border w-full max-w-md">
+        <h2 className="text-center text-xl font-bold mb-8">Login to Rightship</h2>
         <input
           type="text"
           placeholder="Enter the phone number"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded"
+          className="w-full px-5 py-5 mb-4 border border-gray-300 rounded-lg"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <button
           onClick={handleSendOtp}
-          className="w-full bg-indigo-900 text-white px-4 py-2 rounded"
+          className="w-full bg-indigo-900 text-white px-5 py-5 rounded-lg text-lg font-light"
           disabled={otpStatus === 'loading'}
         >
           {otpStatus === 'loading' ? 'Sending...' : 'Send OTP'}
@@ -46,4 +46,4 @@ const JobLogin = () => {
   );
 };
 
-export default JobLogin;
+export default Login;
