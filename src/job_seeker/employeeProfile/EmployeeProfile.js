@@ -3,6 +3,7 @@ import { FaRegEdit, FaEdit, FaShareSquare } from "react-icons/fa";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import EditModal from './EditModal';
+import Select from 'react-select'; // Import Select from react-select
 
 const EmployeeProfile = () => {
   const [profileImage, setProfileImage] = useState("https://i2.pickpik.com/photos/711/14/431/smile-profile-face-male-preview.jpg");
@@ -37,8 +38,20 @@ const EmployeeProfile = () => {
       cop: '',
       coc: '',
       watchkeeping: '',
+      sid: '', // SID field added
+      usVisa: '', // US Visa field added
     }
   });
+
+  // State for dropdown options
+  const [copOptions, setCopOptions] = useState([]);
+  const [cocOptions, setCocOptions] = useState([]);
+  const [shipOptions, setShipOptions] = useState([]);
+  const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
+  const [rankOptions, setRankOptions] = useState([]);
+  const [vesselExpOptions, setVesselExpOptions] = useState([]);
+  const sidOptions = [{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }];
+  const usVisaOptions = [{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }];
 
   const authState = useSelector((state) => state.auth);
   const employeeId = authState?.user?._id;
@@ -54,7 +67,6 @@ const EmployeeProfile = () => {
 
         const result = response.data.data[0];
 
-        // Calculate age if dob is available
         const calculateAge = (dob) => {
           const birthDate = new Date(dob);
           const ageDifMs = Date.now() - birthDate.getTime();
@@ -82,7 +94,7 @@ const EmployeeProfile = () => {
             gender: result?.gender || '',
             country: result?.country || '',
             dob: result?.dob || '',
-            age: result?.dob ? calculateAge(result?.dob) : '', // Calculate age based on DOB
+            age: result?.dob ? calculateAge(result?.dob) : '',
           },
           experience: {
             presentRankExperienceInYear: result?.presentRankExperienceInYear || '',
@@ -94,10 +106,11 @@ const EmployeeProfile = () => {
             cop: result?.cop || '',
             coc: result?.coc || '',
             watchkeeping: result?.watchkeeping || '',
+            sid: result?.sid || '',
+            usVisa: result?.usVisa || '',
           }
         });
 
-        // Set the resume file name and URL if available
         if (result?.resume) {
           setFile({ name: "Resume", url: result.resume });
         }
@@ -107,8 +120,47 @@ const EmployeeProfile = () => {
       }
     };
 
+    const fetchAttributes = async () => {
+      try {
+        const response = await axios.post('https://api.rightships.com/attributes/get', {}, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': '*/*',
+          }
+        });
+
+        if (response.data && response.data.code === 200) {
+          const attributes = response.data.data;
+
+          const copAttribute = attributes.find(attr => attr.name.toLowerCase() === 'cop');
+          const cocAttribute = attributes.find(attr => attr.name.toLowerCase() === 'coc');
+          const shipAttribute = attributes.find(attr => attr.name.toLowerCase() === 'ships');
+          const watchKeepingAttribute = attributes.find(attr => attr.name.toLowerCase() === 'watch keeping');
+          const rankAttribute = attributes.find(attr => attr.name.toLowerCase() === 'rank');
+
+          const copData = copAttribute ? copAttribute.values : [];
+          const cocData = cocAttribute ? cocAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
+          const shipData = shipAttribute ? shipAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
+          const watchKeepingData = watchKeepingAttribute ? watchKeepingAttribute.values : [];
+          const rankData = rankAttribute ? rankAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
+
+          setCopOptions(copData.map(option => ({ value: option, label: option })));
+          setCocOptions(cocData.map(option => ({ value: option, label: option })));
+          setShipOptions(shipData.map(option => ({ value: option, label: option })));
+          setWatchKeepingOptions(watchKeepingData.map(option => ({ value: option, label: option })));
+          setRankOptions(rankData.map(option => ({ value: option, label: option })));
+          setVesselExpOptions(shipData.map(option => ({ value: option, label: option })));
+        } else {
+          console.error('Failed to fetch attributes:', response.data.msg);
+        }
+      } catch (error) {
+        console.error('Failed to fetch attributes:', error);
+      }
+    };
+
     if (employeeId) {
       fetchProfileData();
+      fetchAttributes();
     }
   }, [employeeId]);
 
@@ -165,9 +217,40 @@ const EmployeeProfile = () => {
     }
   };
 
+  const [isDropdown, setIsDropdown] = useState(false);
+  const [options, setOptions] = useState([]);
+
   const handleEditClick = (section, value) => {
+    let dropdown = false;
+    let dropdownOptions = [];
+
+    if (section === 'cop') {
+      dropdown = true;
+      dropdownOptions = copOptions;
+    } else if (section === 'coc') {
+      dropdown = true;
+      dropdownOptions = cocOptions;
+    } else if (section === 'watchkeeping') {
+      dropdown = true;
+      dropdownOptions = watchKeepingOptions;
+    } else if (section === 'presentRank' || section === 'appliedRank') {
+      dropdown = true;
+      dropdownOptions = rankOptions;
+    } else if (section === 'appliedVessel' || section === 'presentVessel') {
+      dropdown = true;
+      dropdownOptions = shipOptions;
+    } else if (section === 'sid') {
+      dropdown = true;
+      dropdownOptions = sidOptions;
+    } else if (section === 'usVisa') {
+      dropdown = true;
+      dropdownOptions = usVisaOptions;
+    }
+
     setEditSection(section);
     setEditValue(value);
+    setIsDropdown(dropdown);
+    setOptions(dropdownOptions);
     setModalOpen(true); 
   };
 
@@ -214,6 +297,10 @@ const EmployeeProfile = () => {
     });
   };
 
+  const handleDropdownChange = (selectedOption) => {
+    setEditValue(selectedOption.value);
+  };
+
   const handleShareClick = () => {
     if (navigator.share) {
       navigator.share({
@@ -230,7 +317,6 @@ const EmployeeProfile = () => {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-100">
-      {/* Sidebar for Profile Info and Uploads */}
       <aside className="w-full lg:my-4 lg:ms-8 lg:w-1/3 p-8 bg-white shadow-lg flex flex-col space-y-4">
         <div className="bg-white p-8 flex flex-col items-center text-center">
           <FaShareSquare className="ms-72 -mt-3 cursor-pointer" size={21} onClick={handleShareClick} />
@@ -263,7 +349,6 @@ const EmployeeProfile = () => {
 
         <div className="bg-white p-8 border rounded-xl shadow-md">
           <div className='flex align-center'>
-            
             <label htmlFor="resumeUpload" className="cursor-pointer text-gray-600 mb-2 hover:text-gray-900 me-3">
               <FaRegEdit className="text-2xl" />
             </label>
@@ -284,13 +369,8 @@ const EmployeeProfile = () => {
             />
           </div>
         </div>
-
-        {/* <div className="bg-gray-100 p-8 border rounded-xl shadow-md flex items-center justify-center text-gray-500">
-          <span>Advertisement</span>
-        </div> */}
       </aside>
 
-      {/* Main Content for Profile Details */}
       <div className="w-full lg:w-2/3 p-4 space-y-3 overflow-y-auto bg-gray-100 me-4">
         {Object.entries({
           appliedVessel: 'Vessel Applied For',
@@ -327,21 +407,25 @@ const EmployeeProfile = () => {
           </div>
         ))}
 
-        {/* Modal for Editing */}
         <EditModal
           isOpen={modalOpen}
           title={`Edit ${editSection}`}
           onSave={handleSaveClick}
           onClose={() => setModalOpen(false)}
+          isDropdown={isDropdown}
+          options={options}
+          editValue={editValue}
+          handleChange={handleDropdownChange}
         >
-          {typeof sectionData[editSection] === 'string' ? (
+          {!isDropdown && typeof sectionData[editSection] === 'string' && (
             <input
               type="text"
               className="w-full border p-2 rounded"
               value={editValue}
               onChange={(e) => setEditValue(e.target.value)}
             />
-          ) : (
+          )}
+          {!isDropdown && typeof sectionData[editSection] === 'object' && (
             Object.keys(sectionData[editSection] || {}).map((field) => (
               <div key={field} className="mb-4">
                 <label className="block text-sm font-medium text-black mb-1">
@@ -360,6 +444,6 @@ const EmployeeProfile = () => {
       </div>
     </div>
   );
-}
+};
 
 export default EmployeeProfile;

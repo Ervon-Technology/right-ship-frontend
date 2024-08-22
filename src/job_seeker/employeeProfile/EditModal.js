@@ -1,8 +1,8 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
+import Select from 'react-select';
 
-
-const EditModal = ({ isOpen, title, children, onSave, onClose }) => {
+const EditModal = ({ isOpen, title, children, onSave, onClose, isDropdown, options, editValue, handleChange }) => {
   if (!isOpen) return null;
 
   return (
@@ -13,7 +13,16 @@ const EditModal = ({ isOpen, title, children, onSave, onClose }) => {
           <FaTimes className="cursor-pointer" onClick={onClose} />
         </div>
         <div className="mt-4">
-          {children}
+          {isDropdown ? (
+            <Select
+              value={options.find(option => option.value === editValue)}
+              onChange={handleChange}
+              options={options}
+              className="w-full"
+            />
+          ) : (
+            children
+          )}
         </div>
         <div className="mt-6 flex justify-end space-x-2">
           <button

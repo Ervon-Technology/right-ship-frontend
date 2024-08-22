@@ -16,7 +16,7 @@ import RegistrationForm from './company/registrationform';
 import EmployeeOtpAuth from './job_seeker/login/employeelogin';
 import EmployeeSignup from './job_seeker/signup/Signup';
 import VerifySignupOtp from './job_seeker/signup/VerifySignupOtp';
-import EmployeeRegistration from './job_seeker/Registration/EmployeeRegistration';
+import EmployeeRegistration from './job_seeker/Registration/employeeregistration';
 
 
 import JobDashboard from './job_seeker/jobs/JobDashboard';
