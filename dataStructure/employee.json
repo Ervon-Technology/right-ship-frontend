@@ -1,0 +1,79 @@
+{
+    "employee": {
+        "_id": "",
+        "fistName": "",
+        "lastName": "",
+        "email": "",
+        "mobile_no": "",
+        "whatsApp": "",
+        "profile": "",
+        "resume": "",
+        "dob": "",
+        "Age": "",
+        "gender": "",
+        "dateOfAvailability": "",
+        "appliedVessel": "",
+        "presentVessel": "",
+        "vesselExp": [],
+        "appliedRank": "",
+        "presentRank": "",
+        "cop": "",
+        "coc": "",
+        "watchkeeping": "",
+        "presentRankExperienceInYear": "",
+        "presentRankExperienceInMonth": "",
+        "totalSeaExperienceYear": "",
+        "totalSeaExperienceMonth": "",
+        "nationality": "",
+        "savedJobs": [],
+        "appliedJobs": [],
+        "address": {
+            "country": "",
+            "state": "",
+            "city": "",
+            "addresss": ""
+        },
+        "createdDate": "",
+        "updatedDate": ""
+    },
+    
+    "company": {
+        "_id": "",
+        "first_name": "",
+        "last_name": "",
+        "company_name": "",
+        "website_url": "",
+        "mobile_no": "",
+        "email": "",
+        "city": "",
+        "state": "",
+        "country": "",
+        "license_rpsl": "",
+        "address": "mumbai\nkandivali",
+        "verified": true,
+        "admin_verify": false,
+        "created_date": {
+            "$date": "2024-07-25T14:26:15.467Z"
+        },
+        "company_admin_id": "66a260a09dc140fbd9a3d030",
+        "updated_date": {
+            "$date": "2024-08-07T07:36:59.424Z"
+        }
+    },
+
+    "application": {
+        "_id": "66bfcaed8bc3ec5a195f1019",
+        "company_id": "66bc44f762a38c4ad336c660",
+        "rspl_no": null,
+        "company_name": "Evron2",
+        "hiring_for": ["AHT"],
+        "open_positions": ["2nd Engineer"],
+        "description": "",
+        "mobile_no": "8693895363",
+        "email": null,
+        "created_date": "",
+        "applied_by": [],
+        "status": "inactive",
+        "updated_date": ""
+    }
+}

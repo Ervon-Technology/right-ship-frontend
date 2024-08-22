@@ -1,4 +1,3 @@
-// src/features/otpSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,12 +7,13 @@ export const sendOtp = createAsyncThunk(
   'otp/sendOtp',
   async (contact, { rejectWithValue }) => {
     try {
+      const isEmail = contact.includes('@');
       const response = await fetch('https://api.rightships.com/otp/send_otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mobile_no: contact }),
+        body: JSON.stringify(isEmail ? { email: contact } : { mobile_no: contact }),
       });
 
       if (!response.ok) {
@@ -33,12 +33,13 @@ export const verifyOtp = createAsyncThunk(
   'otp/verifyOtp',
   async ({ contactInfo, otp }, { rejectWithValue }) => {
     try {
+      const isEmail = contactInfo.includes('@');
       const response = await fetch('https://api.rightships.com/otp/verify_otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mobile_no: contactInfo, otp }),
+        body: JSON.stringify(isEmail ? { email: contactInfo, otp } : { mobile_no: contactInfo, otp }),
       });
 
       if (!response.ok) {
@@ -47,9 +48,8 @@ export const verifyOtp = createAsyncThunk(
       }
 
       const data = await response.json();
-      if(!data.code===200){
-        console.log('error')
-        
+      if (data.code !== 200) {
+        throw new Error(data.message || 'Failed to verify OTP');
       }
       return data;
     } catch (error) {
@@ -63,7 +63,7 @@ const otpSlice = createSlice({
   initialState: {
     status: 'idle',
     error: null,
-    isLoggedIn: false, // Track login status
+    isLoggedIn: false,
   },
   reducers: {},
   extraReducers: (builder) => {

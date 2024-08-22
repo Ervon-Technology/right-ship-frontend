@@ -1,11 +1,58 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'tailwindcss/tailwind.css';
 import Loader from './Loader';
 import MailSendPopup from './helper/mailsendpopup';
-import Logo from '../images/logo.png';
+import { motion } from 'framer-motion';
+import { FaUser, FaBuilding, FaGlobe, FaMobile, FaEnvelope, FaCity, FaIdCard, FaMapMarkerAlt } from 'react-icons/fa';
+
+const InputField = ({ icon: Icon, label, value, onChange, required, type = 'text', prefix, textarea }) => (
+  <div className="relative mb-6">
+    <label className="block text-gray-700 text-lg font-medium mb-1">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+    <div className="relative">
+      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        {Icon && <Icon className="h-5 w-5 text-gray-400" />}
+      </div>
+      {textarea ? (
+        <textarea
+          className="w-full p-4 pl-12 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required={required}
+        />
+      ) : (
+        <div className="flex">
+          {prefix && (
+            <span className="inline-flex items-center px-4 rounded-l-lg border border-r-0 border-gray-300 bg-gray-100 text-gray-600 text-sm">
+              {prefix}
+            </span>
+          )}
+          <input
+            type={type}
+            className={`w-full p-4 ${
+              prefix ? '' : 'pl-12'
+            } border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            required={required}
+          />
+        </div>
+      )}
+    </div>
+  </div>
+);
+
+const ProgressBar = ({ currentStep, totalSteps }) => (
+  <div className="w-full bg-gray-300 rounded-full h-2 mb-6">
+    <div
+      className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-in-out"
+      style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+    ></div>
+  </div>
+);
 
 const RegistrationForm = () => {
   const [loading, setLoading] = useState(false);
@@ -19,9 +66,10 @@ const RegistrationForm = () => {
   const [licenseRPSL, setLicenseRPSL] = useState('');
   const [address, setAddress] = useState('');
   const [countryCode] = useState('+91');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const dropdownRef = useRef(null);
+  const [step, setStep] = useState(1);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const totalSteps = 3;
 
   const validateEmail = (email) => {
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -36,7 +84,6 @@ const RegistrationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate form inputs
     if (!validateMobileNo(mobileNo)) {
       toast.error('Mobile number must be exactly 10 digits.');
       return;
@@ -48,17 +95,6 @@ const RegistrationForm = () => {
     }
 
     setLoading(true);
-    console.log('Form submitted:', {
-      first_name: firstName,
-      last_name: lastName,
-      company_name: companyName,
-      Website_URL: websiteURL,
-      mobile_no: `${mobileNo}`,
-      email,
-      City: city,
-      licenseRPSL,
-      Address: address,
-    });
     senddata();
   };
 
@@ -84,210 +120,167 @@ const RegistrationForm = () => {
       });
 
       const data = await response.json();
-      console.log('data',data);
-      if (response.ok) {
-        if (data.code === 200) {
-          console.log('Verify link has been sent to your email. Please verify.');
-          console.log(data.msg);
-          setShowPopup(true);
-        }else if(data.code === 409) {
-          toast.error(`Error ${data.code}: ${data.msg || "Error while registering."}`);
-          console.log('Error response:', data);
-        }else{
-          toast.error(`Error ${data.code}: ${data.msg || "Error while registering."}`);
-          console.log('Error response:', data);
-        }
-      }
-      else{
-        toast.error(`Error ${data.code}: ${data.msg || "Error while registering."}`);
-        console.log('Error response:', data);
+      if (response.ok && data.code === 200) {
+        setIsRegistered(true);
+        toast.success('Successfully registered! Please check your email to verify.');
+      } else {
+        toast.error(`Error ${data.code}: ${data.msg || 'Error while registering.'}`);
       }
     } catch (error) {
-      console.log(error.message);
       toast.error('Error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDropdownClick = () => {
-    setDropdownOpen(!dropdownOpen);
+  const nextStep = () => {
+    if (validateCurrentStep()) {
+      setStep(step + 1);
+    }
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
+  const prevStep = () => setStep(step - 1);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const validateCurrentStep = () => {
+    switch (step) {
+      case 1:
+        if (!firstName || !lastName || !companyName ) {
+          toast.error('Please fill in all required fields.');
+          return false;
+        }
+        break;
+      case 2:
+        if (!mobileNo || !email || !city) {
+          toast.error('Please fill in all required fields.');
+          return false;
+        }
+        break;
+      case 3:
+        if (!address) {
+          toast.error('Please fill in all required fields.');
+          return false;
+        }
+        break;
+      default:
+        return true;
+    }
+    return true;
+  };
 
-  return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100">
-      <ToastContainer />
-      {loading && <Loader />}
-      {showPopup && <MailSendPopup/>}
-      <nav className="w-full bg-white border-b border-gray-300">
-        <div className="max-w-6xl mx-auto flex justify-between items-center h-12">
-          <div className="flex items-center h-full">
-            <Link className="flex"><img src={Logo} alt="Logo" height={40} width={40} /> <p className="font-bold text-gray-800 mt-2 px-4">RIGHTSHIP</p></Link>
-            <Link to="/jobs_home"><p className="text-black font-bold hover:text-customBlue hover:font-bold mx-4">Jobs</p></Link>
-            <Link><p className="text-black font-bold hover:text-customBlue hover:font-bold mx-4">Companies</p></Link>
-          </div>
-          <div className="flex space-x-2">
-            <button className="px-3 py-1 text-customBlue border border-blue-600 rounded hover:bg-blue-50">Login</button>
-            <button className="px-3 py-1 text-white bg-red-600 rounded hover:bg-red-700">Register</button>
-            <div className="relative" ref={dropdownRef}>
-              <button onClick={handleDropdownClick} className="px-3 py-1 text-black-600  rounded hover:bg-blue-50">
-                For employers
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <InputField icon={FaUser} label="First Name" value={firstName} onChange={setFirstName} required />
+            <InputField icon={FaUser} label="Last Name" value={lastName} onChange={setLastName} required />
+            <InputField icon={FaBuilding} label="Company Name" value={companyName} onChange={setCompanyName} required />
+            <InputField icon={FaGlobe} label="Website URL" value={websiteURL} onChange={setWebsiteURL} required type="url" />
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <InputField label="Mobile No." value={mobileNo} onChange={setMobileNo} required type="tel" prefix={countryCode} />
+            <InputField icon={FaEnvelope} label="Email" value={email} onChange={setEmail} required type="email" />
+            <InputField icon={FaCity} label="City" value={city} onChange={setCity} required />
+            <InputField icon={FaIdCard} label="License RPSL" value={licenseRPSL} onChange={setLicenseRPSL} />
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <InputField icon={FaMapMarkerAlt} label="Address" value={address} onChange={setAddress} required textarea />
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderForm = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full max-w-2xl bg-white rounded-xl shadow-xl overflow-hidden"
+    >
+      <div className="bg-gradient-to-r from-teal-400 to-blue-500 text-white p-8 rounded-t-xl">
+        <h2 className="text-3xl font-semibold">Register Your Company</h2>
+        <p className="mt-2 text-sm">Fill in the details below to get started.</p>
+      </div>
+
+      <div className="p-8">
+        <ProgressBar currentStep={step} totalSteps={totalSteps} />
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {renderStep()}
+          </motion.div>
+
+          <div className="flex justify-between mt-8">
+            {step > 1 && (
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition duration-200"
+              >
+                Previous
               </button>
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
-                  {/* <a href="/admin_dashboard" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Admin</a> */}
-                  <a href="/login" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Company Login</a>
-                  <a href="/" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Company Registration</a>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Form Container */}
-      <div className="w-full max-w-4xl mt-6 bg-white border border-gray-400 rounded-lg shadow-md">
-        <div className="bg-customBlue text-white p-4 rounded-t-lg">
-          <h2 className="text-xl font-semibold">Please fill out the form for registration</h2>
-        </div>
-        <form onSubmit={handleSubmit} className="p-8 space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block font-semibold mb-2" htmlFor="firstName">First Name <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                className="w-full p-2 border border-gray-300 rounded"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold mb-2" htmlFor="lastName">Last Name <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                className="w-full p-2 border border-gray-300 rounded"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold mb-2" htmlFor="companyName">Company Name <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                id="companyName"
-                name="companyName"
-                className="w-full p-2 border border-gray-300 rounded"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold mb-2" htmlFor="websiteURL">Website URL <span className="text-red-500">*</span></label>
-              <input
-                type="url"
-                id="websiteURL"
-                name="websiteURL"
-                className="w-full p-2 border border-gray-300 rounded"
-                value={websiteURL}
-                onChange={(e) => setWebsiteURL(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold mb-2" htmlFor="mobileNo">Mobile No. <span className="text-red-500">*</span></label>
-              <div className="flex">
-                <div className="p-2 border border-gray-300 rounded-l bg-customBlue text-white flex items-center">
-                  {countryCode}
-                </div>
-                <input
-                  type="text"
-                  id="mobileNo"
-                  name="mobileNo"
-                  className="w-full p-2 border border-gray-300 rounded-r"
-                  value={mobileNo}
-                  onChange={(e) => setMobileNo(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block font-semibold mb-2" htmlFor="email">Email <span className="text-red-500">*</span></label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="w-full p-2 border border-gray-300 rounded"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold mb-2" htmlFor="city">City <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                className="w-full p-2 border border-gray-300 rounded"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold mb-2" htmlFor="licenseRPSL">License RPSL</label>
-              <input
-                type="text"
-                id="licenseRPSL"
-                name="licenseRPSL"
-                className="w-full p-2 border border-gray-300 rounded"
-                value={licenseRPSL}
-                onChange={(e) => setLicenseRPSL(e.target.value)}
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block font-semibold mb-2" htmlFor="address">Address <span className="text-red-500">*</span></label>
-            <textarea
-              id="address"
-              name="address"
-              className="w-full p-2 border border-gray-300 rounded"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </div>
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-customBlue text-white px-4 py-2 rounded hover:bg-blue-600"
-              disabled={loading}
-            >
-              Register
-            </button>
+            )}
+            {step < totalSteps ? (
+              <button
+                type="button"
+                onClick={nextStep}
+                className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-200"
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition duration-200"
+                disabled={loading}
+              >
+                Register
+              </button>
+            )}
           </div>
         </form>
       </div>
+    </motion.div>
+  );
+
+  const renderSuccess = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full max-w-2xl bg-white rounded-xl shadow-xl overflow-hidden p-8 text-center"
+    >
+      <h2 className="text-3xl font-semibold text-green-500">Registration Successful!</h2>
+      <p className="mt-4 text-gray-600">A verification link has been sent to your email. Please verify your account.</p>
+      <button
+        onClick={() => setIsRegistered(false)}
+        className="mt-6 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-200"
+      >
+        Back
+      </button>
+    </motion.div>
+  );
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 p-6">
+      <ToastContainer />
+      {loading && <Loader />}
+      {showPopup && <MailSendPopup />}
+      {isRegistered ? renderSuccess() : renderForm()}
     </div>
   );
 };

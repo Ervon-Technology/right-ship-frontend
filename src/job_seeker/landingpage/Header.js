@@ -1,27 +1,26 @@
-// import landinShip from '../../images'
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
-import './header.css'
-const Header = () => (
-    <header className="bg-blue-500 text-white text-center py-8 landingShip h-80">
-      <div className="container-fluid mx-auto ">
-        <div className="md:flex justify-between items-center md:mt-16 block ">
-        <button className="order-2 md:me-72 2xl:me-96 bg-white bg-opacity-30 backdrop-blur-md hover:bg-opacity-50 h-28 w-64 rounded-md text-lg text-white">
-          <span className="-ms-24">
-           I want a Job
-           </span>
-          <FaRegArrowAltCircleRight className="ms-48 -mt-6 size-6 text-white" />
-        </button>
-        <button className="2xl:ms-96 order-1 bg-white md:ms-72 md:mt-0 mt-5  bg-opacity-30 backdrop-blur-md hover:bg-opacity-50 h-28 w-64 rounded-md text-lg text-white ">
-          <span className="-ms-24">
-          I want to Hire
-          </span>
-          <FaRegArrowAltCircleRight className="ms-48 -mt-6 size-6 text-white" />
-        </button>
+import './header.css';
+import Iwantjob from "../../images/landing/iwantajob.svg";
+import Iwanttohire from "../../images/landing/iwanttohire.svg";
+import { Link } from "react-router-dom";
 
+const Header = () => (
+  <section className="landingShip py-9">
+    <div className="container mx-auto px-4">
+      <div className="flex flex-wrap -mx-2">
+        <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
+          <Link to="/login">
+            <img src={Iwantjob} alt="I Want a Job" className="w-full h-auto" />
+          </Link>
+        </div>
+        <div className="w-full md:w-1/2 px-2">
+          <Link to="/hire">
+            <img src={Iwanttohire} alt="I Want to Hire" className="w-full h-auto" />
+          </Link>
         </div>
       </div>
-    </header>
-  );
-  
-  export default Header;
-  
+    </div>
+  </section>
+);
+
+export default Header;
