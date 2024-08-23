@@ -3,15 +3,17 @@ import { FaRegEdit, FaEdit, FaShareSquare } from "react-icons/fa";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import EditModal from './EditModal';
-import Select from 'react-select'; // Import Select from react-select
+import Select from 'react-select';
 
 const EmployeeProfile = () => {
   const [profileImage, setProfileImage] = useState("https://i2.pickpik.com/photos/711/14/431/smile-profile-face-male-preview.jpg");
   const [profileData, setProfileData] = useState({ name: '', presentRank: '', appliedRank: '' });
   const [file, setFile] = useState(null);
   const [editSection, setEditSection] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false); 
-  const [editValue, setEditValue] = useState({});
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editValue, setEditValue] = useState('');
+  const [isDropdown, setIsDropdown] = useState(false);
+  const [options, setOptions] = useState([]);
   const [sectionData, setSectionData] = useState({
     appliedVessel: '',
     presentVessel: '',
@@ -23,7 +25,7 @@ const EmployeeProfile = () => {
       email: '',
       mobile_no: '',
       whatsappNumber: '',
-      gender: '', // Gender dropdown
+      gender: '',
       country: '',
       dob: '',
       age: '',
@@ -35,15 +37,14 @@ const EmployeeProfile = () => {
       totalSeaExperienceMonth: '',
     },
     licenseHolding: {
-      cop: '', // COP dropdown
-      coc: '', // COC dropdown
-      watchkeeping: '', // Watchkeeping dropdown
-      sid: '', // SID dropdown
-      usVisa: '', // US Visa dropdown
+      cop: '',
+      coc: '',
+      watchkeeping: '',
+      sid: '',
+      usVisa: '',
     }
   });
 
-  // State for dropdown options
   const [copOptions, setCopOptions] = useState([]);
   const [cocOptions, setCocOptions] = useState([]);
   const [shipOptions, setShipOptions] = useState([]);
@@ -56,7 +57,7 @@ const EmployeeProfile = () => {
     { value: 'Male', label: 'Male' },
     { value: 'Female', label: 'Female' },
     { value: 'Other', label: 'Other' }
-  ]; // Gender dropdown options
+  ];
 
   const authState = useSelector((state) => state.auth);
   const employeeId = authState?.user?._id;
@@ -87,14 +88,14 @@ const EmployeeProfile = () => {
         });
 
         setSectionData({
-          appliedVessel: result?.appliedVessel || '', 
+          appliedVessel: result?.appliedVessel || '',
           presentVessel: result?.presentVessel || '',
           appliedRank: result?.appliedRank || '',
           presentRank: result?.presentRank || '',
           dateOfAvailability: result?.availability || '',
           contactDetail: {
             email: result?.email || '',
-            mobile_no: result?.mobile_no || '', 
+            mobile_no: result?.mobile_no || '',
             whatsappNumber: result?.whatsappNumber || '',
             gender: result?.gender || '',
             country: result?.country || '',
@@ -222,65 +223,72 @@ const EmployeeProfile = () => {
     }
   };
 
-  const [isDropdown, setIsDropdown] = useState(false);
-  const [options, setOptions] = useState([]);
-
   const handleEditClick = (section, value) => {
     let dropdown = false;
     let dropdownOptions = [];
 
-    if (section === 'cop') {
-      dropdown = true;
-      dropdownOptions = copOptions;
-    } else if (section === 'coc') {
-      dropdown = true;
-      dropdownOptions = cocOptions;
-    } else if (section === 'watchkeeping') {
-      dropdown = true;
-      dropdownOptions = watchKeepingOptions;
-    } else if (section === 'presentRank' || section === 'appliedRank') {
-      dropdown = true;
-      dropdownOptions = rankOptions;
-    } else if (section === 'appliedVessel' || section === 'presentVessel') {
-      dropdown = true;
-      dropdownOptions = shipOptions;
-    } else if (section === 'sid') {
-      dropdown = true;
-      dropdownOptions = sidOptions;
-    } else if (section === 'usVisa') {
-      dropdown = true;
-      dropdownOptions = usVisaOptions;
-    } else if (section === 'gender') {
-      dropdown = true;
-      dropdownOptions = genderOptions;
+    switch (section) {
+      case 'cop':
+        dropdown = true;
+        dropdownOptions = copOptions;
+        break;
+      case 'coc':
+        dropdown = true;
+        dropdownOptions = cocOptions;
+        break;
+      case 'watchkeeping':
+        dropdown = true;
+        dropdownOptions = watchKeepingOptions;
+        break;
+      case 'presentRank':
+      case 'appliedRank':
+        dropdown = true;
+        dropdownOptions = rankOptions;
+        break;
+      case 'appliedVessel':
+      case 'presentVessel':
+        dropdown = true;
+        dropdownOptions = shipOptions;
+        break;
+      case 'sid':
+        dropdown = true;
+        dropdownOptions = sidOptions;
+        break;
+      case 'usVisa':
+        dropdown = true;
+        dropdownOptions = usVisaOptions;
+        break;
+      case 'gender':
+        dropdown = true;
+        dropdownOptions = genderOptions;
+        break;
+      default:
+        dropdown = false;
+        dropdownOptions = [];
     }
 
     setEditSection(section);
     setEditValue(value);
     setIsDropdown(dropdown);
     setOptions(dropdownOptions);
-    setModalOpen(true); 
+    setModalOpen(true);
   };
 
   const handleSaveClick = async () => {
     try {
-      if (typeof sectionData[editSection] === 'string') {
-        setSectionData({
-          ...sectionData,
-          [editSection]: editValue,
-        });
+      const updatedSectionData = { ...sectionData };
+
+      if (typeof updatedSectionData[editSection] === 'string') {
+        updatedSectionData[editSection] = editValue;
       } else {
-        setSectionData({
-          ...sectionData,
-          [editSection]: {
-            ...editValue,
-          },
-        });
+        updatedSectionData[editSection] = {
+          ...editValue,
+        };
       }
 
       const payload = {
         employee_id: employeeId,
-        ...sectionData,
+        ...updatedSectionData,
       };
 
       await axios.post('https://api.rightships.com/employee/update', payload, {
@@ -290,19 +298,13 @@ const EmployeeProfile = () => {
         },
       });
 
+      setSectionData(updatedSectionData);
       console.log('Data updated successfully');
-      setModalOpen(false); 
+      setModalOpen(false);
       setEditSection(null);
     } catch (error) {
       console.error('Error updating data:', error);
     }
-  };
-
-  const handleChange = (e, field) => {
-    setEditValue({
-      ...editValue,
-      [field]: e.target.value,
-    });
   };
 
   const handleDropdownChange = (selectedOption) => {
@@ -316,8 +318,8 @@ const EmployeeProfile = () => {
         text: `Check out the profile of ${profileData.name} - ${profileData.presentRank}`,
         url: window.location.href,
       })
-      .then(() => console.log('Profile shared successfully'))
-      .catch((error) => console.error('Error sharing profile:', error));
+        .then(() => console.log('Profile shared successfully'))
+        .catch((error) => console.error('Error sharing profile:', error));
     } else {
       alert('Web Share API is not supported in your browser.');
     }
@@ -356,7 +358,7 @@ const EmployeeProfile = () => {
         </div>
 
         <div className="bg-white p-8 border rounded-xl shadow-md">
-          <div className='flex align-center'>
+          <div className="flex align-center">
             <label htmlFor="resumeUpload" className="cursor-pointer text-gray-600 mb-2 hover:text-gray-900 me-3">
               <FaRegEdit className="text-2xl" />
             </label>
@@ -380,40 +382,126 @@ const EmployeeProfile = () => {
       </aside>
 
       <div className="w-full lg:w-2/3 p-4 space-y-3 overflow-y-auto bg-gray-100 me-4">
-        {Object.entries({
-          appliedVessel: 'Vessel Applied For',
-          presentVessel: 'Present Vessel',
-          appliedRank: 'Applied Rank',
-          presentRank: 'Present Rank',
-          dateOfAvailability: 'Date of Availability',
-        }).map(([key, title]) => (
-          <div key={key} className="bg-white p-8 border shadow-sm relative">
+        {/* Applied Vessel and Present Vessel */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
             <h3 className="text-lg font-semibold text-black flex justify-between">
-              {title}
-              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick(key, sectionData[key])} />
+              Vessel Applied For
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('appliedVessel', sectionData.appliedVessel)} />
             </h3>
             <div className="mt-2 text-gray-600">
-              <p>{sectionData[key]}</p>
+              <p>{sectionData.appliedVessel}</p>
             </div>
           </div>
-        ))}
 
-        {['contactDetail', 'experience', 'licenseHolding'].map((section) => (
-          <div key={section} className="bg-white p-8 border rounded-xl shadow-md relative">
+          <div className="bg-white p-8 border shadow-sm relative">
             <h3 className="text-lg font-semibold text-black flex justify-between">
-              {section.charAt(0).toUpperCase() + section.slice(1).replace(/([A-Z])/g, ' $1')}
-              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick(section, sectionData[section])} />
+              Present Vessel
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentVessel', sectionData.presentVessel)} />
             </h3>
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-600">
-              {Object.keys(sectionData[section]).map((key) => (
-                <div key={key}>
-                  <p className="text-sm font-semibold text-black">{key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}:</p>
-                  <p className="mt-1 text-gray-600">{sectionData[section][key]}</p>
-                </div>
-              ))}
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.presentVessel}</p>
             </div>
           </div>
-        ))}
+        </div>
+
+        {/* Applied Rank and Present Rank */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Applied Rank
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('appliedRank', sectionData.appliedRank)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.appliedRank}</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Present Rank
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentRank', sectionData.presentRank)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.presentRank}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Date of Availability */}
+        <div className="bg-white p-8 border shadow-sm relative">
+          <h3 className="text-lg font-semibold text-black flex justify-between">
+            Date of Availability
+            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('dateOfAvailability', sectionData.dateOfAvailability)} />
+          </h3>
+          <div className="mt-2 text-gray-600">
+            <p>{sectionData.dateOfAvailability}</p>
+          </div>
+        </div>
+
+        {/* Contact Details Section */}
+        <div className="bg-white p-8 border rounded-xl shadow-md relative">
+          <h3 className="text-lg font-semibold text-black flex justify-between">
+            Contact Details
+            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('contactDetail', sectionData.contactDetail)} />
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-gray-600">
+            <div>
+              <p><span className="font-semibold">Email:</span> {sectionData.contactDetail.email}</p>
+              <p><span className="font-semibold">Mobile No:</span> {sectionData.contactDetail.mobile_no}</p>
+            </div>
+            <div>
+              <p><span className="font-semibold">WhatsApp Number:</span> {sectionData.contactDetail.whatsappNumber}</p>
+              <p><span className="font-semibold">Gender:</span> {sectionData.contactDetail.gender}</p>
+            </div>
+            <div>
+              <p><span className="font-semibold">Country:</span> {sectionData.contactDetail.country}</p>
+              <p><span className="font-semibold">Date of Birth:</span> {sectionData.contactDetail.dob}</p>
+            </div>
+            <div>
+              <p><span className="font-semibold">Age:</span> {sectionData.contactDetail.age}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Experience Section */}
+        <div className="bg-white p-8 border rounded-xl shadow-md relative">
+          <h3 className="text-lg font-semibold text-black flex justify-between">
+            Experience
+            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('experience', sectionData.experience)} />
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-gray-600">
+            <div>
+              <p><span className="font-semibold">Present Rank Experience (Years):</span> {sectionData.experience.presentRankExperienceInYear}</p>
+              <p><span className="font-semibold">Present Rank Experience (Months):</span> {sectionData.experience.presentRankExperienceInMonth}</p>
+            </div>
+            <div>
+              <p><span className="font-semibold">Total Sea Experience (Years):</span> {sectionData.experience.totalSeaExperienceYear}</p>
+              <p><span className="font-semibold">Total Sea Experience (Months):</span> {sectionData.experience.totalSeaExperienceMonth}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* License Holding Section */}
+        <div className="bg-white p-8 border rounded-xl shadow-md relative">
+          <h3 className="text-lg font-semibold text-black flex justify-between">
+            License Holding
+            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('licenseHolding', sectionData.licenseHolding)} />
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-gray-600">
+            <div>
+              <p><span className="font-semibold">COP:</span> {sectionData.licenseHolding.cop}</p>
+              <p><span className="font-semibold">COC:</span> {sectionData.licenseHolding.coc}</p>
+            </div>
+            <div>
+              <p><span className="font-semibold">Watchkeeping:</span> {sectionData.licenseHolding.watchkeeping}</p>
+              <p><span className="font-semibold">SID:</span> {sectionData.licenseHolding.sid}</p>
+            </div>
+            <div>
+              <p><span className="font-semibold">US Visa:</span> {sectionData.licenseHolding.usVisa}</p>
+            </div>
+          </div>
+        </div>
 
         <EditModal
           isOpen={modalOpen}
@@ -425,28 +513,41 @@ const EmployeeProfile = () => {
           editValue={editValue}
           handleChange={handleDropdownChange}
         >
-          {!isDropdown && typeof sectionData[editSection] === 'string' && (
-            <input
-              type="text"
-              className="w-full border p-2 rounded"
-              value={editValue}
-              onChange={(e) => setEditValue(e.target.value)}
+          {isDropdown ? (
+            <Select
+              value={options.find(option => option.value === editValue)}
+              onChange={handleDropdownChange}
+              options={options}
+              className="w-full"
             />
-          )}
-          {!isDropdown && typeof sectionData[editSection] === 'object' && (
-            Object.keys(sectionData[editSection] || {}).map((field) => (
-              <div key={field} className="mb-4">
-                <label className="block text-sm font-medium text-black mb-1">
-                  {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
-                </label>
+          ) : (
+            <>
+              {typeof sectionData[editSection] === 'string' ? (
                 <input
                   type="text"
                   className="w-full border p-2 rounded"
-                  value={editValue[field] || sectionData[editSection][field]}
-                  onChange={(e) => handleChange(e, field)}
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
                 />
-              </div>
-            ))
+              ) : (
+                Object.keys(sectionData[editSection] || {}).map((field) => (
+                  <div key={field} className="mb-4">
+                    <label className="block text-sm font-medium text-black mb-1">
+                      {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full border p-2 rounded"
+                      value={editValue[field] || sectionData[editSection][field]}
+                      onChange={(e) => setEditValue({
+                        ...editValue,
+                        [field]: e.target.value
+                      })}
+                    />
+                  </div>
+                ))
+              )}
+            </>
           )}
         </EditModal>
       </div>
