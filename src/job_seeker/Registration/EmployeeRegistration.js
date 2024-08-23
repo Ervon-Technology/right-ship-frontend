@@ -332,6 +332,7 @@ const EmployeeRegistration = () => {
     try {
       dispatch(registerUser({
         employee_id: employeeId,
+        _id:employeeId,
         ...formData,
       }));
 
@@ -622,7 +623,7 @@ const EmployeeRegistration = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-3xl bg-white rounded-xl shadow-xl overflow-hidden"
+        className="w-full max-w-3xl bg-white rounded-xl shadow-xl"
       >
         <div className="bg-gradient-to-r from-teal-400 to-blue-500 text-white p-8 rounded-t-xl">
           <h2 className="text-3xl font-semibold">{steps[currentStep - 1]}</h2>

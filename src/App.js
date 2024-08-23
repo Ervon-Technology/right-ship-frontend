@@ -12,11 +12,11 @@ import CompanyLayout from '../src/component/layout/companyLayout';
 import HomePage from './job_seeker/landingpage/Home';
 import NotFoundPage from './pageNotFound';
 import CompanyOtpAuth from './company/login/login';
-import RegistrationForm from './company/registrationform';
+import RegistrationForm from './company/registrationForm';
 import EmployeeOtpAuth from './job_seeker/login/employeelogin';
 import EmployeeSignup from './job_seeker/signup/Signup';
 import VerifySignupOtp from './job_seeker/signup/VerifySignupOtp';
-import EmployeeRegistration from './job_seeker/Registration/employeeregistration';
+import EmployeeRegistration from './job_seeker/Registration/EmployeeRegistration';
 
 
 import JobDashboard from './job_seeker/jobs/JobDashboard';
@@ -29,7 +29,7 @@ import JobPostList from './company/job/jobPostList';
 import CandidatesTable from './company/candidates/candidateList';
 import CandidateDetail from './company/candidates/candidateDetail';
 import JobDetail from './company/job/jobdetail';
-import CompanyManageUsers from './company/manageusers';
+import CompanyManageUsers from './company/manageUsers';
 import CompanyProfile from './company/setting';
 import Setting from './job_seeker/setting/Setting'
 import JobBoard from './job_seeker/jobs/MyJobs';

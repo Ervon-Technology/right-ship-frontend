@@ -55,6 +55,7 @@ const ProgressBar = ({ currentStep, totalSteps }) => (
 );
 
 const RegistrationForm = () => {
+  
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
