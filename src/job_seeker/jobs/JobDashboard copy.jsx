@@ -180,8 +180,8 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
   };
 
   return (
-    <div
-      className="bg-white p-6 transition duration-300 hover:bg-gray-200 border-opacity-50 cursor-pointer border-b-2 border-gray-400"
+    <motion.div
+      className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition duration-300 cursor-pointer"
       onClick={() => onCardClick(job)}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
@@ -227,7 +227,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
         )}
       </div>
       
-    </div>
+    </motion.div>
   );
 };
 
@@ -363,7 +363,7 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
       className="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-lg overflow-y-auto z-50"
     >
       <div className="sticky top-0 bg-white z-10 p-4 border-b">
-        <h2 className="text-2xl font-bold text-gray-800 text-opacity-0">Job Details</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Job Details</h2>
         <button 
           onClick={onClose} 
           className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
@@ -430,7 +430,42 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
                 {job.total_applied !== undefined && (
                   <p className="text-gray-700"><span className="font-medium">Total Applied:</span> {job.total_applied}</p>
                 )}
-               
+                <div className="flex space-x-4">
+                  {isApplied ? (
+                    <button
+                      className="px-6 py-2 rounded-md font-medium border border-customBlue text-customBlue transition-all hover:bg-customBlue hover:text-white"
+                      onClick={handleUnapply}
+                      disabled={unapplying}
+                    >
+                      {unapplying ? 'Unapplying...' : 'Unapply'}
+                    </button>
+                  ) : (
+                    <button
+                      className="px-6 py-2 rounded-md font-medium bg-customBlue text-white transition-all hover:bg-customBlue2"
+                      onClick={handleApply}
+                      disabled={applying}
+                    >
+                      {applying ? 'Applying...' : 'Apply'}
+                    </button>
+                  )}
+                  {isSaved ? (
+                    <button
+                      className="px-4 py-2 rounded-lg text-black-700 font-medium hover:bg-blue-200 transition duration-200"
+                      onClick={handleUnsave}
+                      disabled={unsaving}
+                    >
+                      {unsaving ? 'Unsaving...' : 'Unsave'}
+                    </button>
+                  ) : (
+                    <button
+                      className="px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium hover:bg-blue-200 transition duration-200"
+                      onClick={handleSave}
+                      disabled={saving}
+                    >
+                      {saving ? 'Saving...' : 'Save'}
+                    </button>
+                  )}
+                </div>
               </div>
             </section>
           </div>
@@ -630,7 +665,7 @@ const App = () => {
               <input
                 type="text"
                 placeholder="Search jobs..."
-                className="flex-grow px-4 py-3 rounded-l-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 border-1 border"
+                className="flex-grow px-4 py-3 rounded-l-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                 value={inputSearchTerm}
                 onChange={(e) => setInputSearchTerm(e.target.value)}
               />
@@ -642,7 +677,7 @@ const App = () => {
               </button>
             </div>
 
-            <div className="grid gap-2">
+            <div className="grid gap-6">
               {fetchingJobs
                 ? Array.from({ length: jobsPerPage }).map((_, index) => (
                   <CardLoader key={index} />
