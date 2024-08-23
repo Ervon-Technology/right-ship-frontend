@@ -23,7 +23,7 @@ const EmployeeProfile = () => {
       email: '',
       mobile_no: '',
       whatsappNumber: '',
-      gender: '',
+      gender: '', // Gender dropdown
       country: '',
       dob: '',
       age: '',
@@ -35,11 +35,11 @@ const EmployeeProfile = () => {
       totalSeaExperienceMonth: '',
     },
     licenseHolding: {
-      cop: '',
-      coc: '',
-      watchkeeping: '',
-      sid: '', // SID field added
-      usVisa: '', // US Visa field added
+      cop: '', // COP dropdown
+      coc: '', // COC dropdown
+      watchkeeping: '', // Watchkeeping dropdown
+      sid: '', // SID dropdown
+      usVisa: '', // US Visa dropdown
     }
   });
 
@@ -52,6 +52,11 @@ const EmployeeProfile = () => {
   const [vesselExpOptions, setVesselExpOptions] = useState([]);
   const sidOptions = [{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }];
   const usVisaOptions = [{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }];
+  const genderOptions = [
+    { value: 'Male', label: 'Male' },
+    { value: 'Female', label: 'Female' },
+    { value: 'Other', label: 'Other' }
+  ]; // Gender dropdown options
 
   const authState = useSelector((state) => state.auth);
   const employeeId = authState?.user?._id;
@@ -245,6 +250,9 @@ const EmployeeProfile = () => {
     } else if (section === 'usVisa') {
       dropdown = true;
       dropdownOptions = usVisaOptions;
+    } else if (section === 'gender') {
+      dropdown = true;
+      dropdownOptions = genderOptions;
     }
 
     setEditSection(section);
