@@ -1,20 +1,16 @@
-// Logic
-// get the list of jobs from properties job_applied and save_job from employee detail api 
-// Get all the application id and create a array of jobs Id
-// do a api call to get all the jobs in array 
-// save the response 
-// Get two varibale saveJobs and applied Jobs and store into it
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const JobBoard = ({ employeeId }) => {
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [savedJobs, setSavedJobs] = useState([]);
-  const [jobList, setJoblists] = useState([]);
+  const [activeTab, setActiveTab] = useState('applied'); // State to track active tab
 
   const user = useSelector((state) => state.auth.user);
+  const authEmployeeId = user?._id; // Assuming employee ID is stored in the user object
 
   // Fetch employee details on component mount
   useEffect(() => {
@@ -23,29 +19,19 @@ const JobBoard = ({ employeeId }) => {
 
   const fetchEmployeeDetails = async () => {
     try {
-        
       const requestData = {
-          employee_id: { '$in': [user._id] }
+        employee_id: authEmployeeId
       };
 
-      console.log(requestData);
-
-      const response = await axios.post("https://api.rightships.com/employee/get", requestData );
-      
+      const response = await axios.post("https://api.rightships.com/employee/get", requestData);
       const employeeData = response.data.data[0]; // Assuming the data is in the first object
      
-      // Extract job application IDs from `applied_by` array
-      const appliedJobIds = extractAppliedJobs(response.data.data[0])
-  
-     
-      // Extract job application IDs from `save_jobs_applications` array
-      const savedJobIds = extractSaveJobs(response.data.data[0])
-      
+      const appliedJobIds = extractAppliedJobs(employeeData);
+      const savedJobIds = extractSaveJobs(employeeData);
 
-      // Fetch jobs for the extracted IDs
       fetchJobs(appliedJobIds, savedJobIds);
     } catch (error) {
-      console.error("Error fetching employee details:", error);
+      toast.error("Error fetching employee details: " + error.message);
     }
   };
   
@@ -65,9 +51,7 @@ const JobBoard = ({ employeeId }) => {
 
   const fetchJobs = async (appliedJobIds, savedJobIds) => {
     try {
-      // Fetch applied jobs
       if (appliedJobIds.length > 0) {
-        console.log("========> s", appliedJobIds);
         const appliedJobsResponse = await axios.post(
           "https://api.rightships.com/company/application/get",
           {
@@ -76,11 +60,9 @@ const JobBoard = ({ employeeId }) => {
             },
           }
         );
-       
-        setAppliedJobs(appliedJobsResponse.data.applications); // Assuming 'jobs' contains the relevant job data
+        setAppliedJobs(appliedJobsResponse.data.applications);
       }
 
-      // Fetch saved jobs
       if (savedJobIds.length > 0) {
         const savedJobsResponse = await axios.post(
           "https://api.rightships.com/company/application/get",
@@ -90,92 +72,116 @@ const JobBoard = ({ employeeId }) => {
             },
           }
         );
-        setSavedJobs(savedJobsResponse.data.applications); // Assuming 'jobs' contains the relevant job data
+        setSavedJobs(savedJobsResponse.data.applications);
       }
     } catch (error) {
-      console.error("Error fetching jobs:", error);
+      toast.error("Error fetching jobs: " + error.message);
     }
   };
 
   const handleApply = async (job) => {
     try {
-      await axios.post("https://api.rightships.com/employee/apply_job", {
-        employee_id: employeeId,
+      const response = await axios.post("https://api.rightships.com/employee/apply_job", {
+        employee_id: authEmployeeId,
         application_id: job.application_id,
         company_id: job.company_id,
       });
-      fetchEmployeeDetails(); // Refresh job lists after applying
+      if (response.data) {
+        toast.success('Successfully applied for the job');
+        fetchEmployeeDetails(); // Refresh job lists after applying
+      } else {
+        toast.error('Failed to apply for the job');
+      }
     } catch (error) {
-      console.error("Error applying for job:", error);
+      toast.error("Error applying for job: " + error.message);
     }
   };
 
   const handleUnapply = async (job) => {
     try {
-      await axios.post("https://api.rightships.com/employee/unapply", {
-        employee_id: employeeId,
+      const response = await axios.post("https://api.rightships.com/employee/unapply", {
+        employee_id: authEmployeeId,
         application_id: job.application_id,
         company_id: job.company_id,
       });
-      fetchEmployeeDetails(); // Refresh job lists after unapplying
+      if (response.data) {
+        toast.success('Successfully unapplied from the job');
+        fetchEmployeeDetails(); // Refresh job lists after unapplying
+      } else {
+        toast.error('Failed to unapply from the job');
+      }
     } catch (error) {
-      console.error("Error unapplying from job:", error);
+      toast.error("Error unapplying from job: " + error.message);
     }
   };
 
   const handleSave = async (job) => {
     try {
-      await axios.post("https://api.rightships.com/employee/save_jobs", {
-        employee_id: employeeId,
+      const response = await axios.post("https://api.rightships.com/employee/save_jobs", {
+        employee_id: authEmployeeId,
         application_id: job.application_id,
         company_id: job.company_id,
       });
-      fetchEmployeeDetails(); // Refresh job lists after saving
+      if (response.data) {
+        toast.success('Successfully saved the job');
+        fetchEmployeeDetails(); // Refresh job lists after saving
+      } else {
+        toast.error('Failed to save the job');
+      }
     } catch (error) {
-      console.error("Error saving job:", error);
+      toast.error("Error saving job: " + error.message);
     }
   };
 
   const handleUnsave = async (job) => {
     try {
-      await axios.post("https://api.rightships.com/employee/unsave", {
-        employee_id: employeeId,
+      const response = await axios.post("https://api.rightships.com/employee/unsave", {
+        employee_id: authEmployeeId,
         application_id: job.application_id,
         company_id: job.company_id,
       });
-      fetchEmployeeDetails(); // Refresh job lists after unsaving
+      if (response.data) {
+        toast.success('Successfully unsaved the job');
+        fetchEmployeeDetails(); // Refresh job lists after unsaving
+      } else {
+        toast.error('Failed to unsave the job');
+      }
     } catch (error) {
-      console.error("Error unsaving job:", error);
+      toast.error("Error unsaving job: " + error.message);
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-8 h-screen">
+      <ToastContainer />
       <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">My Jobs</h1>
       <div className="flex justify-center mb-8">
         <button
           className={`px-6 py-2 rounded-md font-semibold text-lg transition-colors ${
-            appliedJobs.length > 0
+            activeTab === 'applied'
               ? "bg-customBlue text-white shadow-md"
               : "bg-gray-100 border border-customBlue hover:bg-gray-200"
           }`}
+          onClick={() => setActiveTab('applied')}
         >
           Applied Jobs ({appliedJobs.length})
         </button>
         <button
           className={`px-6 py-2 rounded-md font-semibold text-lg ml-4 transition-colors ${
-            savedJobs.length > 0
+            activeTab === 'saved'
               ? "bg-customBlue text-white shadow-md"
               : "bg-gray-100 text-customBlue border border-customBlue hover:bg-gray-200"
           }`}
+          onClick={() => setActiveTab('saved')}
         >
           Saved Jobs ({savedJobs.length})
         </button>
       </div>
       <div className="border-b-2 border-gray-300 mb-10"></div>
+      
       <div className="grid gap-6">
-        {/* Display applied jobs */}
-        {appliedJobs.map((job) => (
+        {/* Display applied jobs if the active tab is 'applied' */}
+        {activeTab === 'applied' && appliedJobs.map((job) => (
           <div
             key={job.application_id}
             className="p-6 bg-white rounded-lg shadow-lg flex justify-between items-center transition-transform hover:scale-105"
@@ -199,16 +205,16 @@ const JobBoard = ({ employeeId }) => {
                 Unapply
               </button>
               {savedJobs.some((savedJob) => savedJob.application_id === job.application_id) ? (
-                <button onClick={() => handleUnsave(job)}>Unsave</button>
+                <button onClick={() => handleUnsave(job)} className="w-20" >Unsave</button>
               ) : (
-                <button onClick={() => handleSave(job)}>Save</button>
+                <button onClick={() => handleSave(job)} className="w-20" >Save</button>
               )}
             </div>
           </div>
         ))}
 
-        {/* Display saved jobs */}
-        {savedJobs.map((job) => (
+        {/* Display saved jobs if the active tab is 'saved' */}
+        {activeTab === 'saved' && savedJobs.map((job) => (
           <div
             key={job.application_id}
             className="p-6 bg-white rounded-lg shadow-lg flex justify-between items-center transition-transform hover:scale-105"
