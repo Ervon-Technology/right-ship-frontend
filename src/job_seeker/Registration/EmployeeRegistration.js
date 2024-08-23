@@ -47,16 +47,15 @@ const EmployeeRegistration = () => {
     appliedVessel: '',
     presentVessel: '',
     vesselExp: [],
-    lastVesselType: [],
     appliedRank: '',
     presentRank: '',
     presentRankExperienceInYear: '',
     presentRankExperienceInMonth: '',
     totalSeaExperienceYear: '',
     totalSeaExperienceMonth: '',
-    cop: '',
-    coc: '',
-    watchkeeping: '',
+    cop: null,
+    coc: null,
+    watchkeeping: null,
     profile: null,
     resume: null,
     address: {
@@ -65,8 +64,6 @@ const EmployeeRegistration = () => {
       city: '',
       addresss: ''
     },
-    createdDate: '',
-    updatedDate: '',
   });
 
   // Capitalize the first letter of First and Last name
@@ -184,38 +181,47 @@ const EmployeeRegistration = () => {
     fetchAttributes();
   }, []);
 
-  const steps = ['Personal Details', 'Contact Details', 'Basic Information', 'Rank Details', 'Vessel Details', 'Experience', 'Certificates', 'Upload Resume & Profile Picture'];
+  const steps = [
+    'Personal Details',
+    'Contact Details',
+    'Basic Information',
+    'Rank Details',
+    'Vessel Details',
+    'Experience',
+    'Certificates',
+    'Upload Resume & Profile Picture'
+  ];
 
   const handleNext = async () => {
     let requiredFields = [];
 
     if (currentStep === 1) {
       requiredFields = ['firstName', 'lastName', 'dob'];
-    } 
-    
+    }
+
     if (currentStep === 2) {
       requiredFields = ['email', 'mobile_no', 'whatsappNumber'];
-    }  
-    
+    }
+
     if (currentStep === 3) {
       requiredFields = ['nationality', 'availability', 'sid', 'usVisa'];
-    }  
-    
+    }
+
     if (currentStep === 4) {
       requiredFields = ['presentRank', 'appliedRank'];
-    } 
-    
+    }
+
     if (currentStep === 5) {
       requiredFields = ['presentVessel', 'appliedVessel'];
-    }  
-    
+    }
+
     if (currentStep === 6) {
       requiredFields = ['totalSeaExperienceYear', 'totalSeaExperienceMonth', 'presentRankExperienceInMonth'];
     }
-   if (currentStep === 7) {
+    if (currentStep === 7) {
       requiredFields = [];
     }
-  
+
 
     const missingFields = requiredFields.filter(field => !formData[field]);
 
@@ -332,7 +338,7 @@ const EmployeeRegistration = () => {
     try {
       dispatch(registerUser({
         employee_id: employeeId,
-        _id:employeeId,
+        _id: employeeId,
         ...formData,
       }));
 
@@ -445,8 +451,10 @@ const EmployeeRegistration = () => {
               <label class="block text-gray-700 text-lg font-medium mb-4 ">Present Rank<span class="text-red-500">*</span></label>
               <Select
                 label="Present Rank"
-                value={formData.presentRank}
-                onChange={(value) => setFormData({ ...formData, presentRank: value })}
+                value={rankOptions.find(option => option.value === formData.presentRank)}
+                onChange={(selectedOption) => {
+                  setFormData({ ...formData, presentRank: selectedOption ? selectedOption.value : '' });
+                }}
                 options={rankOptions}
                 required
               />
@@ -455,8 +463,8 @@ const EmployeeRegistration = () => {
               <label class="block text-gray-700 text-lg font-medium mb-4">Applied Rank<span class="text-red-500">*</span></label>
               <Select
                 label="Applied Rank"
-                value={formData.appliedRank}
-                onChange={(value) => setFormData({ ...formData, appliedRank: value })}
+                value={rankOptions.find(option => option.value === formData.appliedRank)}
+                onChange={(selectedOption) => setFormData({ ...formData, appliedRank: selectedOption ? selectedOption.value : '' })}
                 options={rankOptions}
                 required
               />
@@ -471,19 +479,20 @@ const EmployeeRegistration = () => {
               <label class="block text-gray-700 text-lg font-medium mb-4 ">Present Vessel<span class="text-red-500">*</span></label>
               <Select
                 label="Present Vessel"
-                value={formData.presentVessel}
-                onChange={(value) => setFormData({ ...formData, presentVessel: value })}
+                value={shipOptions.find(option => option.value === formData.presentVessel)}
+                onChange={(selectedOption) => setFormData({ ...formData, presentVessel: selectedOption ? selectedOption.value : '' })}
                 options={shipOptions}
                 required
               />
+
             </div>
 
             <div className='mb-8'>
               <label class="block text-gray-700 text-lg font-medium mb-4 ">Applied Vessel<span class="text-red-500">*</span></label>
               <Select
                 label="Applied Vessel"
-                value={formData.appliedVessel}
-                onChange={(value) => setFormData({ ...formData, appliedVessel: value })}
+                value={shipOptions.find(option => option.value === formData.appliedVessel)}
+                onChange={(selectedOption) => setFormData({ ...formData, appliedVessel: selectedOption ? selectedOption.value : '' })}
                 options={shipOptions}
                 required
               />
@@ -536,8 +545,8 @@ const EmployeeRegistration = () => {
               <label class="block text-gray-700 text-lg font-medium mb-4 ">COP<span class="text-red-500">*</span></label>
               <Select
                 label="COP"
-                value={formData.cop}
-                onChange={(value) => setFormData({ ...formData, cop: value })}
+                value={copOptions.find(option => option.value === formData.cop)} // This ensures the selected option is set based on the current form state
+                onChange={(selectedOption) => setFormData({ ...formData, cop: selectedOption ? selectedOption.value : '' })}
                 options={copOptions}
                 required
               />
@@ -547,8 +556,8 @@ const EmployeeRegistration = () => {
               <label class="block text-gray-700 text-lg font-medium mb-4 ">COC<span class="text-red-500">*</span></label>
               <Select
                 label="COC"
-                value={formData.coc}
-                onChange={(value) => setFormData({ ...formData, coc: value })}
+                value={cocOptions.find(option => option.value === formData.coc)} // Ensures the correct option is selected based on the current state
+                onChange={(selectedOption) => setFormData({ ...formData, coc: selectedOption ? selectedOption.value : '' })}
                 options={cocOptions}
                 required
               />
@@ -557,8 +566,8 @@ const EmployeeRegistration = () => {
               <label class="block text-gray-700 text-lg font-medium mb-4 ">Watch keeping<span class="text-red-500">*</span></label>
               <Select
                 label="Watchkeeping"
-                value={formData.watchkeeping}
-                onChange={(value) => setFormData({ ...formData, watchkeeping: value })}
+                value={watchKeepingOptions.find(option => option.value === formData.watchkeeping)} // Ensures the correct option is selected based on the current state
+                onChange={(selectedOption) => setFormData({ ...formData, watchkeeping: selectedOption ? selectedOption.value : '' })}
                 options={watchKeepingOptions}
                 required
               />
