@@ -79,43 +79,63 @@ const OtpVerificationForm = ({ contactInfo }) => {
     };
 
     return (
-        <section className="flex flex-col items-center py-20 h-screen bg-gray-100">
-            <div className="mb-4">
-                <img src={logo} alt="Logo" className="h-24 w-20" />
-            </div>
-            <div className="bg-white p-10 mt-3 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-center text-2xl font-semibold mb-4">Verify OTP</h2>
-                <p className="text-center text-sm mb-4">OTP sent to: {contactInfo}</p>
-                <input
-                    type="text"
-                    placeholder="Enter OTP"
-                    className="w-full px-4 py-4 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-customBlue"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                />
-                <button
-                    onClick={handleVerifyOtp}
-                    className={`w-full py-4 rounded-md text-white font-medium ${otpStatus === 'loading' || authState.loading ? 'bg-customBlue' : 'bg-customBlue hover:bg-customBlue2'} transition duration-300`}
-                    disabled={otpStatus === 'loading' || authState.loading}
-                >
-                    {otpStatus === 'loading' || authState.loading ? 'Verifying...' : 'Verify OTP'}
-                </button>
-                {(otpStatus === 'failed' || authState.error) && <p className="text-red-600 mt-4">{otpError || authState.error}</p>}
-                <p className="text-center mt-4">
-                    {canResend ? (
-                        <button
-                            onClick={handleSendOtp}
-                            className="text-blue-700 underline text-sm"
-                        >
-                            Resend OTP
-                        </button>
-                    ) : (
-                        `Resend OTP in: ${formatTime(timer)}`
-                    )}
-                </p>
-                <Link className="text-blue-700 block text-center text-sm underline mt-4" to="/login">Change Contact Info</Link>
-            </div>
-        </section>
+        <section
+  className="relative flex flex-col items-center py-20 h-screen bg-gray-100 bgImage"
+  
+>
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-white opacity-80 z-10"></div>
+
+  {/* Content */}
+  <div className="relative z-20 flex flex-col items-center">
+    <div className="mb-4">
+      <img src={logo} alt="Logo" className="h-24 w-20" />
+    </div>
+    <div className="bg-white p-10 mt-3 rounded-lg shadow-lg w-full max-w-md">
+      <h2 className="text-center text-2xl font-semibold mb-4">Verify OTP</h2>
+      <p className="text-center text-sm mb-4">OTP sent to: {contactInfo}</p>
+      <input
+        type="text"
+        placeholder="Enter OTP"
+        className="w-full px-4 py-4 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-customBlue"
+        value={otp}
+        onChange={(e) => setOtp(e.target.value)}
+      />
+      <button
+        onClick={handleVerifyOtp}
+        className={`w-full py-4 rounded-md text-white font-medium ${
+          otpStatus === 'loading' || authState.loading
+            ? 'bg-customBlue'
+            : 'bg-customBlue hover:bg-customBlue2'
+        } transition duration-300`}
+        disabled={otpStatus === 'loading' || authState.loading}
+      >
+        {otpStatus === 'loading' || authState.loading ? 'Verifying...' : 'Verify OTP'}
+      </button>
+      {(otpStatus === 'failed' || authState.error) && (
+        <p className="text-red-600 mt-4">{otpError || authState.error}</p>
+      )}
+      <p className="text-center mt-4">
+        {canResend ? (
+          <button
+            onClick={handleSendOtp}
+            className="text-blue-700 underline text-sm"
+          >
+            Resend OTP
+          </button>
+        ) : (
+          `Resend OTP in: ${formatTime(timer)}`
+        )}
+      </p>
+      <Link
+        className="text-blue-700 block text-center text-sm underline mt-4"
+        to="/login"
+      >
+        Change Contact Info
+      </Link>
+    </div>
+  </div>
+</section>
     );
 };
 
