@@ -19,22 +19,23 @@ const DefaultNavbar = () => {
             <Link to="/myjobs">Jobs</Link>
           </div>
         </div>
-        <div className=" md:flex hidden items-center space-x-4">
+        <div className=" md:flex hidden items-center space-x-6">
           <Link to='/login'><button className="text-customBlue border border-customBlue font-semibold p-2 px-6 hover:bg-customBlue hover:text-white rounded">Login</button></Link>
           <Link to='/register'><button className="bg-customBlue hover:bg-customBlue2 font-semibold text-white px-4 py-2 rounded">Register</button></Link>
-          <div className="relative">
+          <div className="relative space-x-6">
             <button
               className="flex items-center space-x-2"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <span>For Employers</span>
+              <span>For Company</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </button>
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg">
-                <Link to="/company/register" className="block px-4 py-2 hover:bg-gray-200">For Company</Link>
+                <Link to="/company/login" className="block px-4 py-2 hover:bg-gray-200">Login</Link>
+                <Link to="/company/register" className="block px-4 py-2 hover:bg-gray-200">Register</Link>
               </div>
             )}
           </div>
@@ -83,14 +84,15 @@ const DefaultNavbar = () => {
               className="flex items-center space-x-2"
               onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
             >
-              <span>For Employers</span>
+              <span>For Company</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {isMobileDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg">
-                <Link to="/company/register" className="block px-4 py-2 hover:bg-gray-200">For Company</Link>
+                <Link to="/company/login" className="block px-4 py-2 hover:bg-gray-200">Login</Link>
+                <Link to="/company/register" className="block px-4 py-2 hover:bg-gray-200">Register</Link>
               </div>
             )}
           </div>
