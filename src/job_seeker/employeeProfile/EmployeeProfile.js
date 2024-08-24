@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import EditModal from './EditModal';
 import Select from 'react-select';
+import LicenseHoldingEditModal from './LicenseHoldingEditModal';
 
 const EmployeeProfile = () => {
   const [profileImage, setProfileImage] = useState("https://i2.pickpik.com/photos/711/14/431/smile-profile-face-male-preview.jpg");
@@ -11,6 +12,7 @@ const EmployeeProfile = () => {
   const [file, setFile] = useState(null);
   const [editSection, setEditSection] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [licenseModalOpen, setLicenseModalOpen] = useState(false);
   const [editValue, setEditValue] = useState('');
   const [isDropdown, setIsDropdown] = useState(false);
   const [options, setOptions] = useState([]);
@@ -311,6 +313,30 @@ const EmployeeProfile = () => {
     setEditValue(selectedOption.value);
   };
 
+  const handleSaveLicenseHolding = async (updatedLicenseHolding) => {
+    try {
+      const updatedSectionData = { ...sectionData, licenseHolding: updatedLicenseHolding };
+
+      const payload = {
+        employee_id: employeeId,
+        ...updatedSectionData,
+      };
+
+      await axios.post('https://api.rightships.com/employee/update', payload, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: '*/*',
+        },
+      });
+
+      setSectionData(updatedSectionData);
+      console.log('License holding data updated successfully');
+      setLicenseModalOpen(false);
+    } catch (error) {
+      console.error('Error updating license holding data:', error);
+    }
+  };
+
   const handleShareClick = () => {
     if (navigator.share) {
       navigator.share({
@@ -486,7 +512,7 @@ const EmployeeProfile = () => {
         <div className="bg-white p-8 border rounded-xl shadow-md relative">
           <h3 className="text-lg font-semibold text-black flex justify-between">
             License Holding
-            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('licenseHolding', sectionData.licenseHolding)} />
+            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => setLicenseModalOpen(true)} />
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-gray-600">
             <div>
@@ -550,6 +576,18 @@ const EmployeeProfile = () => {
             </>
           )}
         </EditModal>
+
+        <LicenseHoldingEditModal
+          isOpen={licenseModalOpen}
+          licenseHolding={sectionData.licenseHolding}
+          copOptions={copOptions}
+          cocOptions={cocOptions}
+          watchKeepingOptions={watchKeepingOptions}
+          sidOptions={sidOptions}
+          usVisaOptions={usVisaOptions}
+          onSave={handleSaveLicenseHolding}
+          onClose={() => setLicenseModalOpen(false)}
+        />
       </div>
     </div>
   );

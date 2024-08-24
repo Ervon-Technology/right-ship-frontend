@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import DefaultNavbar from '../navbar/defaultNavbar';
+import JobFooter from '../footer/JobFooter';
 
 const DefaultLayout = ({ children }) => {
   return (
@@ -12,7 +13,7 @@ const DefaultLayout = ({ children }) => {
         { children ? children :<Outlet /> }
       </main>
       <footer>
-        <p>Default Footer</p>
+        <JobFooter />
       </footer>
     </div>
   );
