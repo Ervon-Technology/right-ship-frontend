@@ -13,13 +13,31 @@ const EditModal = ({ isOpen, title, children, onSave, onClose, isDropdown, optio
           <FaTimes className="cursor-pointer" onClick={onClose} />
         </div>
         <div className="mt-4">
-          {isDropdown ? (
-            <Select
-              value={options.find(option => option.value === editValue)}
-              onChange={handleChange}
-              options={options}
-              className="w-full"
-            />
+          {isDropdown ? ( 
+
+            title === 'Edit vesselExp' ? ( 
+
+              <Select
+                isMulti
+                    value={options.find(option => option.value === editValue)}
+                    onChange={handleChange}
+                    options={options}
+                    classNsame="w-full"
+                  />
+            
+
+              ) : (
+
+                <Select
+                
+                    value={options.find(option => option.value === editValue)}
+                    onChange={handleChange}
+                    options={options}
+                    classNsame="w-full"
+                  />
+
+              )
+            
           ) : (
             children
           )}

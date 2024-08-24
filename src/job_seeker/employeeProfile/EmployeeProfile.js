@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import EditModal from './EditModal';
 import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 const EmployeeProfile = () => {
   const [profileImage, setProfileImage] = useState("https://i2.pickpik.com/photos/711/14/431/smile-profile-face-male-preview.jpg");
@@ -15,34 +16,33 @@ const EmployeeProfile = () => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [options, setOptions] = useState([]);
   const [sectionData, setSectionData] = useState({
-    appliedVessel: '',
-    presentVessel: '',
-    vesselExperience: '',
-    appliedRank: '',
-    presentRank: '',
-    dateOfAvailability: '',
-    contactDetail: {
-      email: '',
-      mobile_no: '',
-      whatsappNumber: '',
-      gender: '',
-      country: '',
-      dob: '',
-      age: '',
-    },
-    experience: {
-      presentRankExperienceInYear: '',
-      presentRankExperienceInMonth: '',
-      totalSeaExperienceYear: '',
-      totalSeaExperienceMonth: '',
-    },
-    licenseHolding: {
-      cop: '',
-      coc: '',
-      watchkeeping: '',
-      sid: '',
-      usVisa: '',
-    }
+    appliedVessel: null,
+    presentVessel: null,
+    vesselExp: [],
+    appliedRank: null,
+    presentRank: null,
+    dateOfAvailability: null,
+    email: null,
+    mobile_no: null,
+    whatsappNumber: null,
+    gender: null,
+    country: null,
+    dob: null,
+    age: null,
+    presentRankExperienceInYear: null,
+    presentRankExperienceInMonth: null,
+    totalSeaExperienceYear: null,
+    totalSeaExperienceMonth: null,
+    cop: null,
+    coc: null,
+    watchkeeping: null,
+    sid: null,
+    usVisa: null,
+    availability: null,
+    nationality: null,
+    height: null,
+    weight: null,
+    bmi: null
   });
 
   const [copOptions, setCopOptions] = useState([]);
@@ -80,6 +80,16 @@ const EmployeeProfile = () => {
           return Math.abs(ageDate.getUTCFullYear() - 1970);
         };
 
+        const calculateBMI = (height, weight) => {
+          if (height && weight) {
+            return (weight / (height * height)).toFixed(2);
+          }
+          return null;
+        };
+
+        const age = result?.dob ? calculateAge(result.dob) : null;
+        const bmi = calculateBMI(result?.height, result?.weight);
+
         setProfileImage(result?.profile || profileImage);
         setProfileData({
           name: result?.firstName + ' ' + result?.lastName || '',
@@ -88,33 +98,33 @@ const EmployeeProfile = () => {
         });
 
         setSectionData({
-          appliedVessel: result?.appliedVessel || '',
-          presentVessel: result?.presentVessel || '',
-          appliedRank: result?.appliedRank || '',
-          presentRank: result?.presentRank || '',
-          dateOfAvailability: result?.availability || '',
-          contactDetail: {
-            email: result?.email || '',
-            mobile_no: result?.mobile_no || '',
-            whatsappNumber: result?.whatsappNumber || '',
-            gender: result?.gender || '',
-            country: result?.country || '',
-            dob: result?.dob || '',
-            age: result?.dob ? calculateAge(result?.dob) : '',
-          },
-          experience: {
-            presentRankExperienceInYear: result?.presentRankExperienceInYear || '',
-            presentRankExperienceInMonth: result?.presentRankExperienceInMonth || '',
-            totalSeaExperienceYear: result?.totalSeaExperienceYear || '',
-            totalSeaExperienceMonth: result?.totalSeaExperienceMonth || '',
-          },
-          licenseHolding: {
-            cop: result?.cop || '',
-            coc: result?.coc || '',
-            watchkeeping: result?.watchkeeping || '',
-            sid: result?.sid || '',
-            usVisa: result?.usVisa || '',
-          }
+          appliedVessel: result?.appliedVessel || null,
+          presentVessel: result?.presentVessel || null,
+          vesselExp: result?.vesselExp || [],
+          appliedRank: result?.appliedRank || null,
+          presentRank: result?.presentRank || null,
+          dateOfAvailability: result?.dateOfAvailability || null,
+          email: result?.email || null,
+          mobile_no: result?.mobile_no || null,
+          whatsappNumber: result?.whatsappNumber || null,
+          gender: result?.gender || null,
+          country: result?.country || null,
+          dob: result?.dob || null,
+          age: age,
+          presentRankExperienceInYear: result?.presentRankExperienceInYear || null,
+          presentRankExperienceInMonth: result?.presentRankExperienceInMonth || null,
+          totalSeaExperienceYear: result?.totalSeaExperienceYear || null,
+          totalSeaExperienceMonth: result?.totalSeaExperienceMonth || null,
+          cop: result?.cop || null,
+          coc: result?.coc || null,
+          watchkeeping: result?.watchkeeping || null,
+          sid: result?.sid || null,
+          usVisa: result?.usVisa || null,
+          availability: result?.availability || null,
+          nationality: result?.nationality || null,
+          height: result?.height || null,
+          weight: result?.weight || null,
+          bmi: bmi
         });
 
         if (result?.resume) {
@@ -262,6 +272,10 @@ const EmployeeProfile = () => {
         dropdown = true;
         dropdownOptions = genderOptions;
         break;
+      case 'vesselExp':
+        dropdown = true;
+        dropdownOptions = vesselExpOptions;
+        break;
       default:
         dropdown = false;
         dropdownOptions = [];
@@ -277,27 +291,37 @@ const EmployeeProfile = () => {
   const handleSaveClick = async () => {
     try {
       const updatedSectionData = { ...sectionData };
-
-      if (typeof updatedSectionData[editSection] === 'string') {
-        updatedSectionData[editSection] = editValue;
-      } else {
-        updatedSectionData[editSection] = {
-          ...editValue,
-        };
+  
+      if (editSection === 'dob') {
+        updatedSectionData.age = new Date().getFullYear() - new Date(editValue).getFullYear();
       }
-
+  
+      if (editSection === 'height' || editSection === 'weight') {
+        const height = editSection === 'height' ? parseFloat(editValue) : updatedSectionData.height;
+        const weight = editSection === 'weight' ? parseFloat(editValue) : updatedSectionData.weight;
+        updatedSectionData.bmi = (weight / ((height / 100) ** 2)).toFixed(2);
+      }
+  
+      if (editSection === 'vesselExp') {
+        updatedSectionData[editSection] = editValue; // editValue is already an array for vesselExp
+      } else if (editSection === 'height' || editSection === 'weight') {
+        updatedSectionData[editSection] = parseFloat(editValue);
+      } else {
+        updatedSectionData[editSection] = editValue;
+      }
+  
       const payload = {
         employee_id: employeeId,
         ...updatedSectionData,
       };
-
+  
       await axios.post('https://api.rightships.com/employee/update', payload, {
         headers: {
           'Content-Type': 'application/json',
           Accept: '*/*',
         },
       });
-
+  
       setSectionData(updatedSectionData);
       console.log('Data updated successfully');
       setModalOpen(false);
@@ -309,6 +333,12 @@ const EmployeeProfile = () => {
 
   const handleDropdownChange = (selectedOption) => {
     setEditValue(selectedOption.value);
+  };
+
+
+  const handleVesselExpChange = (selectedOptions) => {
+    const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setEditValue(selectedValues);
   };
 
   const handleShareClick = () => {
@@ -382,30 +412,117 @@ const EmployeeProfile = () => {
       </aside>
 
       <div className="w-full lg:w-2/3 p-4 space-y-3 overflow-y-auto bg-gray-100 me-4">
-        {/* Applied Vessel and Present Vessel */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div className="bg-white p-8 border shadow-sm relative">
+          <h3 className='bold text-2xl'>Basic</h3>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <div className="bg-white p-8 border shadow-sm relative">
             <h3 className="text-lg font-semibold text-black flex justify-between">
-              Vessel Applied For
-              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('appliedVessel', sectionData.appliedVessel)} />
+              Date Of Availability
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('dateOfAvailability', sectionData.dateOfAvailability)} />
             </h3>
             <div className="mt-2 text-gray-600">
-              <p>{sectionData.appliedVessel}</p>
+              <p>{sectionData.dateOfAvailability}</p>
             </div>
           </div>
-
           <div className="bg-white p-8 border shadow-sm relative">
             <h3 className="text-lg font-semibold text-black flex justify-between">
-              Present Vessel
-              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentVessel', sectionData.presentVessel)} />
+              SID
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('sid', sectionData.sid)} />
             </h3>
             <div className="mt-2 text-gray-600">
-              <p>{sectionData.presentVessel}</p>
+              <p>{sectionData.sid}</p>
             </div>
           </div>
         </div>
 
-        {/* Applied Rank and Present Rank */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              US Visa
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('usVisa', sectionData.usVisa)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.usVisa}</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Nationality
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('nationality', sectionData.nationality)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.nationality}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Age
+              <div className="cursor-pointer text-gray-600 hover:text-gray-900" />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.age}</p>
+            </div>
+          </div>
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Date of Birth
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('dob', sectionData.dob)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+            <p>{sectionData.dob}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-8 border shadow-sm relative">
+          <h3 className='bold text-2xl'>Contact</h3>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Email
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('email', sectionData.email)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+            <p>{sectionData.email}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Mobile No
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('mobile_no', sectionData.mobile_no)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.mobile_no}</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Whatsapp Number
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('whatsappNumber', sectionData.whatsappNumber)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.whatsappNumber}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-8 border shadow-sm relative">
+          <h3 className='bold text-2xl'>Rank</h3>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-white p-8 border shadow-sm relative">
             <h3 className="text-lg font-semibold text-black flex justify-between">
@@ -428,129 +545,200 @@ const EmployeeProfile = () => {
           </div>
         </div>
 
-        {/* Date of Availability */}
+        <div className="bg-white p-8 border shadow-sm relative">
+          <h3 className='bold text-2xl'>Vessel</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Vessel Applied For
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('appliedVessel', sectionData.appliedVessel)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.appliedVessel}</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Present Vessel
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentVessel', sectionData.presentVessel)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.presentVessel}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Experience In Vessel
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900"  />
+              {/* <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('vesselExp', sectionData.vesselExp)} /> */}
+            </h3>
+            <div className="mt-2 text-gray-600">
+            <p>{sectionData.vesselExp}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-8 border shadow-sm relative">
+          <h3 className='bold text-2xl'>Experience</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Total Sea Exp (Years):
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('totalSeaExperienceYear', sectionData.totalSeaExperienceYear)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+            <p>{sectionData.totalSeaExperienceYear}</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Total Sea Exp (Months):
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('totalSeaExperienceMonth', sectionData.totalSeaExperienceMonth)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.totalSeaExperienceMonth}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Present Rank Exp (Years):
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentRankExperienceInYear', sectionData.presentRankExperienceInYear)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+            <p>{sectionData.presentRankExperienceInYear}</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Present Rank Exp (Months):
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentRankExperienceInMonth', sectionData.presentRankExperienceInMonth)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+            <p>{sectionData.presentRankExperienceInMonth}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-8 border shadow-sm relative">
+          <h3 className='bold text-2xl'>Certificates</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              COC
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('coc', sectionData.coc)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.coc}</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              COP
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('cop', sectionData.cop)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+              <p>{sectionData.cop}</p>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-white p-8 border shadow-sm relative">
           <h3 className="text-lg font-semibold text-black flex justify-between">
-            Date of Availability
-            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('dateOfAvailability', sectionData.dateOfAvailability)} />
+            Watchkeeping
+            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('watchkeeping', sectionData.watchkeeping)} />
           </h3>
           <div className="mt-2 text-gray-600">
-            <p>{sectionData.dateOfAvailability}</p>
+            <p>{sectionData.watchkeeping}</p>
           </div>
         </div>
 
-        {/* Contact Details Section */}
-        <div className="bg-white p-8 border rounded-xl shadow-md relative">
+        <div className="bg-white p-8 border shadow-sm relative">
+          <h3 className='bold text-2xl'>Other</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Height (cm)
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('height', sectionData.height)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+            {/* <p>{sectionData.height}</p> */}
+            </div>
+          </div>
+
+          <div className="bg-white p-8 border shadow-sm relative">
+            <h3 className="text-lg font-semibold text-black flex justify-between">
+              Weight (kg)
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('weight', sectionData.weight)} />
+            </h3>
+            <div className="mt-2 text-gray-600">
+            {/* <p>{sectionData.weight}</p> */}
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-8 border shadow-sm relative">
           <h3 className="text-lg font-semibold text-black flex justify-between">
-            Contact Details
-            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('contactDetail', sectionData.contactDetail)} />
+            BMI
+            <div className="cursor-pointer text-gray-600 hover:text-gray-900" />
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-gray-600">
-            <div>
-              <p><span className="font-semibold">Email:</span> {sectionData.contactDetail.email}</p>
-              <p><span className="font-semibold">Mobile No:</span> {sectionData.contactDetail.mobile_no}</p>
-            </div>
-            <div>
-              <p><span className="font-semibold">WhatsApp Number:</span> {sectionData.contactDetail.whatsappNumber}</p>
-              <p><span className="font-semibold">Gender:</span> {sectionData.contactDetail.gender}</p>
-            </div>
-            <div>
-              <p><span className="font-semibold">Country:</span> {sectionData.contactDetail.country}</p>
-              <p><span className="font-semibold">Date of Birth:</span> {sectionData.contactDetail.dob}</p>
-            </div>
-            <div>
-              <p><span className="font-semibold">Age:</span> {sectionData.contactDetail.age}</p>
-            </div>
+          <div className="mt-2 text-gray-600">
+            <p>{sectionData.bmi}</p>
           </div>
         </div>
-
-        {/* Experience Section */}
-        <div className="bg-white p-8 border rounded-xl shadow-md relative">
-          <h3 className="text-lg font-semibold text-black flex justify-between">
-            Experience
-            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('experience', sectionData.experience)} />
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-gray-600">
-            <div>
-              <p><span className="font-semibold">Present Rank Experience (Years):</span> {sectionData.experience.presentRankExperienceInYear}</p>
-              <p><span className="font-semibold">Present Rank Experience (Months):</span> {sectionData.experience.presentRankExperienceInMonth}</p>
-            </div>
-            <div>
-              <p><span className="font-semibold">Total Sea Experience (Years):</span> {sectionData.experience.totalSeaExperienceYear}</p>
-              <p><span className="font-semibold">Total Sea Experience (Months):</span> {sectionData.experience.totalSeaExperienceMonth}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* License Holding Section */}
-        <div className="bg-white p-8 border rounded-xl shadow-md relative">
-          <h3 className="text-lg font-semibold text-black flex justify-between">
-            License Holding
-            <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('licenseHolding', sectionData.licenseHolding)} />
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-gray-600">
-            <div>
-              <p><span className="font-semibold">COP:</span> {sectionData.licenseHolding.cop}</p>
-              <p><span className="font-semibold">COC:</span> {sectionData.licenseHolding.coc}</p>
-            </div>
-            <div>
-              <p><span className="font-semibold">Watchkeeping:</span> {sectionData.licenseHolding.watchkeeping}</p>
-              <p><span className="font-semibold">SID:</span> {sectionData.licenseHolding.sid}</p>
-            </div>
-            <div>
-              <p><span className="font-semibold">US Visa:</span> {sectionData.licenseHolding.usVisa}</p>
-            </div>
-          </div>
-        </div>
-
-        <EditModal
-          isOpen={modalOpen}
-          title={`Edit ${editSection}`}
-          onSave={handleSaveClick}
-          onClose={() => setModalOpen(false)}
-          isDropdown={isDropdown}
-          options={options}
-          editValue={editValue}
-          handleChange={handleDropdownChange}
-        >
-          {isDropdown ? (
-            <Select
-              value={options.find(option => option.value === editValue)}
-              onChange={handleDropdownChange}
-              options={options}
-              className="w-full"
-            />
-          ) : (
-            <>
-              {typeof sectionData[editSection] === 'string' ? (
-                <input
-                  type="text"
-                  className="w-full border p-2 rounded"
-                  value={editValue}
-                  onChange={(e) => setEditValue(e.target.value)}
-                />
-              ) : (
-                Object.keys(sectionData[editSection] || {}).map((field) => (
-                  <div key={field} className="mb-4">
-                    <label className="block text-sm font-medium text-black mb-1">
-                      {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full border p-2 rounded"
-                      value={editValue[field] || sectionData[editSection][field]}
-                      onChange={(e) => setEditValue({
-                        ...editValue,
-                        [field]: e.target.value
-                      })}
-                    />
-                  </div>
-                ))
-              )}
-            </>
-          )}
-        </EditModal>
       </div>
+
+      <EditModal
+        isOpen={modalOpen}
+        title={`Edit ${editSection}`}
+        onSave={handleSaveClick}
+        onClose={() => setModalOpen(false)}
+        isDropdown={isDropdown}
+        options={options}
+        editValue={editValue}
+        handleChange={handleDropdownChange}
+      >
+        {!isDropdown && (
+         
+     
+          <>
+            {editSection === 'height' || editSection === 'weight' ? (
+              <input
+                type="number"
+                min="0"
+                className="w-full border p-2 rounded"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+              />
+            ) : (
+              <input
+                type={editSection === 'dob' || editSection === 'dateOfAvailability' ? 'date' : 'text'}
+                className="w-full border p-2 rounded"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+              />
+            )}
+          </>
+        )}
+      </EditModal>
+
     </div>
   );
 };
