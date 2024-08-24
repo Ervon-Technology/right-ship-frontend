@@ -38,13 +38,11 @@ const EmployeeProfile = () => {
       totalSeaExperienceYear: '',
       totalSeaExperienceMonth: '',
     },
-    licenseHolding: {
-      cop: '',
-      coc: '',
-      watchkeeping: '',
-      sid: '',
-      usVisa: '',
-    }
+    cop: '',
+    coc: '',
+    watchkeeping: '',
+    sid: '',
+    usVisa: ''
   });
 
   const [copOptions, setCopOptions] = useState([]);
@@ -110,13 +108,11 @@ const EmployeeProfile = () => {
             totalSeaExperienceYear: result?.totalSeaExperienceYear || '',
             totalSeaExperienceMonth: result?.totalSeaExperienceMonth || '',
           },
-          licenseHolding: {
-            cop: result?.cop || '',
-            coc: result?.coc || '',
-            watchkeeping: result?.watchkeeping || '',
-            sid: result?.sid || '',
-            usVisa: result?.usVisa || '',
-          }
+          cop: result?.cop || '',
+          coc: result?.coc || '',
+          watchkeeping: result?.watchkeeping || '',
+          sid: result?.sid || '',
+          usVisa: result?.usVisa || ''
         });
 
         if (result?.resume) {
@@ -136,26 +132,29 @@ const EmployeeProfile = () => {
             'Accept': '*/*',
           }
         });
-
+    
         if (response.data && response.data.code === 200) {
           const attributes = response.data.data;
-
-          const copAttribute = attributes.find(attr => attr.name.toLowerCase() === 'cop');
-          const cocAttribute = attributes.find(attr => attr.name.toLowerCase() === 'coc');
-          const shipAttribute = attributes.find(attr => attr.name.toLowerCase() === 'ships');
-          const watchKeepingAttribute = attributes.find(attr => attr.name.toLowerCase() === 'watch keeping');
-          const rankAttribute = attributes.find(attr => attr.name.toLowerCase() === 'rank');
-
+    
+          // Fetching attributes based on the names
+          const copAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'cop');
+          const cocAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'coc');
+          const shipAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'ships');
+          const watchKeepingAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'watch keeping');
+          const rankAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'rank');
+          
+          // Extracting values from attributes
           const copData = copAttribute ? copAttribute.values : [];
           const cocData = cocAttribute ? cocAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
           const shipData = shipAttribute ? shipAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
           const watchKeepingData = watchKeepingAttribute ? watchKeepingAttribute.values : [];
           const rankData = rankAttribute ? rankAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
-
-          setCopOptions(copData.map(option => ({ value: option, label: option })));
-          setCocOptions(cocData.map(option => ({ value: option, label: option })));
+          
+          // Setting the options in your state with both API and existing data
+          setCopOptions(copData.concat(sectionData.cop).map(option => ({ value: option, label: option })));
+          setCocOptions(cocData.concat(sectionData.coc).map(option => ({ value: option, label: option })));
           setShipOptions(shipData.map(option => ({ value: option, label: option })));
-          setWatchKeepingOptions(watchKeepingData.map(option => ({ value: option, label: option })));
+          setWatchKeepingOptions(watchKeepingData.concat(sectionData.watchkeeping).map(option => ({ value: option, label: option })));
           setRankOptions(rankData.map(option => ({ value: option, label: option })));
           setVesselExpOptions(shipData.map(option => ({ value: option, label: option })));
         } else {
@@ -165,7 +164,7 @@ const EmployeeProfile = () => {
         console.error('Failed to fetch attributes:', error);
       }
     };
-
+    
     if (employeeId) {
       fetchProfileData();
       fetchAttributes();
@@ -315,7 +314,7 @@ const EmployeeProfile = () => {
 
   const handleSaveLicenseHolding = async (updatedLicenseHolding) => {
     try {
-      const updatedSectionData = { ...sectionData, licenseHolding: updatedLicenseHolding };
+      const updatedSectionData = { ...sectionData, ...updatedLicenseHolding };
 
       const payload = {
         employee_id: employeeId,
@@ -516,15 +515,15 @@ const EmployeeProfile = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-gray-600">
             <div>
-              <p><span className="font-semibold">COP:</span> {sectionData.licenseHolding.cop}</p>
-              <p><span className="font-semibold">COC:</span> {sectionData.licenseHolding.coc}</p>
+              <p><span className="font-semibold">COP:</span> {sectionData.cop}</p>
+              <p><span className="font-semibold">COC:</span> {sectionData.coc}</p>
             </div>
             <div>
-              <p><span className="font-semibold">Watchkeeping:</span> {sectionData.licenseHolding.watchkeeping}</p>
-              <p><span className="font-semibold">SID:</span> {sectionData.licenseHolding.sid}</p>
+              <p><span className="font-semibold">Watchkeeping:</span> {sectionData.watchkeeping}</p>
+              <p><span className="font-semibold">SID:</span> {sectionData.sid}</p>
             </div>
             <div>
-              <p><span className="font-semibold">US Visa:</span> {sectionData.licenseHolding.usVisa}</p>
+              <p><span className="font-semibold">US Visa:</span> {sectionData.usVisa}</p>
             </div>
           </div>
         </div>
@@ -579,7 +578,7 @@ const EmployeeProfile = () => {
 
         <LicenseHoldingEditModal
           isOpen={licenseModalOpen}
-          licenseHolding={sectionData.licenseHolding}
+          licenseHolding={sectionData}
           copOptions={copOptions}
           cocOptions={cocOptions}
           watchKeepingOptions={watchKeepingOptions}

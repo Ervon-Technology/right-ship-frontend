@@ -10,14 +10,14 @@ const LicenseHoldingEditModal = ({ isOpen, licenseHolding, copOptions, cocOption
   const [usVisa, setUsVisa] = useState(licenseHolding.usVisa);
 
   const handleSave = () => {
-    const updatedLicenseHolding = {
+    const updatedFields = {
       cop,
       coc,
       watchkeeping,
       sid,
       usVisa,
     };
-    onSave(updatedLicenseHolding);
+    onSave(updatedFields);
   };
 
   if (!isOpen) return null;
