@@ -11,12 +11,17 @@ const EmployeeOtpAuth = () => {
         setOtpRequested(true);
     };
 
+    const handleChangeContactInfo = () => {
+        setOtpRequested(false);
+        setContactInfo('');
+    };
+
     return (
         <div>
             {!otpRequested ? (
                 <MobileNumberForm onOtpRequested={handleOtpRequested} />
             ) : (
-                <OtpVerificationForm contactInfo={contactInfo} />
+                <OtpVerificationForm contactInfo={contactInfo} onChangeContactInfo={handleChangeContactInfo} />
             )}
         </div>
     );

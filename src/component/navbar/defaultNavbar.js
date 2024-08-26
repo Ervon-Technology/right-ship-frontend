@@ -16,7 +16,7 @@ const DefaultNavbar = () => {
             <span className="font-bold text-gray-800 px-4">RIGHTSHIP</span>
           </Link>
           <div className="hidden md:flex space-x-4">
-            <Link to="/myjobs">Jobs</Link>
+            <Link to="/jobs">Jobs</Link>
           </div>
         </div>
         <div className=" md:flex hidden items-center space-x-6 z-20">
