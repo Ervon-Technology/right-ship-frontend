@@ -19,7 +19,7 @@ const DefaultNavbar = () => {
             <Link to="/myjobs">Jobs</Link>
           </div>
         </div>
-        <div className=" md:flex hidden items-center space-x-6 z-50">
+        <div className=" md:flex hidden items-center space-x-6 z-20">
           <Link to='/login'><button className="text-customBlue border border-customBlue font-semibold p-2 px-6 hover:bg-customBlue hover:text-white rounded">Login</button></Link>
           <Link to='/register'><button className="bg-customBlue hover:bg-customBlue2 font-semibold text-white px-4 py-2 rounded">Register</button></Link>
           <div className="relative space-x-6">
