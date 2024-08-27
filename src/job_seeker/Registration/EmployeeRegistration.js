@@ -18,7 +18,7 @@ const EmployeeRegistration = () => {
   const location = useLocation();
   const state = location.state || {};
   const employeeId = state.employeeId || '';
-  const contactInfo = useSelector((state) => state.contact.contactInfo);
+  const contactInfo = useSelector((state) => state.contact?.contactInfo || ''); 
   const dispatch = useDispatch();
   const profileFileInputRef = useRef(null);
   const resumeFileInputRef = useRef(null);
@@ -27,15 +27,15 @@ const EmployeeRegistration = () => {
   const [shipOptions, setShipOptions] = useState([]);
   const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
   const [rankOptions, setRankOptions] = useState([]);
-  const [vesselExpOptions, setVesselExpOptions] = useState([]); // For Experience in Vessel
+  const [vesselExpOptions, setVesselExpOptions] = useState([]); 
 
   const { loading, error } = useSelector((state) => state.employee);
 
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
-    mobile_no: contactInfo || '',
+    email: contactInfo.includes('@') ? contactInfo : '',
+    mobile_no: !contactInfo.includes('@') ? contactInfo : '',
     whatsappNumber: '',
     gender: '',
     nationality: '',
@@ -44,11 +44,11 @@ const EmployeeRegistration = () => {
     availability: '',
     sid: '',
     usVisa: '',
-    appliedVessel: '',
-    presentVessel: '',
-    vesselExp: [],
     appliedRank: '',
     presentRank: '',
+    presentVessel: '',
+    appliedVessel: '',
+    vesselExp: [],
     presentRankExperienceInYear: '',
     presentRankExperienceInMonth: '',
     totalSeaExperienceYear: '',
@@ -66,7 +66,6 @@ const EmployeeRegistration = () => {
     },
   });
 
-  // Capitalize the first letter of First and Last name
   const capitalizeFirstLetter = (value) => {
     return value.charAt(0).toUpperCase() + value.slice(1);
   };
@@ -79,7 +78,6 @@ const EmployeeRegistration = () => {
     setFormData({ ...formData, lastName: capitalizeFirstLetter(value) });
   };
 
-  // Date of Birth validation
   const handleDateOfBirthChange = (value) => {
     const today = new Date();
     const selectedDate = new Date(value);
@@ -115,7 +113,6 @@ const EmployeeRegistration = () => {
     return age;
   };
 
-  // Date of Availability validation
   const handleDateOfAvailabilityChange = (value) => {
     const today = new Date();
     const selectedDate = new Date(value);
@@ -128,7 +125,6 @@ const EmployeeRegistration = () => {
     setFormData({ ...formData, availability: value });
   };
 
-  // Total Sea Experience, Months cannot be negative
   const handleSeaExperienceChange = (field, value) => {
     if (value < 0) {
       toast.error("Experience cannot be negative.");
@@ -222,7 +218,6 @@ const EmployeeRegistration = () => {
       requiredFields = [];
     }
 
-
     const missingFields = requiredFields.filter(field => !formData[field]);
 
     if (missingFields.length > 0) {
@@ -243,6 +238,15 @@ const EmployeeRegistration = () => {
       toast.success('Data updated successfully.');
 
       if (currentStep < steps.length) {
+        if (currentStep === 4) {
+          // Clear vessel-related fields when moving from Step 4 to Step 5
+          setFormData(prevFormData => ({
+            ...prevFormData,
+            presentVessel: '', 
+            appliedVessel: '',
+            vesselExp: []
+          }));
+        }
         setCurrentStep(currentStep + 1);
       } else {
         handleSubmit();
@@ -279,11 +283,16 @@ const EmployeeRegistration = () => {
       apiField = 'profile';
       errorMessage = 'Invalid file type. Please upload a JPEG or PNG file.';
     } else if (type === 'resume') {
-      validFileTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      validFileTypes = [
+        'application/pdf', 
+        'application/msword', 
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      ];
       apiField = 'resume';
-      errorMessage = 'Invalid file type. Please upload a PDF, DOC, or DOCX file.';
+      errorMessage = 'Invalid file type. Please upload a PDF, DOC, DOCX, XLS, or XLSX file.';
     }
-
     if (!validFileTypes.includes(selectedFile.type)) {
       toast.error(errorMessage);
       return;
@@ -321,6 +330,7 @@ const EmployeeRegistration = () => {
 
       toast.success(`${type === 'profile' ? 'Profile photo' : 'Resume'} updated successfully.`);
     } catch (error) {
+      console.error('Upload error:', error.response ? error.response.data : error.message);
       toast.error(`Failed to upload ${type === 'profile' ? 'profile photo' : 'resume'}.`);
     } finally {
       if (type === 'profile') setUploadingProfile(false);
@@ -381,7 +391,6 @@ const EmployeeRegistration = () => {
               onChange={(value) => setFormData({ ...formData, age: value })}
               required
             />
-
           </>
         );
       case 2:
@@ -406,7 +415,6 @@ const EmployeeRegistration = () => {
               onChange={(value) => setFormData({ ...formData, whatsappNumber: value })}
               required
             />
-
           </>
         );
       case 3:
@@ -441,14 +449,13 @@ const EmployeeRegistration = () => {
               type="select"
               options={["Yes", "No"]}
             />
-
           </>
         );
       case 4:
         return (
           <>
             <div className='mb-8'>
-              <label class="block text-gray-700 text-lg font-medium mb-4 ">Present Rank<span class="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Present Rank<span className="text-red-500">*</span></label>
               <Select
                 label="Present Rank"
                 value={rankOptions.find(option => option.value === formData.presentRank)}
@@ -460,7 +467,7 @@ const EmployeeRegistration = () => {
               />
             </div>
             <div className='mb-8'>
-              <label class="block text-gray-700 text-lg font-medium mb-4">Applied Rank<span class="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Applied Rank<span className="text-red-500">*</span></label>
               <Select
                 label="Applied Rank"
                 value={rankOptions.find(option => option.value === formData.appliedRank)}
@@ -469,37 +476,37 @@ const EmployeeRegistration = () => {
                 required
               />
             </div>
-
           </>
         );
       case 5:
         return (
           <>
             <div className='mb-8'>
-              <label class="block text-gray-700 text-lg font-medium mb-4 ">Present Vessel<span class="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Present Vessel<span className="text-red-500">*</span></label>
               <Select
                 label="Present Vessel"
-                value={shipOptions.find(option => option.value === formData.presentVessel)}
+                value={shipOptions.find(option => option.value === formData.presentVessel) || null}
                 onChange={(selectedOption) => setFormData({ ...formData, presentVessel: selectedOption ? selectedOption.value : '' })}
                 options={shipOptions}
                 required
+                placeholder="Select Present Vessel"
               />
-
             </div>
 
             <div className='mb-8'>
-              <label class="block text-gray-700 text-lg font-medium mb-4 ">Applied Vessel<span class="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Applied Vessel<span className="text-red-500">*</span></label>
               <Select
                 label="Applied Vessel"
-                value={shipOptions.find(option => option.value === formData.appliedVessel)}
+                value={shipOptions.find(option => option.value === formData.appliedVessel) || null}
                 onChange={(selectedOption) => setFormData({ ...formData, appliedVessel: selectedOption ? selectedOption.value : '' })}
                 options={shipOptions}
                 required
+                placeholder="Select Applied Vessel"
               />
             </div>
 
             <div className='mb-8'>
-              <label class="block text-gray-700 text-lg font-medium mb-4 ">Exp. Type of Vessels<span class="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Exp. Type of Vessels<span className="text-red-500">*</span></label>
               <Select
                 isMulti
                 name="vesselExp"
@@ -508,6 +515,7 @@ const EmployeeRegistration = () => {
                 classNamePrefix="select"
                 value={vesselExpOptions.filter(option => formData.vesselExp.includes(option.value))}
                 onChange={handleVesselExpChange}
+                placeholder="Select Experience Type of Vessels"
               />
             </div>
           </>
@@ -530,6 +538,13 @@ const EmployeeRegistration = () => {
               type="number"
             />
             <InputField
+              label="Present Rank Experience (Years)"
+              value={formData.presentRankExperienceInYear}
+              onChange={(value) => handleSeaExperienceChange('presentRankExperienceInYear', value)}
+              required
+              type="number"
+            />
+            <InputField
               label="Present Rank Experience (Months)"
               value={formData.presentRankExperienceInMonth}
               onChange={(value) => handleSeaExperienceChange('presentRankExperienceInMonth', value)}
@@ -542,10 +557,10 @@ const EmployeeRegistration = () => {
         return (
           <>
             <div className='mb-8'>
-              <label class="block text-gray-700 text-lg font-medium mb-4 ">COP<span class="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">COP<span className="text-red-500">*</span></label>
               <Select
                 label="COP"
-                value={copOptions.find(option => option.value === formData.cop)} // This ensures the selected option is set based on the current form state
+                value={copOptions.find(option => option.value === formData.cop)} 
                 onChange={(selectedOption) => setFormData({ ...formData, cop: selectedOption ? selectedOption.value : '' })}
                 options={copOptions}
                 required
@@ -553,20 +568,20 @@ const EmployeeRegistration = () => {
             </div>
 
             <div className='mb-8'>
-              <label class="block text-gray-700 text-lg font-medium mb-4 ">COC<span class="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">COC<span className="text-red-500">*</span></label>
               <Select
                 label="COC"
-                value={cocOptions.find(option => option.value === formData.coc)} // Ensures the correct option is selected based on the current state
+                value={cocOptions.find(option => option.value === formData.coc)} 
                 onChange={(selectedOption) => setFormData({ ...formData, coc: selectedOption ? selectedOption.value : '' })}
                 options={cocOptions}
                 required
               />
             </div>
             <div className='mb-8'>
-              <label class="block text-gray-700 text-lg font-medium mb-4 ">Watch keeping<span class="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Watch keeping<span className="text-red-500">*</span></label>
               <Select
                 label="Watchkeeping"
-                value={watchKeepingOptions.find(option => option.value === formData.watchkeeping)} // Ensures the correct option is selected based on the current state
+                value={watchKeepingOptions.find(option => option.value === formData.watchkeeping)} 
                 onChange={(selectedOption) => setFormData({ ...formData, watchkeeping: selectedOption ? selectedOption.value : '' })}
                 options={watchKeepingOptions}
                 required
@@ -611,11 +626,12 @@ const EmployeeRegistration = () => {
                   className="hidden"
                   ref={resumeFileInputRef}
                   onChange={(e) => handleFileChange(e, 'resume')}
-                  accept=".pdf,.doc,.docx"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx"
                 />
                 {uploadingResume && (
                   <p className="text-blue-500">{`Uploading: ${uploadingResume}%`}</p>
                 )}
+                
               </div>
             </div>
           </>

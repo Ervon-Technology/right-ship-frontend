@@ -42,7 +42,7 @@ const VerifySignupOtp = () => {
   const handleSendOtp = () => {
     setTimer(30);
     setCanResend(false);
-    navigate('/register');
+    // Resend OTP logic here
   };
 
   const handleVerifyOtp = async () => {
@@ -101,70 +101,77 @@ const VerifySignupOtp = () => {
     }
   };
 
+  const handleChangeContactInfo = () => {
+    const isEmail = contactInfo.includes('@');
+    if (isEmail) {
+      navigate('/email-register');
+    } else {
+      navigate('/register');
+    }
+  };
+
   return (
     <section
-  className="relative flex flex-col items-center py-20 h-screen bg-gray-100 bgImage"
-  
->
-  {/* Overlay */}
-  <div className="absolute inset-0 bg-white opacity-80 z-10"></div>
+      className="relative flex flex-col items-center py-20 h-screen bg-gray-100 bgImage"
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-white opacity-80 z-10"></div>
 
-  {/* Content */}
-  <div className="relative z-20 flex flex-col items-center">
-    <ToastContainer />
-    <div className="mb-4">
-      <img src={logo} alt="Logo" className="h-24 w-20 mx-auto" />
-    </div>
-    <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-      <h2 className="text-center text-2xl font-semibold mb-6 text-gray-800">
-        Verify OTP
-      </h2>
-      <p className="text-center text-sm text-gray-600 mb-6">
-        OTP sent to: {contactInfo}
-      </p>
-      <input
-        type="text"
-        placeholder="Enter OTP"
-        className="w-full px-4 py-4 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-customBlue"
-        value={otp}
-        onChange={(e) => setOtp(e.target.value)}
-      />
-      <button
-        onClick={handleVerifyOtp}
-        className={`w-full py-4 rounded-md text-white font-medium ${
-          otpStatus === 'loading'
-            ? 'bg-customBlue'
-            : 'bg-customBlue hover:bg-customBlue2'
-        } transition duration-300`}
-        disabled={otpStatus === 'loading'}
-      >
-        {otpStatus === 'loading' ? 'Verifying...' : 'Verify OTP'}
-      </button>
-      {otpStatus === 'failed' && (
-        <p className="text-red-600 mt-4 text-center">{otpError}</p>
-      )}
-      <p className="text-center mt-4 text-sm text-gray-600">
-        {canResend ? (
+      {/* Content */}
+      <div className="relative z-20 flex flex-col items-center">
+        <ToastContainer />
+        <div className="mb-4">
+          <img src={logo} alt="Logo" className="h-24 w-20 mx-auto" />
+        </div>
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+          <h2 className="text-center text-2xl font-semibold mb-6 text-gray-800">
+            Verify OTP
+          </h2>
+          <p className="text-center text-sm text-gray-600 mb-6">
+            OTP sent to: {contactInfo}
+          </p>
+          <input
+            type="text"
+            placeholder="Enter OTP"
+            className="w-full px-4 py-4 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-customBlue"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
           <button
-            onClick={handleSendOtp}
-            className="text-blue-600 underline hover:text-customBlue2 text-md"
+            onClick={handleVerifyOtp}
+            className={`w-full py-4 rounded-md text-white font-medium ${
+              otpStatus === 'loading'
+                ? 'bg-customBlue'
+                : 'bg-customBlue hover:bg-customBlue2'
+            } transition duration-300`}
+            disabled={otpStatus === 'loading'}
           >
-            Resend OTP
+            {otpStatus === 'loading' ? 'Verifying...' : 'Verify OTP'}
           </button>
-        ) : (
-          `Resend OTP in: ${formatTime(timer)}`
-        )}
-      </p>
-      <Link
-        className="text-blue-600 block text-center text-md underline mt-6 hover:text-customBlue2"
-        to="/register"
-      >
-        Change Contact Info
-      </Link>
-    </div>
-  </div>
-</section>
-
+          {otpStatus === 'failed' && (
+            <p className="text-red-600 mt-4 text-center">{otpError}</p>
+          )}
+          <p className="text-center mt-4 text-sm text-gray-600">
+            {canResend ? (
+              <button
+                onClick={handleSendOtp}
+                className="text-blue-600 underline hover:text-customBlue2 text-md"
+              >
+                Resend OTP
+              </button>
+            ) : (
+              `Resend OTP in: ${formatTime(timer)}`
+            )}
+          </p>
+          <button
+            onClick={handleChangeContactInfo}
+            className="text-blue-600 block text-center text-md underline mt-6 mx-auto hover:text-customBlue2"
+          >
+            Change Contact Info
+          </button>
+        </div>
+      </div>
+    </section>
   );
 };
 

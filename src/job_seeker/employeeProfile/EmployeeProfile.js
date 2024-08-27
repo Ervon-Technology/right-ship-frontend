@@ -3,8 +3,7 @@ import { FaRegEdit, FaEdit, FaShareSquare } from "react-icons/fa";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import EditModal from './EditModal';
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
+
 
 const EmployeeProfile = () => {
   const [profileImage, setProfileImage] = useState("https://i2.pickpik.com/photos/711/14/431/smile-profile-face-male-preview.jpg");
@@ -21,7 +20,6 @@ const EmployeeProfile = () => {
     vesselExp: [],
     appliedRank: null,
     presentRank: null,
-    dateOfAvailability: null,
     email: null,
     mobile_no: null,
     whatsappNumber: null,
@@ -29,7 +27,6 @@ const EmployeeProfile = () => {
     country: null,
     dob: null,
     age: null,
-    presentRankExperienceInYear: null,
     presentRankExperienceInMonth: null,
     totalSeaExperienceYear: null,
     totalSeaExperienceMonth: null,
@@ -103,7 +100,6 @@ const EmployeeProfile = () => {
           vesselExp: result?.vesselExp || [],
           appliedRank: result?.appliedRank || null,
           presentRank: result?.presentRank || null,
-          dateOfAvailability: result?.dateOfAvailability || null,
           email: result?.email || null,
           mobile_no: result?.mobile_no || null,
           whatsappNumber: result?.whatsappNumber || null,
@@ -111,7 +107,6 @@ const EmployeeProfile = () => {
           country: result?.country || null,
           dob: result?.dob || null,
           age: age,
-          presentRankExperienceInYear: result?.presentRankExperienceInYear || null,
           presentRankExperienceInMonth: result?.presentRankExperienceInMonth || null,
           totalSeaExperienceYear: result?.totalSeaExperienceYear || null,
           totalSeaExperienceMonth: result?.totalSeaExperienceMonth || null,
@@ -360,7 +355,7 @@ const EmployeeProfile = () => {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-100">
-      <aside className="w-full lg:w-1/3 p-6 my-8 ms-8 lg:p-8 bg-white shadow-lg flex flex-col space-y-6">
+      <aside className="w-full lg:w-1/3 p-6 my-8 lg:ms-8 lg:p-8 bg-white shadow-lg flex flex-col space-y-6">
         <div className="bg-white p-6 lg:p-8 rounded-lg shadow-md flex flex-col items-center text-center">
           <FaShareSquare className="absolute right-4 top-4 cursor-pointer text-gray-600 hover:text-gray-900" size={21} onClick={handleShareClick} />
           <div className="relative">
@@ -424,7 +419,7 @@ const EmployeeProfile = () => {
                 Date Of Availability
                 <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('dateOfAvailability', sectionData.dateOfAvailability)} />
               </h4>
-              <p className="mt-2 text-gray-600">{sectionData.dateOfAvailability}</p>
+              <p className="mt-2 text-gray-600">{sectionData.availability}</p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
@@ -560,13 +555,6 @@ const EmployeeProfile = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-            <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-              <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
-                Present Rank Exp (Years)
-                <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentRankExperienceInYear', sectionData.presentRankExperienceInYear)} />
-              </h4>
-              <p className="mt-2 text-gray-600">{sectionData.presentRankExperienceInYear}</p>
-            </div>
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
                 Present Rank Exp (Months)
