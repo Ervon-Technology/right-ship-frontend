@@ -41,7 +41,7 @@ const VerifySignupOtp = () => {
 
   const handleSendOtp = () => {
     setTimer(30);
-    setCanResend(false);
+    setCanResend(true);
     // Resend OTP logic here
   };
 

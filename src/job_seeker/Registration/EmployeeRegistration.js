@@ -49,7 +49,6 @@ const EmployeeRegistration = () => {
     presentVessel: '',
     appliedVessel: '',
     vesselExp: [],
-    presentRankExperienceInYear: '',
     presentRankExperienceInMonth: '',
     totalSeaExperienceYear: '',
     totalSeaExperienceMonth: '',
@@ -538,13 +537,6 @@ const EmployeeRegistration = () => {
               type="number"
             />
             <InputField
-              label="Present Rank Experience (Years)"
-              value={formData.presentRankExperienceInYear}
-              onChange={(value) => handleSeaExperienceChange('presentRankExperienceInYear', value)}
-              required
-              type="number"
-            />
-            <InputField
               label="Present Rank Experience (Months)"
               value={formData.presentRankExperienceInMonth}
               onChange={(value) => handleSeaExperienceChange('presentRankExperienceInMonth', value)}
@@ -557,34 +549,31 @@ const EmployeeRegistration = () => {
         return (
           <>
             <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">COP<span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">COP</label>
               <Select
                 label="COP"
                 value={copOptions.find(option => option.value === formData.cop)} 
                 onChange={(selectedOption) => setFormData({ ...formData, cop: selectedOption ? selectedOption.value : '' })}
                 options={copOptions}
-                required
               />
             </div>
 
             <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">COC<span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">COC</label>
               <Select
                 label="COC"
                 value={cocOptions.find(option => option.value === formData.coc)} 
                 onChange={(selectedOption) => setFormData({ ...formData, coc: selectedOption ? selectedOption.value : '' })}
                 options={cocOptions}
-                required
               />
             </div>
             <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">Watch keeping<span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Watch keeping</label>
               <Select
                 label="Watchkeeping"
                 value={watchKeepingOptions.find(option => option.value === formData.watchkeeping)} 
                 onChange={(selectedOption) => setFormData({ ...formData, watchkeeping: selectedOption ? selectedOption.value : '' })}
                 options={watchKeepingOptions}
-                required
               />
             </div>
 
