@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import logo from '../../images/logo.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { sendOtp } from '../../features/otpSlice'; // Import the sendOtp action
 import 'react-toastify/dist/ReactToastify.css';
 
 const VerifySignupOtp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // Initialize useDispatch
   const [otp, setOtp] = useState('');
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
+
   const otpStatus = useSelector((state) => state.otp.status);
   const otpError = useSelector((state) => state.otp.error);
   const contactInfo = useSelector((state) => state.contact.contactInfo);
@@ -41,8 +44,12 @@ const VerifySignupOtp = () => {
 
   const handleSendOtp = () => {
     setTimer(30);
-    setCanResend(true);
-    // Resend OTP logic here
+    setCanResend(false);
+    dispatch(sendOtp(contactInfo)) // Dispatch sendOtp action with contactInfo
+      .unwrap()
+      .catch((error) => {
+        toast.error(`Error sending OTP: ${error}`);
+      });
   };
 
   const handleVerifyOtp = async () => {
