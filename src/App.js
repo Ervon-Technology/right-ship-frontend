@@ -21,6 +21,8 @@ import EmployeeRegistration from './job_seeker/Registration/EmployeeRegistration
 
 import JobDashboard from './job_seeker/jobs/JobDashboard';
 
+import PrivacyPolicy from './company/privacyPolicy';
+import Terms from './company/terms';
 
 import SignupWithEmail from './job_seeker/signup/SignupWithEmail';
 import EmployeeProfile from './job_seeker/employeeProfile/EmployeeProfile';
@@ -52,6 +54,8 @@ const App = () => {
             <Route path="/my-jobs" element={<JobBoard />} />
             <Route path="/settings" element={<Setting />} />
             <Route path="*" element={<JobDashboard />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
           </Route>
         ) : (
           <Route element={<CompanyLayout />}>
@@ -63,6 +67,8 @@ const App = () => {
             <Route path="/manage/company/team" element={<CompanyManageUsers />} />
             <Route path="/setting" element={<CompanyProfile />} />
             <Route path="*" element={<JobPostList />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
           </Route>
         )
         ) : (
@@ -77,6 +83,8 @@ const App = () => {
               <Route path='/verify-signup-otp' element={<VerifySignupOtp />} />
               <Route path="/employee-registration" element={<EmployeeRegistration />} />
               <Route path="*" element={<NotFoundPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<Terms />} />
             </Route>
             <Route path="/company/register" element={<RegistrationForm />} />
           </>

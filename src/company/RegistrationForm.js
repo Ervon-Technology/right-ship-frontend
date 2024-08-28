@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'tailwindcss/tailwind.css';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaUser, FaBuilding, FaGlobe, FaEnvelope, FaCity, FaIdCard, FaMapMarkerAlt } from 'react-icons/fa';
 import Loader from './Loader';
 import MailSendPopup from './helper/mailsendpopup';
-import { motion } from 'framer-motion';
-import { FaUser, FaBuilding, FaGlobe, FaMobile, FaEnvelope, FaCity, FaIdCard, FaMapMarkerAlt } from 'react-icons/fa';
 
 const InputField = ({ icon: Icon, label, value, onChange, required, type = 'text', prefix, textarea }) => (
   <div className="relative mb-6">
@@ -32,9 +33,7 @@ const InputField = ({ icon: Icon, label, value, onChange, required, type = 'text
           )}
           <input
             type={type}
-            className={`w-full p-4 ${
-              prefix ? '' : 'pl-12'
-            } border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
+            className={`w-full p-4 ${prefix ? '' : 'pl-12'} border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             required={required}
@@ -55,7 +54,7 @@ const ProgressBar = ({ currentStep, totalSteps }) => (
 );
 
 const RegistrationForm = () => {
-  
+  const navigate = useNavigate(); // useNavigate hook for navigation
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -145,7 +144,7 @@ const RegistrationForm = () => {
   const validateCurrentStep = () => {
     switch (step) {
       case 1:
-        if (!firstName || !lastName || !companyName ) {
+        if (!firstName || !lastName || !companyName) {
           toast.error('Please fill in all required fields.');
           return false;
         }
@@ -267,12 +266,20 @@ const RegistrationForm = () => {
     >
       <h2 className="text-3xl font-semibold text-green-500">Registration Successful!</h2>
       <p className="mt-4 text-gray-600">A verification link has been sent to your email. Please verify your account.</p>
-      <button
-        onClick={() => setIsRegistered(false)}
-        className="mt-6 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-200"
-      >
-        Back
-      </button>
+      <div className="mt-6 flex justify-center space-x-4">
+        <button
+          onClick={() => setIsRegistered(false)}
+          className="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition duration-200"
+        >
+          Back
+        </button>
+        <button
+          onClick={() => navigate('/')}
+          className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-200"
+        >
+          Continue
+        </button>
+      </div>
     </motion.div>
   );
 
