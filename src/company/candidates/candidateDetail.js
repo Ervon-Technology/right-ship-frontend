@@ -51,8 +51,8 @@ const CandidateDetail = () => {
             <img
               loading="lazy"
               className="w-full object-cover md:w-48 h-full"
-              src={candidate.profile_photo || 'https://via.placeholder.com/150'}
-              alt={candidate.name}
+              src={candidate.profile || 'https://via.placeholder.com/150'}
+              alt={candidate.firstName}
             />
           </div>
           <div className="p-8">
@@ -60,12 +60,12 @@ const CandidateDetail = () => {
               {candidate.presentRank || 'Candidate'}
             </div>
             <h1 className="block mt-1 text-3xl leading-tight font-bold text-gray-900">
-              {candidate.name}
+              {candidate.firstName}
             </h1>
             <div className="mt-4">
               <a
                 href={candidate.resume}
-                download={`${candidate.name}-resume.pdf`}
+                download={`${candidate.firstName}-resume.pdf`}
                 className="inline-block px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1"
               >
                 Download Resume
@@ -101,32 +101,32 @@ const CandidateDetail = () => {
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
         <InfoCard title="Personal Information">
-          <InfoItem label="Available From" value={candidate.dateOfAvailability} />
-          <InfoItem label="Date of Birth" value={candidate.dateOfBirth} />
+          <InfoItem label="Available From" value={candidate.availability} />
+          <InfoItem label="Date of Birth" value={candidate.dob} />
           <InfoItem label="Gender" value={candidate.gender} />
         </InfoCard>
 
         <InfoCard title="Professional Experience">
-          <InfoItem label="Total Sea Experience" value={candidate.experience?.seaExperience || 'N/A'} />
+          <InfoItem label="Total Sea Experience" value={candidate.seaExperience || 'N/A'} />
           <InfoItem label="Last Vessel Type" value={candidate.lastVesselType || 'N/A'} />
           <InfoItem label="Vessel Applied For" value={candidate.appliedVessel || 'N/A'} />
         </InfoCard>
 
         <InfoCard title="Certifications">
-          <InfoItem label="License (COC)" value={candidate.licenseHolding?.coc || 'N/A'} />
-          <InfoItem label="COP" value={candidate.licenseHolding?.cop || 'N/A'} />
-          <InfoItem label="Watch Keeping" value={candidate.licenseHolding?.watchKeeping || 'N/A'} />
+          <InfoItem label="License (COC)" value={candidate.coc || 'N/A'} />
+          <InfoItem label="COP" value={candidate.cop || 'N/A'} />
+          <InfoItem label="Watch Keeping" value={candidate.watchkeeping || 'N/A'} />
         </InfoCard>
 
         <InfoCard title="Last Sea Experience">
-          <ItemList value={candidate.pastvesselExp} />
+          <ItemList value={candidate.vesselExp} />
         </InfoCard>
 
         <InfoCard title="Additional Details">
-          <InfoItem label="Height" value={candidate.others?.height || 'N/A'} />
-          <InfoItem label="Weight" value={candidate.others?.weight || 'N/A'} />
-          <InfoItem label="SID Card" value={candidate.others?.sidCard || 'N/A'} />
-          <InfoItem label="Open to Lower Rank" value={candidate.others?.willingToAcceptLowerRank || 'N/A'} />
+          <InfoItem label="Height" value={candidate.height || 'N/A'} />
+          <InfoItem label="Weight" value={candidate.weight || 'N/A'} />
+          <InfoItem label="SID Card" value={candidate.sid || 'N/A'} />
+          {/* <InfoItem label="Open to Lower Rank" value={candidate.others?.willingToAcceptLowerRank || 'N/A'} /> */}
         </InfoCard>
       </div>
 
