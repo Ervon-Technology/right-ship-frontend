@@ -481,7 +481,7 @@ const EmployeeRegistration = () => {
         return (
           <>
             <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">Present Vessel<span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Past Vessel<span className="text-red-500">*</span></label>
               <Select
                 label="Present Vessel"
                 value={shipOptions.find(option => option.value === formData.presentVessel) || null}
