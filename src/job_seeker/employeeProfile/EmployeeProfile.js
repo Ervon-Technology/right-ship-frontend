@@ -521,7 +521,7 @@ const EmployeeProfile = () => {
             </div>
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
-                Present Vessel
+                Past Vessel
                 <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentVessel', sectionData.presentVessel)} />
               </h4>
               <p className="mt-2 text-gray-600">{sectionData.presentVessel}</p>
