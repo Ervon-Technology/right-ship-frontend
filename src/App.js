@@ -12,7 +12,7 @@ import CompanyLayout from '../src/component/layout/companyLayout';
 import HomePage from './job_seeker/landingpage/Home';
 import NotFoundPage from './pageNotFound';
 import CompanyOtpAuth from './company/login/login';
-import RegistrationForm from './company/RegistrationForm';
+import RegistrationForm from './company/registrationForm';
 import EmployeeOtpAuth from './job_seeker/login/employeelogin';
 import EmployeeSignup from './job_seeker/signup/Signup';
 import VerifySignupOtp from './job_seeker/signup/VerifySignupOtp';
@@ -32,6 +32,9 @@ import CompanyProfile from './company/setting';
 import Setting from './job_seeker/setting/Setting';
 import JobBoard from './job_seeker/jobs/MyJobs';
 import PublicProfile from './job_seeker/employeeProfile/PublicProfile'; // Import the PublicProfile component
+import ContactUs from './contactUs';
+
+
 
 const App = () => {
   const user = useSelector((state) => state.auth.user);
@@ -82,6 +85,7 @@ const App = () => {
             </Route>
             <Route path="/company/register" element={<RegistrationForm />} />
             <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+            <Route path="/contact-us" element={<ContactUs />} />
           </>
         )}
       </Routes>

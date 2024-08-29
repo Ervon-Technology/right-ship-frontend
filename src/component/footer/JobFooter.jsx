@@ -9,6 +9,7 @@ const JobFooter = () => {
           <a href='/' className="text-sm mb-4 md:mb-0">© 2024 Rightships</a>
           <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Privacy Policy</a>
           <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:underline">Terms</a>
+          <a href="/contact-us" target="_blank" rel="noopener noreferrer" className="hover:underline">Contact US</a>
         </div>
         <div className="flex space-x-4">
           <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
