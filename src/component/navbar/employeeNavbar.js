@@ -224,7 +224,7 @@ const EmployeeNavbar = () => {
             </button>
           </div>
 
-          <a href="#help-support" className="px-6 text-black flex items-center font-bold">
+          <a href="/contact-us" className="px-6 text-black flex items-center font-bold">
             <CircleHelp size={20} className="mr-2" /> Help & Support
           </a>
         </div>
