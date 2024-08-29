@@ -6,7 +6,7 @@ export const applyJobToCompany = createAsyncThunk(
   async ({ jobId, companyId, employeeId }, { rejectWithValue }) => {
     try {
       console.log('Applying for Job:', { jobId, companyId, employeeId });  // Debugging line
-      const response = await fetch('https://api.rightships.com/employee/apply_job', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/employee/apply_job`, {
         method: 'POST',
         headers: {
           'Accept': '*/*',
@@ -38,7 +38,7 @@ export const unapplyJobFromCompany = createAsyncThunk(
   async ({ jobId, companyId, employeeId }, { rejectWithValue }) => {
     try {
       console.log('Unapplying from Job:', { jobId, companyId, employeeId });  // Debugging line
-      const response = await fetch('https://api.rightships.com/employee/unapply', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/employee/unapply`, {
         method: 'POST',
         headers: {
           'Accept': '*/*',

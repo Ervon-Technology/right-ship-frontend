@@ -52,7 +52,7 @@ const VerifySignupOtp = () => {
         ? { email: contactInfo, otp }
         : { mobile_no: contactInfo, otp };
 
-      const response = await fetch('https://api.rightships.com/otp/verify_otp', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/otp/verify_otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const VerifySignupOtp = () => {
       if (data.code === 200) {
         const employeeId = data.employee_id;
 
-        const registrationResponse = await fetch('https://api.rightships.com/employee/register', {
+        const registrationResponse = await fetch(`${process.env.REACT_APP_API_URL}/employee/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

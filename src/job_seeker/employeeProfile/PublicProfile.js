@@ -9,7 +9,7 @@ const PublicProfile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/employee/get', {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, {
           employee_id: employeeId,
         });
 

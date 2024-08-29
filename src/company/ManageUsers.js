@@ -25,7 +25,7 @@ const CompanyManageUsers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://api.rightships.com/company/team/get", {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/company/team/get`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const CompanyManageUsers = () => {
     
     e.preventDefault();
     try {
-      const endpoint = editMode ? 'https://api.rightships.com/company/team/edit' : 'https://api.rightships.com/company/team/add';
+      const endpoint = editMode ? `${process.env.REACT_APP_API_URL}/company/team/edit` : `${process.env.REACT_APP_API_URL}/company/team/add`;
       const payload = editMode ? { ...formData, team_id: editTeamId } : { ...formData, company_id };
 
       await fetch(endpoint, {
@@ -96,7 +96,7 @@ const CompanyManageUsers = () => {
         body: JSON.stringify(payload),
       });
 
-      const response = await fetch("https://api.rightships.com/company/team/get", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/company/team/get`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const CompanyManageUsers = () => {
 
   const handleDeleteUserClick = async (team_id) => {
     try {
-      await fetch('https://api.rightships.com/company/team/delete', {
+      await fetch(`${process.env.REACT_APP_API_URL}/company/team/delete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ const CompanyManageUsers = () => {
         body: JSON.stringify({ team_id }),
       });
 
-      const response = await fetch("https://api.rightships.com/company/team/get", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/company/team/get`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

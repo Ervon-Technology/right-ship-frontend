@@ -28,10 +28,10 @@ const HomePage = () => {
         };
 
         const [topCompaniesData, featuredCompaniesData, sponsoredCompaniesData, subscriptionData] = await Promise.all([
-          fetchData('https://api.rightships.com/company/get'),
-          fetchData('https://api.rightships.com/company/get'),
-          fetchData('https://api.rightships.com/company/get'),
-          fetchData('https://api.rightships.com/subscription/get'),
+          fetchData(`${process.env.REACT_APP_API_URL}/company/get`),
+          fetchData(`${process.env.REACT_APP_API_URL}/company/get`),
+          fetchData(`${process.env.REACT_APP_API_URL}/company/get`),
+          fetchData(`${process.env.REACT_APP_API_URL}/subscription/get`),
         ]);
 
         console.log('Top Companies Data:', topCompaniesData);

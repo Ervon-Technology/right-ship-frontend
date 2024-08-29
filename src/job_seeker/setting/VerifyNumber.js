@@ -26,7 +26,7 @@ const VerifyNumber = ({ closeModal }) => {
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
-        const response = await fetch('https://api.rightships.com/employee/get', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/employee/get`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const VerifyNumber = ({ closeModal }) => {
 
   const handleVerifyOtp = async () => {
     try {
-        const verifyResponse = await fetch('https://api.rightships.com/otp/verify_otp', {
+        const verifyResponse = await fetch(`${process.env.REACT_APP_API_URL}/otp/verify_otp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ const VerifyNumber = ({ closeModal }) => {
             // mobile_no: contactInfo,
         };
   
-        const updateResponse = await fetch('https://api.rightships.com/employee/update', {
+        const updateResponse = await fetch(`${process.env.REACT_APP_API_URL}/employee/update`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ export const sendOtp = createAsyncThunk(
   async (contact, { rejectWithValue }) => {
     try {
       const isEmail = contact.includes('@');
-      const response = await fetch('https://api.rightships.com/otp/send_otp', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/otp/send_otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export const verifyOtp = createAsyncThunk(
   async ({ contactInfo, otp }, { rejectWithValue }) => {
     try {
       const isEmail = contactInfo.includes('@');
-      const response = await fetch('https://api.rightships.com/otp/verify_otp', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/otp/verify_otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

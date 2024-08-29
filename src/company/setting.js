@@ -15,7 +15,7 @@ const CompanyProfile = () => {
     const fetchCompanyData = async () => {
       try {
         const response = await axios.post(
-          'https://api.rightships.com/company/get',
+          `${process.env.REACT_APP_API_URL}/company/get`,
           { company_id: user.company_id },
           {
             headers: {
@@ -50,7 +50,7 @@ const CompanyProfile = () => {
 
     try {
       const response = await axios.post(
-        'https://api.rightships.com/company/update',
+        `${process.env.REACT_APP_API_URL}/company/update`,
         editedCompany
       );
       setCompany(editedCompany);

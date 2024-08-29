@@ -61,7 +61,7 @@ const Supports = () => {
 
   const createTicket = async () => {
     try {
-      const response = await fetch('https://api.rightships.com/company/support/create', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/company/support/create`, {
         method: 'POST',
         headers: {
           'Accept': '*/*',
@@ -87,7 +87,7 @@ const Supports = () => {
 
   const editTicket = async (supportId) => {
     try {
-      const response = await fetch('https://api.rightships.com/company/support/update', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/company/support/update`, {
         method: 'POST',
         headers: {
           'Accept': '*/*',
@@ -112,7 +112,7 @@ const Supports = () => {
 
   const getTickets = async () => {
     try {
-      const response = await fetch('https://api.rightships.com/company/support/get', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/company/support/get`, {
         method: 'POST',
         headers: {
           'Accept': '*/*',
@@ -132,7 +132,7 @@ const Supports = () => {
 
   const deleteTicket = async (supportId) => {
     try {
-      await fetch('https://api.rightships.com/company/support/delete', {
+      await fetch(`${process.env.REACT_APP_API_URL}/company/support/delete`, {
         method: 'POST',
         headers: {
           'Accept': '*/*',

@@ -5,7 +5,7 @@ export const registerEmployee = createAsyncThunk(
   'employee/registerEmployee',
   async (employeeData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('https://api.rightships.com/employee/register', employeeData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/register`, employeeData, {
         headers: {
           'Content-Type': 'application/json'
         }

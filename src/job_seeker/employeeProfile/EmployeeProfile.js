@@ -61,7 +61,7 @@ const EmployeeProfile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/employee/get', {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, {
           employee_id: employeeId,
           page: 1,
           limit: 10
@@ -132,7 +132,7 @@ const EmployeeProfile = () => {
 
     const fetchAttributes = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/attributes/get', {}, {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/attributes/get`, {}, {
           headers: {
             'Content-Type': 'application/json',
             'Accept': '*/*',
@@ -197,7 +197,7 @@ const EmployeeProfile = () => {
       formData.append('file', selectedFile);
 
       try {
-        const response = await axios.post('https://api.rightships.com/upload', formData, {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -217,7 +217,7 @@ const EmployeeProfile = () => {
           setProfileImage(fileUrl);
         }
 
-        await axios.post('https://api.rightships.com/employee/update', updatePayload, {
+        await axios.post(`${process.env.REACT_APP_API_URL}/employee/update`, updatePayload, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -312,7 +312,7 @@ const EmployeeProfile = () => {
         ...updatedSectionData,
       };
   
-      await axios.post('https://api.rightships.com/employee/update', payload, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/employee/update`, payload, {
         headers: {
           'Content-Type': 'application/json',
           Accept: '*/*',

@@ -21,7 +21,7 @@ const ChangeNumber = () => {
     // Fetch user data from API
     const fetchUserData = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/employee/get', {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, {
           mobile_no: contactInfo, 
           user_type: 'employee',
         });
@@ -45,7 +45,7 @@ const ChangeNumber = () => {
   const handleSendOtp = async () => {
     setOtpStatus('loading');
     try {
-      await axios.post('https://api.rightships.com/otp/send_otp', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, {
         mobile_no: number,
         user_type: 'employee',
       });

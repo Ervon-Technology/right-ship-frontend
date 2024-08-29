@@ -33,7 +33,7 @@ const CreateJobStepForm = () => {
   useEffect(() => {
     const fetchAttributes = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/attributes/get', {});
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/attributes/get`, {});
 
         if (response.data && response.data.code === 200) {
           const attributes = response.data.data;
@@ -67,7 +67,7 @@ const CreateJobStepForm = () => {
   useEffect(() => {
     const fetchAttributes = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/company/get', {company_id: user.company_id});
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/get`, {company_id: user.company_id});
 
         if (response.data && response.data.code === 200) {
      
@@ -110,7 +110,7 @@ const CreateJobStepForm = () => {
 
 
       // Make the API request
-      const response = await axios.post('https://api.rightships.com/company/application/create', requestData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/application/create`, requestData, {
       
       });
 

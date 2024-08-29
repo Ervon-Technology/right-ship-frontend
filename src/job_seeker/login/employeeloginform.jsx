@@ -15,7 +15,7 @@ const MobileNumberForm = ({ onOtpRequested }) => {
             const isEmail = contactInfo.includes('@');
             const payload = isEmail ? { email: contactInfo } : { mobile_no: contactInfo };
 
-            const response = await axios.post('https://api.rightships.com/otp/send_otp', payload);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, payload);
             console.log(response.data);
 
             if (response.data.code === 200) {

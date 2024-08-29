@@ -18,7 +18,7 @@ const CandidateDetail = () => {
     const fetchCandidate = async () => {
       setLoading(true);
       try {
-        const response = await axios.post('https://api.rightships.com/employee/get', data);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, data);
         setCandidate(response.data.data[0]);
       } catch (err) {
         console.error('Error fetching candidate details:', err);

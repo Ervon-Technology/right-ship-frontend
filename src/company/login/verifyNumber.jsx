@@ -21,7 +21,7 @@ const OtpVerificationForm = ({ mobileNumber }) => {
         setOtpStatus('loading');
         
         try {
-            const response = await axios.post('https://api.rightships.com/otp/verify_otp', { mobile_no: mobileNumber, otp });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/verify_otp`, { mobile_no: mobileNumber, otp });
             console.log(response.data);
             if (response.data.code === 200) {
                 setOtpStatus('success');
@@ -41,7 +41,7 @@ const OtpVerificationForm = ({ mobileNumber }) => {
     const handleSendOtp = async () => {
         setOtpStatus('loading');
         try {
-            const response = await axios.post('https://api.rightships.com/otp/send_otp', { mobile_no: mobileNumber });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, { mobile_no: mobileNumber });
             if (response.data.success) {
                 setOtpStatus('success');
                 setCanResend(false);

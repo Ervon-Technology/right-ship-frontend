@@ -31,7 +31,7 @@ const JobPostList = () => {
         };
 
         const response = await axios.post(
-          'https://api.rightships.com/company/application/get',
+          `${process.env.REACT_APP_API_URL}/company/application/get`,
           requestData
         );
 
@@ -62,7 +62,7 @@ const JobPostList = () => {
 
     try {
       const response = await axios.post(
-        'https://api.rightships.com/company/application/edit',
+        `${process.env.REACT_APP_API_URL}/company/application/edit`,
         data
       );
       console.log('Job status updated:', response.data);
@@ -102,7 +102,7 @@ const JobPostList = () => {
         status: newStatus,
       }
 
-      const JobStatusResponse = axios.post("https://api.rightships.com/company/application/edit", postStateData );
+      const JobStatusResponse = axios.post(`${process.env.REACT_APP_API_URL}/company/application/edit`, postStateData );
      
      
         console.log(posts);

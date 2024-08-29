@@ -44,7 +44,7 @@ function Setting() {
     // Fetch user details from API
     const fetchUserDetails = async () => {
       try {
-        const response = await fetch('https://api.rightships.com/user/details', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/user/details`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

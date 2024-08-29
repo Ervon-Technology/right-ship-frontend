@@ -24,7 +24,7 @@ const JobDetail = () => {
                     application_id: id,
                 };
 
-                const response = await axios.post('https://api.rightships.com/company/application/get', requestData);
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/application/get`, requestData);
 
                 if (response.data.code === 200) {
                     setJob(response.data.application); // Assuming the response contains a list of applications
@@ -52,7 +52,7 @@ const JobDetail = () => {
                     company_id: user.company_id,
                 };
 
-                const response = await axios.post('https://api.rightships.com/company/get', requestData);
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/get`, requestData);
 
                 if (response.data.code === 200) {
                     setCompany(response.data.data); 

@@ -23,7 +23,7 @@ const EmployeeNavbar = () => {
     // Fetch profile photo from the API
     const fetchProfilePhoto = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/employee/get', {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, {
           employee_id: employeeId, // Replace with actual employee ID
         });
         const result = response.data.data[0];

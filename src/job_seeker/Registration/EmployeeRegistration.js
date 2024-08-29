@@ -153,7 +153,7 @@ const EmployeeRegistration = () => {
   useEffect(() => {
     const fetchAttributes = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/attributes/get', {}, {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/attributes/get`, {}, {
           headers: {
             'Content-Type': 'application/json',
             'Accept': '*/*',
@@ -245,7 +245,7 @@ const EmployeeRegistration = () => {
     }
 
     try {
-      await axios.post('https://api.rightships.com/employee/update', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/employee/update`, {
         employee_id: employeeId,
         ...formData,
       }, {
@@ -324,7 +324,7 @@ const EmployeeRegistration = () => {
     formDataFile.append('file', selectedFile);
 
     try {
-      const response = await axios.post('https://api.rightships.com/upload', formDataFile, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/upload`, formDataFile, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -347,7 +347,7 @@ const EmployeeRegistration = () => {
         [apiField]: fileUrl,
       };
 
-      await axios.post('https://api.rightships.com/employee/update', updatePayload, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/employee/update`, updatePayload, {
         headers: {
           'Content-Type': 'application/json',
         },

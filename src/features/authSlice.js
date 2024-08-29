@@ -15,7 +15,7 @@ export const sendOtp = createAsyncThunk(
     try {
       console.log("=====>", contactInfo);
       const contactInfo = contactInfo.includes('@') ? { email: contactInfo } : { mobile_no: contactInfo } ;
-      const response = await axios.post('https://api.rightships.com/send_otp', { contactInfo });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/send_otp`, { contactInfo });
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || 'An unexpected error occurred';
@@ -30,7 +30,7 @@ export const verifyOtp = createAsyncThunk(
   async ({ contactInfo, otp }, { rejectWithValue }) => {
     try {
       const contactInfo = contactInfo.includes('@') ? { email: contactInfo } : { mobile_no: contactInfo } ;
-      const response = await axios.post('https://api.rightships.com/verify_otp', { contactInfo, otp });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/verify_otp`, { contactInfo, otp });
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to verify OTP';
@@ -44,7 +44,7 @@ export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('https://api.rightships.com/employee/update', userData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/update`, userData);
       userData.role = "employee";
       return { user: userData, token: response.data.token };
     } catch (error) {
@@ -60,7 +60,7 @@ export const login = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       console.log("======>", credentials);
-      const response = await axios.post('https://api.rightships.com/employee/login', credentials);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/login`, credentials);
       console.log("======>", response);
       const { _id, name, profile_photo, mobile_no, email, presentRank } = response.data.employee;
       const user = { _id, name, profile_photo, mobile_no, email, role: "employee" };
@@ -77,7 +77,7 @@ export const loginCompany = createAsyncThunk(
   'auth/login/company',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post('https://api.rightships.com/company/login', credentials);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/login`, credentials);
       console.log("======> 1", credentials);
       const { _id, company_id, mobile_no } = response.data.data;
       console.log("======> 2", response.data.data);

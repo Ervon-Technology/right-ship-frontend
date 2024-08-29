@@ -35,7 +35,7 @@ const CandidatesTable = ({ jobId }) => {
 
         console.log("Request Data:", requestData);
 
-        const response = await axios.post('https://api.rightships.com/employee/get', requestData);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
 
         console.log("API Response:", response.data);
 
@@ -63,7 +63,7 @@ const CandidatesTable = ({ jobId }) => {
   const fetchPosts = useCallback(async () => {
     try {
       const response = await axios.post(
-        'https://api.rightships.com/company/application/get',
+        `${process.env.REACT_APP_API_URL}/company/application/get`,
         { company_id: user.company_id }
       );
 
@@ -114,7 +114,7 @@ const CandidatesTable = ({ jobId }) => {
   useEffect(() => {
     const fetchAttributes = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/attributes/get', {});
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/attributes/get`, {});
         if (response.data && response.data.code === 200) {
           const attributes = response.data.data;
           const shipAttribute = attributes.find(attr => attr.name.toLowerCase() === 'ships');

@@ -16,7 +16,7 @@ const MobileNumberForm = ({ onOtpRequested }) => {
         
         setOtpStatus('loading');
         try {
-            const response = await axios.post('https://api.rightships.com/otp/send_otp', { mobile_no: mobileNumber });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, { mobile_no: mobileNumber });
             console.log(response.data);
             if (response.data.code == 200) {
                 onOtpRequested(mobileNumber);

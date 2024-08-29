@@ -100,7 +100,7 @@ const RegistrationForm = () => {
 
   const senddata = async () => {
     try {
-      const response = await fetch('https://api.rightships.com/company/register', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/company/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

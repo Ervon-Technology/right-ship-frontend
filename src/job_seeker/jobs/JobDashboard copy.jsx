@@ -89,7 +89,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
 
     setApplying(true);
     try {
-      const response = await axios.post('https://api.rightships.com/employee/apply_job', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/apply_job`, {
         employee_id: currentUserId,
         application_id: job.application_id,
         company_id: job.company_id
@@ -113,7 +113,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
 
     setUnapplying(true);
     try {
-      const response = await axios.post('https://api.rightships.com/employee/unapply', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unapply`, {
         employee_id: currentUserId,
         application_id: job.application_id,
         company_id: job.company_id
@@ -137,7 +137,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
 
     setSaving(true);
     try {
-      const response = await axios.post('https://api.rightships.com/employee/save_jobs', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/save_jobs`, {
         employee_id: currentUserId,
         application_id: job.application_id,
         company_id: job.company_id
@@ -161,7 +161,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
 
     setUnsaving(true);
     try {
-      const response = await axios.post('https://api.rightships.com/employee/unsave', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unsave`, {
         employee_id: currentUserId,
         application_id: job.application_id,
         company_id: job.company_id
@@ -249,7 +249,7 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
     }
     setApplying(true);
     try {
-      const response = await axios.post('https://api.rightships.com/employee/apply_job', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/apply_job`, {
         employee_id: currentUserId,
         application_id: job.application_id,
         company_id: job.company_id
@@ -277,7 +277,7 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
     }
     setUnapplying(true);
     try {
-      const response = await axios.post('https://api.rightships.com/employee/unapply', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unapply`, {
         employee_id: currentUserId,
         application_id: job.application_id,
         company_id: job.company_id
@@ -305,7 +305,7 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
     }
     setSaving(true);
     try {
-      const response = await axios.post('https://api.rightships.com/employee/save_jobs', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/save_jobs`, {
         employee_id: currentUserId,
         application_id: job.application_id,
         company_id: job.company_id
@@ -333,7 +333,7 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
     }
     setUnsaving(true);
     try {
-      const response = await axios.post('https://api.rightships.com/employee/unsave', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unsave`, {
         employee_id: currentUserId,
         application_id: job.application_id,
         company_id: job.company_id
@@ -505,7 +505,7 @@ const App = () => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const response = await axios.post('https://api.rightships.com/attributes/get', {});
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/attributes/get`, {});
         if (response.data.code === 200) {
           const attributes = response.data.data;
           const shipAttribute = attributes.find(attr => attr.name.toLowerCase() === 'ships');
@@ -551,7 +551,7 @@ const App = () => {
     query.limit = jobsPerPage;
 
     try {
-      const response = await axios.post('https://api.rightships.com/company/application/get', query);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/application/get`, query);
       if (response.data.code === 200) {
         setJobs(response.data.applications);
       } else {
@@ -589,7 +589,7 @@ const App = () => {
   // Fetch company details when a job card is clicked
   const fetchCompanyDetails = async (job) => {
     try {
-      const response = await axios.post('https://api.rightships.com/company/get', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/get`, {
         company_id: job.company_id
       });
       if (response.data.code === 200) {
