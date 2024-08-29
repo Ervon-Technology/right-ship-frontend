@@ -18,7 +18,7 @@ const EmployeeRegistration = () => {
   const location = useLocation();
   const state = location.state || {};
   const employeeId = state.employeeId || '';
-  const contactInfo = useSelector((state) => state.contact?.contactInfo || ''); 
+  const contactInfo = useSelector((state) => state.contact?.contactInfo || '');
   const dispatch = useDispatch();
   const profileFileInputRef = useRef(null);
   const resumeFileInputRef = useRef(null);
@@ -27,7 +27,8 @@ const EmployeeRegistration = () => {
   const [shipOptions, setShipOptions] = useState([]);
   const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
   const [rankOptions, setRankOptions] = useState([]);
-  const [vesselExpOptions, setVesselExpOptions] = useState([]); 
+  const [vesselExpOptions, setVesselExpOptions] = useState([]);
+  const [nationalityOptions, setNationalityOptions] = useState([]); // Nationality options
 
   const { loading, error } = useSelector((state) => state.employee);
 
@@ -38,14 +39,14 @@ const EmployeeRegistration = () => {
     mobile_no: !contactInfo.includes('@') ? contactInfo : '',
     whatsappNumber: '',
     gender: '',
-    nationality: '',
+    nationality: '', // Nationality field in Step 3
     dob: '',
     age: '',
     availability: '',
     sid: '',
     usVisa: '',
     appliedRank: '',
-    presentRank: '',
+    presentRank: '', // Last Rank field in Step 4
     presentVessel: '',
     appliedVessel: '',
     vesselExp: [],
@@ -61,7 +62,7 @@ const EmployeeRegistration = () => {
       country: '',
       state: '',
       city: '',
-      addresss: ''
+      address: ''
     },
   });
 
@@ -70,11 +71,17 @@ const EmployeeRegistration = () => {
   };
 
   const handleFirstNameChange = (value) => {
-    setFormData({ ...formData, firstName: capitalizeFirstLetter(value) });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      firstName: capitalizeFirstLetter(value),
+    }));
   };
 
   const handleLastNameChange = (value) => {
-    setFormData({ ...formData, lastName: capitalizeFirstLetter(value) });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      lastName: capitalizeFirstLetter(value),
+    }));
   };
 
   const handleDateOfBirthChange = (value) => {
@@ -93,7 +100,11 @@ const EmployeeRegistration = () => {
       return;
     }
 
-    setFormData({ ...formData, dob: value, age: age.toString() });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      dob: value,
+      age: age.toString(),
+    }));
   };
 
   const calculateAge = (dob) => {
@@ -121,7 +132,10 @@ const EmployeeRegistration = () => {
       return;
     }
 
-    setFormData({ ...formData, availability: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      availability: value,
+    }));
   };
 
   const handleSeaExperienceChange = (field, value) => {
@@ -130,7 +144,10 @@ const EmployeeRegistration = () => {
       return;
     }
 
-    setFormData({ ...formData, [field]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: value,
+    }));
   };
 
   useEffect(() => {
@@ -152,12 +169,14 @@ const EmployeeRegistration = () => {
           const shipAttribute = attributes.find(attr => attr.name.toLowerCase() === 'ships');
           const watchKeepingAttribute = attributes.find(attr => attr.name.toLowerCase() === 'watch keeping');
           const rankAttribute = attributes.find(attr => attr.name.toLowerCase() === 'rank');
+          const nationalityAttribute = attributes.find(attr => attr.name.toLowerCase() === 'nationality');
 
           const copData = copAttribute ? copAttribute.values : [];
           const cocData = cocAttribute ? cocAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
           const shipData = shipAttribute ? shipAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
           const watchKeepingData = watchKeepingAttribute ? watchKeepingAttribute.values : [];
           const rankData = rankAttribute ? rankAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
+          const nationalityData = nationalityAttribute ? nationalityAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
 
           setCopOptions(copData.map(option => ({ value: option, label: option })));
           setCocOptions(cocData.map(option => ({ value: option, label: option })));
@@ -165,6 +184,7 @@ const EmployeeRegistration = () => {
           setWatchKeepingOptions(watchKeepingData.map(option => ({ value: option, label: option })));
           setRankOptions(rankData.map(option => ({ value: option, label: option })));
           setVesselExpOptions(shipData.map(option => ({ value: option, label: option })));
+          setNationalityOptions(nationalityData.map(option => ({ value: option, label: option }))); // Set nationality options
         } else {
           console.error('Failed to fetch attributes:', response.data.msg);
         }
@@ -262,7 +282,10 @@ const EmployeeRegistration = () => {
   };
 
   const handleVesselExpChange = (selectedOptions) => {
-    setFormData({ ...formData, vesselExp: selectedOptions.map(option => option.value) });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      vesselExp: selectedOptions.map(option => option.value)
+    }));
   };
 
   const handleFileChange = async (event, type) => {
@@ -314,7 +337,10 @@ const EmployeeRegistration = () => {
 
       const fileUrl = response.data.file_url;
 
-      setFormData({ ...formData, [apiField]: fileUrl });
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [apiField]: fileUrl,
+      }));
 
       const updatePayload = {
         employee_id: employeeId,
@@ -387,7 +413,10 @@ const EmployeeRegistration = () => {
             <InputField
               label="Age"
               value={formData.age}
-              onChange={(value) => setFormData({ ...formData, age: value })}
+              onChange={(value) => setFormData((prevFormData) => ({
+                ...prevFormData,
+                age: value,
+              }))}
               required
             />
           </>
@@ -398,20 +427,29 @@ const EmployeeRegistration = () => {
             <InputField
               label="Email"
               value={formData.email}
-              onChange={(value) => setFormData({ ...formData, email: value })}
+              onChange={(value) => setFormData((prevFormData) => ({
+                ...prevFormData,
+                email: value,
+              }))}
               required
               type="email"
             />
             <InputField
               label="Mobile Number"
               value={formData.mobile_no}
-              onChange={(value) => setFormData({ ...formData, mobile_no: value })}
+              onChange={(value) => setFormData((prevFormData) => ({
+                ...prevFormData,
+                mobile_no: value,
+              }))}
               required
             />
             <InputField
               label="WhatsApp Number"
               value={formData.whatsappNumber}
-              onChange={(value) => setFormData({ ...formData, whatsappNumber: value })}
+              onChange={(value) => setFormData((prevFormData) => ({
+                ...prevFormData,
+                whatsappNumber: value,
+              }))}
               required
             />
           </>
@@ -419,12 +457,19 @@ const EmployeeRegistration = () => {
       case 3:
         return (
           <>
-            <InputField
-              label="Nationality"
-              value={formData.nationality}
-              onChange={(value) => setFormData({ ...formData, nationality: value })}
-              required
-            />
+            <div className='mb-8'>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Nationality<span className="text-red-500">*</span></label>
+              <Select
+                label="Nationality"
+                value={nationalityOptions.find(option => option.value === formData.nationality)}
+                onChange={(selectedOption) => setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  nationality: selectedOption ? selectedOption.value : '',
+                }))}
+                options={nationalityOptions}
+                required
+              />
+            </div>
             <InputField
               label="Date of Availability"
               value={formData.availability}
@@ -435,7 +480,10 @@ const EmployeeRegistration = () => {
             <InputField
               label="SID"
               value={formData.sid}
-              onChange={(value) => setFormData({ ...formData, sid: value })}
+              onChange={(value) => setFormData((prevFormData) => ({
+                ...prevFormData,
+                sid: value,
+              }))}
               required
               type="select"
               options={["Yes", "No"]}
@@ -443,7 +491,10 @@ const EmployeeRegistration = () => {
             <InputField
               label="US Visa"
               value={formData.usVisa}
-              onChange={(value) => setFormData({ ...formData, usVisa: value })}
+              onChange={(value) => setFormData((prevFormData) => ({
+                ...prevFormData,
+                usVisa: value,
+              }))}
               required
               type="select"
               options={["Yes", "No"]}
@@ -454,12 +505,15 @@ const EmployeeRegistration = () => {
         return (
           <>
             <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">Present Rank<span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Last Rank<span className="text-red-500">*</span></label>
               <Select
-                label="Present Rank"
+                label="Last Rank"
                 value={rankOptions.find(option => option.value === formData.presentRank)}
                 onChange={(selectedOption) => {
-                  setFormData({ ...formData, presentRank: selectedOption ? selectedOption.value : '' });
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    presentRank: selectedOption ? selectedOption.value : '',
+                  }));
                 }}
                 options={rankOptions}
                 required
@@ -470,7 +524,10 @@ const EmployeeRegistration = () => {
               <Select
                 label="Applied Rank"
                 value={rankOptions.find(option => option.value === formData.appliedRank)}
-                onChange={(selectedOption) => setFormData({ ...formData, appliedRank: selectedOption ? selectedOption.value : '' })}
+                onChange={(selectedOption) => setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  appliedRank: selectedOption ? selectedOption.value : '',
+                }))}
                 options={rankOptions}
                 required
               />
@@ -483,12 +540,15 @@ const EmployeeRegistration = () => {
             <div className='mb-8'>
               <label className="block text-gray-700 text-lg font-medium mb-4">Past Vessel<span className="text-red-500">*</span></label>
               <Select
-                label="Present Vessel"
+                label="Past Vessel"
                 value={shipOptions.find(option => option.value === formData.presentVessel) || null}
-                onChange={(selectedOption) => setFormData({ ...formData, presentVessel: selectedOption ? selectedOption.value : '' })}
+                onChange={(selectedOption) => setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  presentVessel: selectedOption ? selectedOption.value : '',
+                }))}
                 options={shipOptions}
                 required
-                placeholder="Select Present Vessel"
+                placeholder="Select Past Vessel"
               />
             </div>
 
@@ -497,7 +557,10 @@ const EmployeeRegistration = () => {
               <Select
                 label="Applied Vessel"
                 value={shipOptions.find(option => option.value === formData.appliedVessel) || null}
-                onChange={(selectedOption) => setFormData({ ...formData, appliedVessel: selectedOption ? selectedOption.value : '' })}
+                onChange={(selectedOption) => setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  appliedVessel: selectedOption ? selectedOption.value : '',
+                }))}
                 options={shipOptions}
                 required
                 placeholder="Select Applied Vessel"
@@ -537,7 +600,7 @@ const EmployeeRegistration = () => {
               type="number"
             />
             <InputField
-              label="Present Rank Experience (Months)"
+              label="Last Rank Experience (Months)"
               value={formData.presentRankExperienceInMonth}
               onChange={(value) => handleSeaExperienceChange('presentRankExperienceInMonth', value)}
               required
@@ -553,7 +616,10 @@ const EmployeeRegistration = () => {
               <Select
                 label="COP"
                 value={copOptions.find(option => option.value === formData.cop)} 
-                onChange={(selectedOption) => setFormData({ ...formData, cop: selectedOption ? selectedOption.value : '' })}
+                onChange={(selectedOption) => setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  cop: selectedOption ? selectedOption.value : '',
+                }))}
                 options={copOptions}
               />
             </div>
@@ -563,7 +629,10 @@ const EmployeeRegistration = () => {
               <Select
                 label="COC"
                 value={cocOptions.find(option => option.value === formData.coc)} 
-                onChange={(selectedOption) => setFormData({ ...formData, coc: selectedOption ? selectedOption.value : '' })}
+                onChange={(selectedOption) => setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  coc: selectedOption ? selectedOption.value : '',
+                }))}
                 options={cocOptions}
               />
             </div>
@@ -572,7 +641,10 @@ const EmployeeRegistration = () => {
               <Select
                 label="Watchkeeping"
                 value={watchKeepingOptions.find(option => option.value === formData.watchkeeping)} 
-                onChange={(selectedOption) => setFormData({ ...formData, watchkeeping: selectedOption ? selectedOption.value : '' })}
+                onChange={(selectedOption) => setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  watchkeeping: selectedOption ? selectedOption.value : '',
+                }))}
                 options={watchKeepingOptions}
               />
             </div>

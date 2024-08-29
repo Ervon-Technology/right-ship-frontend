@@ -70,6 +70,11 @@ const EmployeeNavbar = () => {
     window.location.reload();
   };
 
+  const handleDropdownItemClick = () => {
+    setUserDropdownOpen(false);
+    setNotificationDropdownOpen(false);
+  };
+
   return (
     <>
       <header className="bg-white border-b py-4 px-8 border-gray-200 sticky top-0 z-50">
@@ -111,16 +116,34 @@ const EmployeeNavbar = () => {
               </button>
               {userDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-50">
-                  <Link to="/profile" className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold">
+                  <Link 
+                    to="/profile" 
+                    className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold"
+                    onClick={handleDropdownItemClick}
+                  >
                     <UserRound size={20} className="mr-2" /> Profile
                   </Link>
-                  <Link to="/my-jobs" className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold">
+                  <Link 
+                    to="/my-jobs" 
+                    className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold"
+                    onClick={handleDropdownItemClick}
+                  >
                     <BriefcaseBusiness size={20} className="mr-2" /> My Jobs
                   </Link>
-                  <Link to="/settings" className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold">
+                  <Link 
+                    to="/settings" 
+                    className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold"
+                    onClick={handleDropdownItemClick}
+                  >
                     <Settings size={20} className="mr-2" /> Settings
                   </Link>
-                  <Link to="/" onClick={handleLogout} className="px-4 py-2 mt-1 text-gray-800 hover:bg-gray-100 flex justify-center border-t font-bold">Sign Out</Link>
+                  <Link 
+                    to="/" 
+                    onClick={() => { handleLogout(); handleDropdownItemClick(); }} 
+                    className="px-4 py-2 mt-1 text-gray-800 hover:bg-gray-100 flex justify-center border-t font-bold"
+                  >
+                    Sign Out
+                  </Link>
                 </div>
               )}
             </div>
@@ -157,20 +180,36 @@ const EmployeeNavbar = () => {
               User
             </button>         
               <div className="mt-2 space-y-2">
-                <Link to="/profile" className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2">
+                <Link 
+                  to="/profile" 
+                  className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2"
+                  onClick={handleDropdownItemClick}
+                >
                   <img
                     src={profilePhoto}
                     alt="Profile"
                     className="w-8 h-8 rounded-full object-cover mr-2"
                   /> Profile
                 </Link>
-                <Link to="/my-jobs" className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2">
+                <Link 
+                  to="/my-jobs" 
+                  className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2"
+                  onClick={handleDropdownItemClick}
+                >
                   <BriefcaseBusiness size={20} className="mr-2" /> My Jobs
                 </Link>
-                <Link to="/settings" className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2">
+                <Link 
+                  to="/settings" 
+                  className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2"
+                  onClick={handleDropdownItemClick}
+                >
                   <Settings size={20} className="mr-2" /> Settings
                 </Link>
-                <Link to="/" onClick={handleLogout} className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2">
+                <Link 
+                  to="/" 
+                  onClick={() => { handleLogout(); handleDropdownItemClick(); }} 
+                  className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2"
+                >
                   <LogOut size={20} className="mr-2" /> Sign Out
                 </Link>
               </div>
@@ -202,4 +241,3 @@ const EmployeeNavbar = () => {
 };
 
 export default EmployeeNavbar;
-

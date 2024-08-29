@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import EditModal from './EditModal';
 
-
 const EmployeeProfile = () => {
   const [profileImage, setProfileImage] = useState("https://i2.pickpik.com/photos/711/14/431/smile-profile-face-male-preview.jpg");
   const [profileData, setProfileData] = useState({ name: '', presentRank: '', appliedRank: '' });
@@ -333,18 +332,18 @@ const EmployeeProfile = () => {
     setEditValue(selectedOption.value);
   };
 
-
   const handleVesselExpChange = (selectedOptions) => {
     const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
     setEditValue(selectedValues);
   };
 
   const handleShareClick = () => {
+    const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
     if (navigator.share) {
       navigator.share({
-        title: 'Employee Profile',
+        title: `Employee Profile of ${profileData.name}`,
         text: `Check out the profile of ${profileData.name} - ${profileData.presentRank}`,
-        url: window.location.href,
+        url: profileUrl,
       })
         .then(() => console.log('Profile shared successfully'))
         .catch((error) => console.error('Error sharing profile:', error));
@@ -352,12 +351,17 @@ const EmployeeProfile = () => {
       alert('Web Share API is not supported in your browser.');
     }
   };
+  
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-100">
       <aside className="w-full lg:w-1/3 p-6 my-8 lg:ms-8 lg:p-8 bg-white shadow-lg flex flex-col space-y-6">
-        <div className="bg-white p-6 lg:p-8 rounded-lg shadow-md flex flex-col items-center text-center">
-          <FaShareSquare className="absolute right-4 top-4 cursor-pointer text-gray-600 hover:text-gray-900" size={21} onClick={handleShareClick} />
+        <div className="bg-white p-6 lg:p-8 rounded-lg shadow-md flex flex-col items-center text-center relative">
+          <FaShareSquare 
+            className="absolute right-4 top-4 cursor-pointer text-gray-600 hover:text-gray-900" 
+            size={21} 
+            onClick={handleShareClick} 
+          />
           <div className="relative">
             <img
               src={profileImage}
@@ -417,7 +421,7 @@ const EmployeeProfile = () => {
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
                 Date Of Availability
-                <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('dateOfAvailability', sectionData.dateOfAvailability)} />
+                <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('availability', sectionData.availability)} />
               </h4>
               <p className="mt-2 text-gray-600">{sectionData.availability}</p>
             </div>
@@ -501,7 +505,7 @@ const EmployeeProfile = () => {
             </div>
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
-                Present Rank
+                Last Rank
                 <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentRank', sectionData.presentRank)} />
               </h4>
               <p className="mt-2 text-gray-600">{sectionData.presentRank}</p>
@@ -530,9 +534,9 @@ const EmployeeProfile = () => {
           <div className="bg-gray-50 p-4 rounded-lg shadow-sm mt-4">
             <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
               Experience In Vessel
-              {/* <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('vesselExp', sectionData.vesselExp)} /> */}
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('vesselExp', sectionData.vesselExp)} />
             </h4>
-            <p className="mt-2 text-gray-600">{sectionData.vesselExp}</p>
+            <p className="mt-2 text-gray-600">{sectionData.vesselExp.join(', ')}</p>
           </div>
         </div>
 
@@ -557,7 +561,7 @@ const EmployeeProfile = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
-                Present Rank Exp (Months)
+                Last Rank Exp (Months)
                 <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('presentRankExperienceInMonth', sectionData.presentRankExperienceInMonth)} />
               </h4>
               <p className="mt-2 text-gray-600">{sectionData.presentRankExperienceInMonth}</p>
@@ -597,15 +601,24 @@ const EmployeeProfile = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
+                Gender
+                <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('gender', sectionData.gender)} />
+              </h4>
+              <p className="mt-2 text-gray-600">{sectionData.gender}</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
                 Height (cm)
                 <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('height', sectionData.height)} />
               </h4>
+              <p className="mt-2 text-gray-600">{sectionData.height}</p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
               <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
                 Weight (kg)
                 <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('weight', sectionData.weight)} />
               </h4>
+              <p className="mt-2 text-gray-600">{sectionData.weight}</p>
             </div>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg shadow-sm mt-4">
@@ -626,7 +639,7 @@ const EmployeeProfile = () => {
         isDropdown={isDropdown}
         options={options}
         editValue={editValue}
-        handleChange={handleDropdownChange}
+        handleChange={isDropdown ? handleDropdownChange : (e) => setEditValue(e.target.value)}
       >
         {!isDropdown && (
           <>
@@ -640,7 +653,7 @@ const EmployeeProfile = () => {
               />
             ) : (
               <input
-                type={editSection === 'dob' || editSection === 'dateOfAvailability' ? 'date' : 'text'}
+                type={editSection === 'dob' || editSection === 'availability' ? 'date' : 'text'}
                 className="w-full border p-2 rounded"
                 value={editValue}
                 onChange={(e) => setEditValue(e.target.value)}

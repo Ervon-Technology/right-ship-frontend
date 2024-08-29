@@ -7,6 +7,12 @@ const DefaultNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
+  const handleDropdownItemClick = () => {
+    setIsDropdownOpen(false);
+    setIsMobileDropdownOpen(false);
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <>
       <nav className="flex items-center justify-between p-4 bg-white text-black border-b-2">
@@ -34,8 +40,20 @@ const DefaultNavbar = () => {
             </button>
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg">
-                <Link to="/company/login" className="block px-4 py-2 hover:bg-gray-200">Login</Link>
-                <Link to="/company/register" className="block px-4 py-2 hover:bg-gray-200">Register</Link>
+                <Link 
+                  to="/company/login" 
+                  className="block px-4 py-2 hover:bg-gray-200"
+                  onClick={handleDropdownItemClick}
+                >
+                  Login
+                </Link>
+                <Link 
+                  to="/company/register" 
+                  className="block px-4 py-2 hover:bg-gray-200"
+                  onClick={handleDropdownItemClick}
+                >
+                  Register
+                </Link>
               </div>
             )}
           </div>
@@ -91,8 +109,20 @@ const DefaultNavbar = () => {
             </button>
             {isMobileDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg">
-                <Link to="/company/login" className="block px-4 py-2 hover:bg-gray-200">Login</Link>
-                <Link to="/company/register" className="block px-4 py-2 hover:bg-gray-200">Register</Link>
+                <Link 
+                  to="/company/login" 
+                  className="block px-4 py-2 hover:bg-gray-200"
+                  onClick={handleDropdownItemClick}
+                >
+                  Login
+                </Link>
+                <Link 
+                  to="/company/register" 
+                  className="block px-4 py-2 hover:bg-gray-200"
+                  onClick={handleDropdownItemClick}
+                >
+                  Register
+                </Link>
               </div>
             )}
           </div>

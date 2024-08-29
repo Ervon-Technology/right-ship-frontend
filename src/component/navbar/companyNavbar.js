@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
 import { CgProfile } from "react-icons/cg";
 import { useDispatch } from 'react-redux';
 import { logout } from '../../features/authSlice'; // Import the logout action
@@ -18,7 +17,10 @@ const CompanyNavbar = () => {
     dispatch(logout()); // Dispatch the logout action
     setDropdownOpen(false); // Close the dropdown
     navigate('/');
+  };
 
+  const handleDropdownItemClick = () => {
+    setDropdownOpen(false); // Close the dropdown
   };
 
   return (
@@ -26,10 +28,7 @@ const CompanyNavbar = () => {
       <div className="container mx-auto flex justify-between items-center py-1">
         
         <div className="flex items-center">
-          <Link
-            to="/"
-            className="flex items-center"
-          >
+          <Link to="/" className="flex items-center">
             <h1 className="text-2xl font-semibold">Dashboard</h1>
           </Link>
         </div>
@@ -55,7 +54,7 @@ const CompanyNavbar = () => {
                 <Link
                   to="/profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  onClick={() => setDropdownOpen(false)}
+                  onClick={handleDropdownItemClick} // Close dropdown on click
                 >
                   Profile
                 </Link>
