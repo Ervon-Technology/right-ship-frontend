@@ -196,7 +196,7 @@ const CandidatesTable = ({ jobId }) => {
                 <tr key={candidate.id} className="border-t">
                   <td className="py-4 px-6 text-gray-700">
                     <Link to={`/job/candidates/detail/${candidate._id}`} className="text-blue-600 hover:underline">
-                      <ListView data={[candidate.name, `DOB: ${candidate.dateOfBirth}`, `Gender: ${candidate.gender}`]} />
+                      <ListView data={[candidate.firstName, `DOB: ${candidate.dob}`, `Gender: ${candidate.gender}`]} />
                     </Link>
                   </td>
                   <td className="py-4 px-6 text-gray-700">{candidate.appliedRank}</td>

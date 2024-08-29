@@ -1,13 +1,13 @@
 import React from 'react';
 
-const StepTwo = ({ nextStep, prevStep, benefits, formData, handleInputChange }) => {
+const StepTwo = ({ nextStep, prevStep,  formData, handleInputChange }) => {
 
   return (
     <div className="max-w-full mx-auto p-6 bg-white border-2 rounded-lg shadow-md">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Select Benefits and Enter Job Description</h2>
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">Enter Job Description</h2>
 
       <div className="mb-4">
-        <h3 className="text-md font-medium text-gray-600 mb-2">Job Description:</h3>
+        <h3 className="text-md font-medium text-gray-600 mb-2">Description:</h3>
         <textarea
           value={formData.jobDescription}
           onChange={(e) => handleInputChange('jobDescription')(e.target.value)}

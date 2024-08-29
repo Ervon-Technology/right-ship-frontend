@@ -107,7 +107,9 @@ const CandidateDetail = () => {
         </InfoCard>
 
         <InfoCard title="Professional Experience">
-          <InfoItem label="Total Sea Experience" value={candidate.seaExperience || 'N/A'} />
+          <InfoItem label="Total Sea Experience (year's)" value={candidate.totalSeaExperienceMonth || 'N/A'} />
+          <InfoItem label="Total Sea Experience (month's)" value={candidate.totalSeaExperienceYear || 'N/A'} />
+          <InfoItem label="Last Sea Experience (month's)" value={candidate.presentRankExperienceInMonth || 'N/A'} />
           <InfoItem label="Last Vessel Type" value={candidate.lastVesselType || 'N/A'} />
           <InfoItem label="Vessel Applied For" value={candidate.appliedVessel || 'N/A'} />
         </InfoCard>
