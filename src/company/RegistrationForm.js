@@ -265,7 +265,7 @@ const RegistrationForm = () => {
       className="w-full max-w-2xl bg-white rounded-xl shadow-xl overflow-hidden p-8 text-center"
     >
       <h2 className="text-3xl font-semibold text-green-500">Registration Successful!</h2>
-      <p className="mt-4 text-gray-600">A verification link has been sent to your email. Please verify your account.</p>
+      <h6 className="mt-4 text-gray-600">A verification link has been sent to your email. Please verify your account and Wait for our Confirmation.</h6>
       <div className="mt-6 flex justify-center space-x-4">
         <button
           onClick={() => setIsRegistered(false)}
