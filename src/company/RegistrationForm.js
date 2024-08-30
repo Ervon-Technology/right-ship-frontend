@@ -113,7 +113,7 @@ const RegistrationForm = () => {
           mobile_no: `${mobileNo}`,
           email,
           city: city,
-          licenseRPSL,
+          license_rpsl: licenseRPSL,
           address: address,
           admin_verify: false,
         }),
