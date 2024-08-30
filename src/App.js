@@ -53,6 +53,9 @@ const App = () => {
               <Route path="/my-jobs" element={<JobBoard />} />
               <Route path="*" element={<JobDashboard />} />
               <Route path="/" element={<HomePage />} />
+              <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<Terms />} />
               <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
             </Route>
             <Route element={<DefaultLayout />}>
@@ -69,6 +72,9 @@ const App = () => {
               <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
               <Route path="/manage/company/team" element={<CompanyManageUsers />} />
               <Route path="/setting" element={<CompanyProfile />} />
+              <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<Terms />} />
               <Route path="*" element={<JobPostList />} />      
             </Route>
             <Route element={<DefaultLayout />}>
