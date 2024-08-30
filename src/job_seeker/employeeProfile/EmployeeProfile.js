@@ -47,6 +47,8 @@ const EmployeeProfile = () => {
   const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
   const [rankOptions, setRankOptions] = useState([]);
   const [vesselExpOptions, setVesselExpOptions] = useState([]);
+  const [nationalityOptions, setNationalityOptions] = useState([]);
+
   const sidOptions = [{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }];
   const usVisaOptions = [{ value: 'Yes', label: 'Yes' }, { value: 'No', label: 'No' }];
   const genderOptions = [
@@ -142,27 +144,27 @@ const EmployeeProfile = () => {
         if (response.data && response.data.code === 200) {
           const attributes = response.data.data;
     
-          // Fetching attributes based on the names
           const copAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'cop');
           const cocAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'coc');
           const shipAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'ships');
           const watchKeepingAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'watch keeping');
           const rankAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'rank');
+          const nationalityAttribute = attributes.find(attr => attr.name.toLowerCase().trim() === 'nationality');
           
-          // Extracting values from attributes
           const copData = copAttribute ? copAttribute.values : [];
           const cocData = cocAttribute ? cocAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
           const shipData = shipAttribute ? shipAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
           const watchKeepingData = watchKeepingAttribute ? watchKeepingAttribute.values : [];
           const rankData = rankAttribute ? rankAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
+          const nationalityData = nationalityAttribute ? nationalityAttribute.values.sort((a, b) => a.localeCompare(b)) : [];
           
-          // Setting the options in your state with both API and existing data
-          setCopOptions(copData.concat(sectionData.cop).map(option => ({ value: option, label: option })));
-          setCocOptions(cocData.concat(sectionData.coc).map(option => ({ value: option, label: option })));
+          setCopOptions(copData.concat(sectionData.cop || []).map(option => ({ value: option, label: option })));
+          setCocOptions(cocData.concat(sectionData.coc || []).map(option => ({ value: option, label: option })));
           setShipOptions(shipData.map(option => ({ value: option, label: option })));
-          setWatchKeepingOptions(watchKeepingData.concat(sectionData.watchkeeping).map(option => ({ value: option, label: option })));
+          setWatchKeepingOptions(watchKeepingData.concat(sectionData.watchkeeping || []).map(option => ({ value: option, label: option })));
           setRankOptions(rankData.map(option => ({ value: option, label: option })));
           setVesselExpOptions(shipData.map(option => ({ value: option, label: option })));
+          setNationalityOptions(nationalityData.map(option => ({ value: option, label: option })));
         } else {
           console.error('Failed to fetch attributes:', response.data.msg);
         }
@@ -273,6 +275,10 @@ const EmployeeProfile = () => {
         dropdown = true;
         dropdownOptions = vesselExpOptions;
         break;
+      case 'nationality':
+        dropdown = true;
+        dropdownOptions = nationalityOptions;
+        break;
       default:
         dropdown = false;
         dropdownOptions = [];
@@ -300,7 +306,7 @@ const EmployeeProfile = () => {
       }
   
       if (editSection === 'vesselExp') {
-        updatedSectionData[editSection] = editValue; // editValue is already an array for vesselExp
+        updatedSectionData[editSection] = Array.isArray(editValue) ? editValue : [editValue];
       } else if (editSection === 'height' || editSection === 'weight') {
         updatedSectionData[editSection] = parseFloat(editValue);
       } else {
@@ -534,9 +540,9 @@ const EmployeeProfile = () => {
           <div className="bg-gray-50 p-4 rounded-lg shadow-sm mt-4">
             <h4 className="text-lg font-semibold text-gray-700 flex justify-between">
               Experience In Vessel
-              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('vesselExp', sectionData.vesselExp)} />
+              <FaEdit className="cursor-pointer text-gray-600 hover:text-gray-900" onClick={() => handleEditClick('vesselExp', sectionData.vesselExp || [])} />
             </h4>
-            <p className="mt-2 text-gray-600">{sectionData.vesselExp.join(', ')}</p>
+            <p className="mt-2 text-gray-600">{(sectionData.vesselExp || []).join(', ')}</p>
           </div>
         </div>
 

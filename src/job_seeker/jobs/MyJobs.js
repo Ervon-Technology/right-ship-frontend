@@ -23,7 +23,7 @@ const JobBoard = ({ employeeId }) => {
         employee_id: authEmployeeId
       };
 
-      const response = await axios.post("{process.env.REACT_APP_API_URL}/employee/get", requestData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
       const employeeData = response.data.data[0]; // Assuming the data is in the first object
      
       const appliedJobIds = extractAppliedJobs(employeeData);
@@ -53,7 +53,7 @@ const JobBoard = ({ employeeId }) => {
     try {
       if (appliedJobIds.length > 0) {
         const appliedJobsResponse = await axios.post(
-          "{process.env.REACT_APP_API_URL}/company/application/get",
+          `${process.env.REACT_APP_API_URL}/company/application/get`,
           {
             application_id: {
               "$in": appliedJobIds,
@@ -65,7 +65,7 @@ const JobBoard = ({ employeeId }) => {
 
       if (savedJobIds.length > 0) {
         const savedJobsResponse = await axios.post(
-          "{process.env.REACT_APP_API_URL}/company/application/get",
+          `${process.env.REACT_APP_API_URL}/company/application/get`,
           {
             application_id: {
               "$in": savedJobIds,
@@ -81,7 +81,7 @@ const JobBoard = ({ employeeId }) => {
 
   const handleApply = async (job) => {
     try {
-      const response = await axios.post("{process.env.REACT_APP_API_URL}/employee/apply_job", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/apply_job`, {
         employee_id: authEmployeeId,
         application_id: job.application_id,
         company_id: job.company_id,
@@ -99,7 +99,7 @@ const JobBoard = ({ employeeId }) => {
 
   const handleUnapply = async (job) => {
     try {
-      const response = await axios.post("{process.env.REACT_APP_API_URL}/employee/unapply", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unapply`, {
         employee_id: authEmployeeId,
         application_id: job.application_id,
         company_id: job.company_id,
@@ -117,7 +117,7 @@ const JobBoard = ({ employeeId }) => {
 
   const handleSave = async (job) => {
     try {
-      const response = await axios.post("{process.env.REACT_APP_API_URL}/employee/save_jobs", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/save_jobs`, {
         employee_id: authEmployeeId,
         application_id: job.application_id,
         company_id: job.company_id,
@@ -135,7 +135,7 @@ const JobBoard = ({ employeeId }) => {
 
   const handleUnsave = async (job) => {
     try {
-      const response = await axios.post("{process.env.REACT_APP_API_URL}/employee/unsave", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unsave`, {
         employee_id: authEmployeeId,
         application_id: job.application_id,
         company_id: job.company_id,
