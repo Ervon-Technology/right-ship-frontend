@@ -13,11 +13,11 @@ const EditModal = ({ isOpen, title, children, onSave, onClose, isDropdown, optio
           <FaTimes className="cursor-pointer" onClick={onClose} />
         </div>
         <div className="mt-4">
-          {isDropdown ? (
-            title === 'Edit vesselExp' ? (
+          {isDropdown ? ( 
+            title === 'Edit vesselExp' ? ( 
               <Select
                 isMulti
-                value={options.filter(option => editValue.includes(option.value))}
+                value={options.filter(option => (editValue || []).includes(option.value))}
                 onChange={handleChange}
                 options={options}
                 className="w-full"

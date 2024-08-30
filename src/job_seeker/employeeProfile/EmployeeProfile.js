@@ -10,7 +10,7 @@ const EmployeeProfile = () => {
   const [file, setFile] = useState(null);
   const [editSection, setEditSection] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editValue, setEditValue] = useState('');
+  const [editValue, setEditValue] = useState(''); // Initialize as an empty string
   const [isDropdown, setIsDropdown] = useState(false);
   const [options, setOptions] = useState([]);
   const [sectionData, setSectionData] = useState({
@@ -272,14 +272,13 @@ const EmployeeProfile = () => {
       case 'vesselExp':
         dropdown = true;
         dropdownOptions = vesselExpOptions;
+        setEditValue(Array.isArray(value) ? value : []);
         break;
       default:
-        dropdown = false;
-        dropdownOptions = [];
+        setEditValue(value || ''); // Initialize editValue with an empty string if undefined
     }
 
     setEditSection(section);
-    setEditValue(value);
     setIsDropdown(dropdown);
     setOptions(dropdownOptions);
     setModalOpen(true);
@@ -288,17 +287,17 @@ const EmployeeProfile = () => {
   const handleSaveClick = async () => {
     try {
       const updatedSectionData = { ...sectionData };
-  
+
       if (editSection === 'dob') {
         updatedSectionData.age = new Date().getFullYear() - new Date(editValue).getFullYear();
       }
-  
+
       if (editSection === 'height' || editSection === 'weight') {
         const height = editSection === 'height' ? parseFloat(editValue) : updatedSectionData.height;
         const weight = editSection === 'weight' ? parseFloat(editValue) : updatedSectionData.weight;
         updatedSectionData.bmi = (weight / ((height / 100) ** 2)).toFixed(2);
       }
-  
+
       if (editSection === 'vesselExp') {
         updatedSectionData[editSection] = editValue; // editValue is already an array for vesselExp
       } else if (editSection === 'height' || editSection === 'weight') {
@@ -306,19 +305,19 @@ const EmployeeProfile = () => {
       } else {
         updatedSectionData[editSection] = editValue;
       }
-  
+
       const payload = {
         employee_id: employeeId,
         ...updatedSectionData,
       };
-  
+
       await axios.post(`${process.env.REACT_APP_API_URL}/employee/update`, payload, {
         headers: {
           'Content-Type': 'application/json',
           Accept: '*/*',
         },
       });
-  
+
       setSectionData(updatedSectionData);
       console.log('Data updated successfully');
       setModalOpen(false);
@@ -639,7 +638,7 @@ const EmployeeProfile = () => {
         isDropdown={isDropdown}
         options={options}
         editValue={editValue}
-        handleChange={isDropdown ? handleDropdownChange : (e) => setEditValue(e.target.value)}
+        handleChange={isDropdown ? (editSection === 'vesselExp' ? handleVesselExpChange : handleDropdownChange) : (e) => setEditValue(e.target.value)}
       >
         {!isDropdown && (
           <>
