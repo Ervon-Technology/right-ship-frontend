@@ -52,7 +52,7 @@ const Terms = () => {
 
         <h2 className="text-2xl font-semibold text-gray-800 mt-6 mb-4">Contact Us</h2>
         <p className="text-gray-600">
-          If you have any questions about these terms, please contact us at <a href="mailto:support@rightship.com" className="text-blue-600 hover:underline">support@rightship.com</a>.
+          If you have any questions about these terms, please contact us at <a href="mailto:info@rightships.com" className="text-blue-600 hover:underline">info@rightships.com</a>.
         </p>
       </div>
     </section>
