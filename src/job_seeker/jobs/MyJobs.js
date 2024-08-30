@@ -106,7 +106,11 @@ const JobBoard = ({ employeeId }) => {
       });
       if (response.data) {
         toast.success('Successfully unapplied from the job');
-        fetchEmployeeDetails(); // Refresh job lists after unapplying
+
+        // Update the applied jobs list by removing the unapplied job
+        setAppliedJobs(appliedJobs.filter(appliedJob => appliedJob.application_id !== job.application_id));
+        
+        // The job remains in the savedJobs list if it was saved
       } else {
         toast.error('Failed to unapply from the job');
       }
@@ -142,7 +146,9 @@ const JobBoard = ({ employeeId }) => {
       });
       if (response.data) {
         toast.success('Successfully unsaved the job');
-        fetchEmployeeDetails(); // Refresh job lists after unsaving
+
+        // Update the saved jobs list by removing the unsaved job
+        setSavedJobs(savedJobs.filter(savedJob => savedJob.application_id !== job.application_id));
       } else {
         toast.error('Failed to unsave the job');
       }
