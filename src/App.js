@@ -51,8 +51,7 @@ const App = () => {
               <Route path="/profile" element={<EmployeeProfile />} />
               <Route path="/my-jobs" element={<JobBoard />} />
               <Route path="*" element={<JobDashboard />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<Terms />} />
+              <Route path="/home" element={<HomePage />} />
             </Route>
           ) : (
             <Route element={<CompanyLayout />}>
@@ -64,8 +63,6 @@ const App = () => {
               <Route path="/manage/company/team" element={<CompanyManageUsers />} />
               <Route path="/setting" element={<CompanyProfile />} />
               <Route path="*" element={<JobPostList />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<Terms />} />
             </Route>
           )
         ) : (
@@ -79,13 +76,13 @@ const App = () => {
               <Route path='/email-register' element={<SignupWithEmail />} />
               <Route path='/verify-signup-otp' element={<VerifySignupOtp />} />
               <Route path="/employee-registration" element={<EmployeeRegistration />} />
-              <Route path="*" element={<NotFoundPage />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<Terms />} />
+              <Route path="*" element={<NotFoundPage />} />              
             </Route>
             <Route path="/company/register" element={<RegistrationForm />} />
             <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
             <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
           </>
         )}
       </Routes>
