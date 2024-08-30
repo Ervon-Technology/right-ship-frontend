@@ -14,30 +14,22 @@ const EditModal = ({ isOpen, title, children, onSave, onClose, isDropdown, optio
         </div>
         <div className="mt-4">
           {isDropdown ? ( 
-
             title === 'Edit vesselExp' ? ( 
-
               <Select
                 isMulti
-                    value={options.find(option => option.value === editValue)}
-                    onChange={handleChange}
-                    options={options}
-                    classNsame="w-full"
-                  />
-            
-
-              ) : (
-
-                <Select
-                
-                    value={options.find(option => option.value === editValue)}
-                    onChange={handleChange}
-                    options={options}
-                    classNsame="w-full"
-                  />
-
-              )
-            
+                value={options.filter(option => (editValue || []).includes(option.value))}
+                onChange={handleChange}
+                options={options}
+                className="w-full"
+              />
+            ) : (
+              <Select
+                value={options.find(option => option.value === editValue)}
+                onChange={handleChange}
+                options={options}
+                className="w-full"
+              />
+            )
           ) : (
             children
           )}
