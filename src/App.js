@@ -45,15 +45,22 @@ const App = () => {
       <Routes>
         {isLoggedIn ? (
           user.role === 'employee' ? (
+            <>
             <Route element={<EmployeeLayout />}>
               <Route path="/settings" element={<Setting />} />
               <Route path="/jobs" element={<JobDashboard />} />
               <Route path="/profile" element={<EmployeeProfile />} />
               <Route path="/my-jobs" element={<JobBoard />} />
               <Route path="*" element={<JobDashboard />} />
-              <Route path="/home" element={<HomePage />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
             </Route>
+            <Route element={<DefaultLayout />}>
+              <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */} 
+            </Route>
+            </>
           ) : (
+            <>
             <Route element={<CompanyLayout />}>
               <Route path="/create/job" element={<CreateJobStepForm />} />
               <Route path="/post/job" element={<JobPostList />} />
@@ -62,8 +69,12 @@ const App = () => {
               <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
               <Route path="/manage/company/team" element={<CompanyManageUsers />} />
               <Route path="/setting" element={<CompanyProfile />} />
-              <Route path="*" element={<JobPostList />} />
+              <Route path="*" element={<JobPostList />} />      
             </Route>
+            <Route element={<DefaultLayout />}>
+              <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */} 
+            </Route>
+            </>
           )
         ) : (
           <>
@@ -76,7 +87,8 @@ const App = () => {
               <Route path='/email-register' element={<SignupWithEmail />} />
               <Route path='/verify-signup-otp' element={<VerifySignupOtp />} />
               <Route path="/employee-registration" element={<EmployeeRegistration />} />
-              <Route path="*" element={<NotFoundPage />} />              
+              <Route path="*" element={<NotFoundPage />} />     
+              
             </Route>
             <Route path="/company/register" element={<RegistrationForm />} />
             <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
@@ -85,6 +97,7 @@ const App = () => {
             <Route path="/terms" element={<Terms />} />
           </>
         )}
+        
       </Routes>
     </BrowserRouter>
   );
