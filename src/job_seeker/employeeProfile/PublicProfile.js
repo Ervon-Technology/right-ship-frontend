@@ -103,7 +103,7 @@ const PublicProfile = () => {
               <p className="text-gray-700"><strong>Vessel Applied For:</strong> {profileData.appliedVessel}</p>
             </div>
             <div>
-              <p className="text-gray-700"><strong>Past Vessel:</strong> {profileData.presentVessel}</p>
+              <p className="text-gray-700"><strong>Last Vessel:</strong> {profileData.presentVessel}</p>
             </div>
             <div className="lg:col-span-2">
               <p className="text-gray-700"><strong>Experience In Vessel:</strong> {profileData.vesselExp.join(', ')}</p>

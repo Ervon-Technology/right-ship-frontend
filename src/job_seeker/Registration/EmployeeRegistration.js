@@ -538,9 +538,9 @@ const EmployeeRegistration = () => {
         return (
           <>
             <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">Past Vessel<span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Last Vessel<span className="text-red-500">*</span></label>
               <Select
-                label="Past Vessel"
+                label="Last Vessel"
                 value={shipOptions.find(option => option.value === formData.presentVessel) || null}
                 onChange={(selectedOption) => setFormData((prevFormData) => ({
                   ...prevFormData,
@@ -548,7 +548,7 @@ const EmployeeRegistration = () => {
                 }))}
                 options={shipOptions}
                 required
-                placeholder="Select Past Vessel"
+                placeholder="Select Lasst Vessel"
               />
             </div>
 

@@ -184,9 +184,9 @@ const CandidatesTable = ({ jobId }) => {
             <tr>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Name</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Applied Rank</th>
-              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Past Rank</th>
+              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Last Rank</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Apply Vessel</th>
-              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Exp. Past Vessel</th>
+              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Exp. Last Vessel</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Date of Availability</th>
             </tr>
           </thead>
