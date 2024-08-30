@@ -152,7 +152,8 @@ const JobBoard = ({ employeeId }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 h-screen">
+    <div className="overflow-y-auto mb-12">
+      <div className="max-w-4xl mx-auto p-8 h-screen">
       <ToastContainer />
       <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">My Jobs</h1>
       <div className="flex justify-center mb-8">
@@ -179,12 +180,12 @@ const JobBoard = ({ employeeId }) => {
       </div>
       <div className="border-b-2 border-gray-300 mb-10"></div>
       
-      <div className="grid gap-6">
+      <div className="grid gap-6 ">
         {/* Display applied jobs if the active tab is 'applied' */}
         {activeTab === 'applied' && appliedJobs.map((job) => (
           <div
             key={job.application_id}
-            className="p-6 bg-white rounded-lg shadow-lg flex justify-between items-center transition-transform hover:scale-105"
+            className="p-6 bg-white rounded-lg shadow-lg flex justify-between items-center transition-transform hover:scale-105 "
           >
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-1">
@@ -250,6 +251,7 @@ const JobBoard = ({ employeeId }) => {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );
