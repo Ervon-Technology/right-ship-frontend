@@ -36,7 +36,7 @@ const CompaniesSection = ({ title, companies }) => (
         </p>
         <a href="mailto:hello@ship" className="inline-flex items-center bg-customBlue text-white hover:bg-customDarkBlue rounded-full py-3 px-8 transition duration-300 shadow-md hover:shadow-lg">
           <FaBuilding className="mr-2" />
-          Contact us at hello@ship
+          Contact us at info@rightships.com
         </a>
       </div>
     )}
