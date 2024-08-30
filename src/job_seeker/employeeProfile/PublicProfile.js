@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+
+import { useSelector, useDispatch } from 'react-redux';
+
 
 const PublicProfile = () => {
   const { employeeId } = useParams();
   const [profileData, setProfileData] = useState(null);
+
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -72,15 +77,25 @@ const PublicProfile = () => {
         <div className="mt-8">
           <h3 className="text-xl font-semibold text-gray-900">Contact Information</h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-            <div>
-              <p className="text-gray-700"><strong>Email:</strong> {profileData.email}</p>
-            </div>
-            <div>
-              <p className="text-gray-700"><strong>Mobile No:</strong> {profileData.mobile_no}</p>
-            </div>
-            <div>
-              <p className="text-gray-700"><strong>WhatsApp Number:</strong> {profileData.whatsappNumber}</p>
-            </div>
+
+            {user ? (
+              <>
+                <div>
+                  <p className="text-gray-700"><strong>Email:</strong> {profileData.email}</p>
+                </div>
+                <div>
+                  <p className="text-gray-700"><strong>Mobile No:</strong> {profileData.mobile_no}</p>
+                </div>
+                <div>
+                  <p className="text-gray-700"><strong>WhatsApp Number:</strong> {profileData.whatsappNumber}</p>
+                </div>
+              </>
+            ) : (
+              <Link to="/" className='py-5 text-blue-600'>
+                <p className=''>Login To View Contact Information</p>
+              </Link>
+            )}
+
           </div>
         </div>
 

@@ -187,7 +187,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
       whileTap={{ scale: 0.98 }}
     >
       <h3 className="text-xl font-bold text-gray-800">{job.open_positions.join(', ')}</h3>
-      <p className="text-sm text-gray-600 mt-1">{job.company_name} • {new Date(job.created_date).toLocaleDateString()}</p>
+      <p className="text-sm text-gray-600 mt-1"><span className='font-bold text-red-500 uppercase'>{job.company_name}</span> • {new Date(job.created_date).toLocaleDateString()}</p>
       <p className="mt-3 text-gray-700">{job.description || ""}</p>
       <div className="mt-4 flex space-x-3">
         {isApplied ? (
