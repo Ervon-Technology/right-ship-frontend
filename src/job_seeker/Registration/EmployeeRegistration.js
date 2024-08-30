@@ -29,6 +29,11 @@ const EmployeeRegistration = () => {
   const [rankOptions, setRankOptions] = useState([]);
   const [vesselExpOptions, setVesselExpOptions] = useState([]);
   const [nationalityOptions, setNationalityOptions] = useState([]); // Nationality options
+  const [genderOptions] = useState([
+    { value: 'Male', label: 'Male' },
+    { value: 'Female', label: 'Female' },
+    { value: 'Other', label: 'Other' },
+  ]); // Gender options
 
   const { loading, error } = useSelector((state) => state.employee);
 
@@ -38,15 +43,15 @@ const EmployeeRegistration = () => {
     email: contactInfo.includes('@') ? contactInfo : '',
     mobile_no: !contactInfo.includes('@') ? contactInfo : '',
     whatsappNumber: '',
-    gender: '',
-    nationality: '', // Nationality field in Step 3
+    gender: '', // Gender field in Step 2
+    nationality: '', // Nationality field in Step 4
     dob: '',
     age: '',
     availability: '',
     sid: '',
     usVisa: '',
     appliedRank: '',
-    presentRank: '', // Last Rank field in Step 4
+    presentRank: '', // Last Rank field in Step 5
     presentVessel: '',
     appliedVessel: '',
     vesselExp: [],
@@ -215,7 +220,7 @@ const EmployeeRegistration = () => {
     }
 
     if (currentStep === 2) {
-      requiredFields = ['email', 'mobile_no', 'whatsappNumber'];
+      requiredFields = ['email', 'mobile_no', 'whatsappNumber', 'gender'];
     }
 
     if (currentStep === 3) {
@@ -452,24 +457,35 @@ const EmployeeRegistration = () => {
               }))}
               required
             />
+            <div className='mb-8'>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Gender<span className="text-red-500">*</span></label>
+              <Select
+                label="Gender"
+                value={genderOptions.find(option => option.value === formData.gender)}
+                onChange={(selectedOption) => setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  gender: selectedOption ? selectedOption.value : '',
+                }))}
+                options={genderOptions}
+                required
+              />
+            </div>
           </>
         );
       case 3:
         return (
           <>
-            <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">Nationality<span className="text-red-500">*</span></label>
-              <Select
-                label="Nationality"
-                value={nationalityOptions.find(option => option.value === formData.nationality)}
-                onChange={(selectedOption) => setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  nationality: selectedOption ? selectedOption.value : '',
-                }))}
-                options={nationalityOptions}
-                required
-              />
-            </div>
+            <InputField
+              label="Nationality"
+              value={formData.nationality}
+              onChange={(value) => setFormData((prevFormData) => ({
+                ...prevFormData,
+                nationality: value,
+              }))}
+              required
+              type="select"
+              options={nationalityOptions.map(option => option.value)} // Convert options to the expected format
+            />
             <InputField
               label="Date of Availability"
               value={formData.availability}
@@ -548,7 +564,7 @@ const EmployeeRegistration = () => {
                 }))}
                 options={shipOptions}
                 required
-                placeholder="Select Lasst Vessel"
+                placeholder="Select Last Vessel"
               />
             </div>
 
@@ -763,7 +779,7 @@ const InputField = ({ label, value, onChange, required, type = 'text', options }
     ) : (
       <input
         type={type}
-        className="w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
