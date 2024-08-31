@@ -12,14 +12,6 @@ const VerificationPending = () => {
           Your account is currently awaiting verification by the admin. You will be notified once your account has been approved.
           Until then, you cannot access the platform features.
         </p>
-        <div className="flex justify-center mt-6">
-          <button
-            // onClick={}
-            className="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition"
-          >
-            Sign Out
-          </button>
-        </div>
       </div>
     </div>
   );
