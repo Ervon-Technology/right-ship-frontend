@@ -66,7 +66,7 @@ const App = () => {
           ) : (
             <>
             <Route element={<CompanyLayout />}>
-            {user.company.admin_verify === true ? (
+            {user.company && user.company.admin_verify === true ? (
                 <>
                   <Route path="/create/job" element={<CreateJobStepForm />} />
                   <Route path="/post/job" element={<JobPostList />} />
