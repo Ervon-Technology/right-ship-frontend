@@ -80,8 +80,14 @@ export const loginCompany = createAsyncThunk(
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/login`, credentials);
       console.log("======> 1", credentials);
       const { _id, company_id, mobile_no } = response.data.data;
+
+      const responseVerify = await axios.post(`${process.env.REACT_APP_API_URL}/company/get`, { company_id });
+
+      // if ( responseVerify.responseVerify.data.data[0].admin_verify == false ) {
+      //   return true;
+      // }
       console.log("======> 2", response.data.data);
-      const user = { _id, company_id, mobile_no, role: "company" };
+      const user = { _id, company_id, mobile_no, role: "company", company: responseVerify.data.data[0] };
       console.log("======> 2", user);
       return { user, token: response.data.token };
     } catch (error) {

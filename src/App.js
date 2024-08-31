@@ -33,6 +33,7 @@ import Setting from './job_seeker/setting/Setting';
 import JobBoard from './job_seeker/jobs/MyJobs';
 import PublicProfile from './job_seeker/employeeProfile/PublicProfile'; // Import the PublicProfile component
 import ContactUs from './contactUs';
+import VerificationPending from './Pages/AccountVerify';
 
 
 
@@ -65,17 +66,24 @@ const App = () => {
           ) : (
             <>
             <Route element={<CompanyLayout />}>
-              <Route path="/create/job" element={<CreateJobStepForm />} />
-              <Route path="/post/job" element={<JobPostList />} />
-              <Route path="/post/job/detail/:id" element={<JobDetail />} />
-              <Route path="/job/candidates" element={<CandidatesTable />} />
-              <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
-              <Route path="/manage/company/team" element={<CompanyManageUsers />} />
-              <Route path="/setting" element={<CompanyProfile />} />
-              <Route path="/contact-us" element={<ContactUs />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="*" element={<JobPostList />} />      
+            {user.company.admin_verify === true ? (
+                <>
+                  <Route path="/create/job" element={<CreateJobStepForm />} />
+                  <Route path="/post/job" element={<JobPostList />} />
+                  <Route path="/post/job/detail/:id" element={<JobDetail />} />
+                  <Route path="/job/candidates" element={<CandidatesTable />} />
+                  <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
+                  <Route path="/manage/company/team" element={<CompanyManageUsers />} />
+                  <Route path="/setting" element={<CompanyProfile />} />
+                  <Route path="/contact-us" element={<ContactUs />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="*" element={<JobPostList />} />
+                </>
+              ) : (
+                // If not verified, show a message or redirect
+                <Route path="/*" element={<VerificationPending />} />
+              )} 
             </Route>
             <Route element={<DefaultLayout />}>
               <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */} 
