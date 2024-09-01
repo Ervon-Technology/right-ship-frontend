@@ -31,6 +31,19 @@ const CandidateDetail = () => {
     fetchCandidate();
   }, [candidateId]);
 
+  const calculateAge = (dob) => {
+    const birthDate = new Date(dob);
+    const difference = Date.now() - birthDate.getTime();
+    const ageDate = new Date(difference);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  };
+
+  const calculateBMI = (height, weight) => {
+    if (!height || !weight) return 'N/A';
+    const heightInMeters = height / 100;
+    return (weight / (heightInMeters * heightInMeters)).toFixed(2);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -100,18 +113,32 @@ const CandidateDetail = () => {
       </div>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+
         <InfoCard title="Personal Information">
           <InfoItem label="Available From" value={candidate.availability} />
+          <hr/>
           <InfoItem label="Date of Birth" value={candidate.dob} />
+          <InfoItem label="Age" value={calculateAge(candidate.dob)} />
           <InfoItem label="Gender" value={candidate.gender} />
+        </InfoCard>
+
+        <InfoCard title="">
+          <InfoItem label="Height" value={candidate.height || 'N/A'} />
+          <InfoItem label="Weight" value={candidate.weight || 'N/A'} />
+          <InfoItem label="BMI" value={calculateBMI(candidate.height, candidate.weight)} />
         </InfoCard>
 
         <InfoCard title="Professional Experience">
           <InfoItem label="Total Sea Experience (year's)" value={candidate.totalSeaExperienceMonth || 'N/A'} />
           <InfoItem label="Total Sea Experience (month's)" value={candidate.totalSeaExperienceYear || 'N/A'} />
           <InfoItem label="Last Sea Experience (month's)" value={candidate.presentRankExperienceInMonth || 'N/A'} />
-          <InfoItem label="Last Vessel Type" value={candidate.lastVesselType || 'N/A'} />
+          </InfoCard>
+          <InfoCard title="Vessel & Rank Experience">
+          <InfoItem label="Experience In Vessel" value={candidate.vesselExp.join(', ') || 'N/A'} />
           <InfoItem label="Vessel Applied For" value={candidate.appliedVessel || 'N/A'} />
+          <hr/>
+          <InfoItem label="Applied Rank:" value={candidate.appliedRank || 'N/A'} />
+          <InfoItem label="Last Rank" value={candidate.presentRank || 'N/A'} />
         </InfoCard>
 
         <InfoCard title="Certifications">
@@ -120,14 +147,13 @@ const CandidateDetail = () => {
           <InfoItem label="Watch Keeping" value={candidate.watchkeeping || 'N/A'} />
         </InfoCard>
 
-        <InfoCard title="Last Sea Experience">
+        {/* <InfoCard title="Last Sea Experience">
           <ItemList value={candidate.vesselExp} />
-        </InfoCard>
+        </InfoCard> */}
 
         <InfoCard title="Additional Details">
-          <InfoItem label="Height" value={candidate.height || 'N/A'} />
-          <InfoItem label="Weight" value={candidate.weight || 'N/A'} />
           <InfoItem label="SID Card" value={candidate.sid || 'N/A'} />
+          <InfoItem label="US Visa" value={candidate.usVisa || 'N/A'} />
           {/* <InfoItem label="Open to Lower Rank" value={candidate.others?.willingToAcceptLowerRank || 'N/A'} /> */}
         </InfoCard>
       </div>

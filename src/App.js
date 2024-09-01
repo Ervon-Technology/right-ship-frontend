@@ -34,6 +34,7 @@ import JobBoard from './job_seeker/jobs/MyJobs';
 import PublicProfile from './job_seeker/employeeProfile/PublicProfile'; // Import the PublicProfile component
 import ContactUs from './contactUs';
 import VerificationPending from './Pages/AccountVerify';
+import AllCandidatesTable from './company/candidates/allCandidateList';
 
 
 
@@ -72,6 +73,7 @@ const App = () => {
                   <Route path="/post/job" element={<JobPostList />} />
                   <Route path="/post/job/detail/:id" element={<JobDetail />} />
                   <Route path="/job/candidates" element={<CandidatesTable />} />
+                  <Route path="/all/candidates" element={<AllCandidatesTable />} />
                   <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
                   <Route path="/manage/company/team" element={<CompanyManageUsers />} />
                   <Route path="/setting" element={<CompanyProfile />} />
