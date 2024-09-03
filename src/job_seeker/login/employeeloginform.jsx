@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import logo from '../../images/logo.png';
 
 const MobileNumberForm = ({ onOtpRequested }) => {
@@ -68,6 +69,14 @@ const MobileNumberForm = ({ onOtpRequested }) => {
                     {otpStatus === 'failed' && (
                         <p className="text-red-600 mt-4 text-center">{otpError}</p>
                     )}
+                    <div className='text-center'>- or -</div>
+                    {/* Register Link as a button */}
+                    <Link
+                        to="/register"
+                        className="w-full block text-center mt-4 py-4 rounded-md text-customBlue font-medium border border-customBlue transition duration-300 hover:bg-customBlue hover:text-white"
+                    >
+                        Create New Account
+                    </Link>
                 </div>
             </div>
         </section>

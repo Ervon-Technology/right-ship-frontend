@@ -17,48 +17,47 @@ const AllCandidatesTable = ({ jobId }) => {
 
   const user = useSelector((state) => state.auth.user);
 
-  const fetchEmployeeDetails = useCallback(async ( page = 1, limit = 10) => {
+  const fetchEmployeeDetails = useCallback(async (page = 1, limit = 20) => {
     try {
-        const requestData = {
-            page,
-            limit,
-        };
+      const requestData = {
+        page,
+        limit,
+      };
 
-        if (rankFilter) {
-            requestData.appliedRank = rankFilter;
-        }
+      if (rankFilter) {
+        requestData.appliedRank = rankFilter;
+      }
 
-        if (shipTypeFilter) {
-            requestData.applyvessel = shipTypeFilter;
-        }
+      if (shipTypeFilter) {
+        requestData.applyvessel = shipTypeFilter;
+      }
 
-        console.log("Request Data:", requestData);
+      console.log("Request Data:", requestData);
 
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
 
-        console.log("API Response:", response.data);
+      console.log("API Response:", response.data);
 
-        if (response.data.code === 200) {
-            setCandidates(response.data.data);
-            const totalRecords = response.data.total || 0;
-            const calculatedTotalPages = Math.ceil(totalRecords / limit);
-            setTotalPages(calculatedTotalPages > 0 ? calculatedTotalPages : 1);
+      if (response.data.code === 200) {
+        setCandidates(response.data.data);
+        const totalRecords = response.data.total_documents || 0; // Use total_documents from your JSON response
+        const calculatedTotalPages = Math.ceil(totalRecords / limit);
+        setTotalPages(calculatedTotalPages > 0 ? calculatedTotalPages : 1);
 
-            return response.data.data;
-        } else {
-            console.error("Failed to fetch employee details:", response.data);
-            throw new Error('Failed to fetch employee details');
-        }
+        return response.data.data;
+      } else {
+        console.error("Failed to fetch employee details:", response.data);
+        throw new Error('Failed to fetch employee details');
+      }
     } catch (error) {
-        if (error.response) {
-            console.error("Error fetching employee details:", error.response.data);
-        } else {
-            console.error("Error fetching employee details:", error.message);
-        }
-        throw error;
+      if (error.response) {
+        console.error("Error fetching employee details:", error.response.data);
+      } else {
+        console.error("Error fetching employee details:", error.message);
+      }
+      throw error;
     }
-}, [rankFilter, shipTypeFilter]);
-
+  }, [rankFilter, shipTypeFilter]);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -82,7 +81,9 @@ const AllCandidatesTable = ({ jobId }) => {
   };
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
   };
 
   // Fetching attributes for ship types and ranks
@@ -168,7 +169,7 @@ const AllCandidatesTable = ({ jobId }) => {
           <tbody>
             {candidates && candidates.length > 0 ? (
               candidates.map((candidate) => (
-                <tr key={candidate.id} className="border-t">
+                <tr key={candidate._id} className="border-t">
                   <td className="py-4 px-6 text-gray-700">
                     <Link to={`/job/candidates/detail/${candidate._id}`} className="text-blue-600 hover:underline">
                       <ListView data={[candidate.firstName, `DOB: ${candidate.dob}`, `Gender: ${candidate.gender}`]} />
@@ -176,7 +177,7 @@ const AllCandidatesTable = ({ jobId }) => {
                   </td>
                   <td className="py-4 px-6 text-gray-700">{candidate.appliedRank}</td>
                   <td className="py-4 px-6 text-gray-700">{candidate.presentRank}</td>
-                  <td className="py-4 px-6 text-gray-700">{candidate.appliedRank}</td>
+                  <td className="py-4 px-6 text-gray-700">{candidate.appliedVessel}</td>
                   <td className="py-4 px-6 text-gray-700">
                     <ListView data={candidate.vesselExp} />
                   </td>
@@ -228,6 +229,22 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     }
   };
 
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => onPageChange(i)}
+          className={`p-2 ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700'} rounded-md mx-1`}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pageNumbers;
+  };
+
   return (
     <div className="flex justify-center mt-4">
       <button
@@ -237,9 +254,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       >
         Previous
       </button>
-      <span className="p-2 text-gray-700">
-        Page {currentPage} of {totalPages || 1} {/* Fallback to 1 if totalPages is NaN */}
-      </span>
+      {renderPageNumbers()}
       <button
         onClick={handleNextPage}
         className="p-2 bg-gray-300 rounded-md ml-2"

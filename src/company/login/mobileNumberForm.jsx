@@ -1,9 +1,8 @@
-// src/job_seeker/login/MobileNumberForm.jsx
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import logo from '../../images/logo.png';
 
 const MobileNumberForm = ({ onOtpRequested }) => {
@@ -18,7 +17,7 @@ const MobileNumberForm = ({ onOtpRequested }) => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, { mobile_no: mobileNumber });
             console.log(response.data);
-            if (response.data.code == 200) {
+            if (response.data.code === 200) {
                 onOtpRequested(mobileNumber);
                 setOtpStatus('success');
             } else {
@@ -38,7 +37,7 @@ const MobileNumberForm = ({ onOtpRequested }) => {
                 <img src={logo} alt="Logo" className="h-24 w-20" />
             </div>
             <div className="bg-white p-10 mt-3 rounded-lg shadow-lg border w-full max-w-md">
-                <h2 className="text-center text-2xl font-semibold mb-6">Log in to Rightship</h2>
+                <h2 className="text-center text-2xl font-semibold mb-6">Log in as Company</h2>
                 <input
                     type="text"
                     value={mobileNumber}
@@ -54,6 +53,17 @@ const MobileNumberForm = ({ onOtpRequested }) => {
                     {otpStatus === 'loading' ? 'Sending...' : 'Send OTP'}
                 </button>
                 {otpStatus === 'failed' && <p className="text-red-600 mt-4 text-center">{otpError}</p>}
+                
+                <div className='text-center'>- or -</div>
+                
+                {/* Register Link as a button */}
+                <Link
+                    target="_blank"
+                    to="/company/register"
+                    className="w-full block text-center mt-4 py-4 rounded-md text-customBlue font-medium border border-customBlue transition duration-300 hover:bg-customBlue hover:text-white"
+                >
+                    Register
+                </Link>
             </div>
         </section>
     );
