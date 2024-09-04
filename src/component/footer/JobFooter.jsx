@@ -12,13 +12,13 @@ const JobFooter = () => {
           <a href="/contact-us" target="_blank" rel="noopener noreferrer" className="hover:underline">Contact US</a>
         </div>
         <div className="flex space-x-4">
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.facebook.com/profile.php?id=61565469260372" target="_blank" rel="noopener noreferrer">
             <FaFacebook className="w-6 h-6 text-blue-800" />
           </a>
           <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
             <FaLinkedin className="w-6 h-6 text-blue-800" />
           </a>
-          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.instagram.com/rightships.services/" target="_blank" rel="noopener noreferrer">
             <FaInstagram className="w-6 h-6 text-red-500" />
           </a>
         </div>

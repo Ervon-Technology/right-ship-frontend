@@ -95,8 +95,8 @@ const DefaultNavbar = () => {
             <span className="font-bold text-gray-800 px-4">RIGHTSHIP</span>
           </Link>
           <Link to="/myjobs" className="block">Jobs</Link>
-          <Link to='/login'><button className="text-customBlue border border-customBlue font-semibold p-2 px-6 hover:bg-customBlue hover:text-white rounded">Login</button></Link>
-          <Link to='/register'><button className="bg-customBlue hover:bg-customBlue2 font-semibold text-white px-4 py-2 rounded">Register</button></Link>
+          <Link onClick={handleDropdownItemClick} to='/login'><button className="text-customBlue border border-customBlue font-semibold p-2 px-6 hover:bg-customBlue hover:text-white rounded">Login</button></Link>
+          <Link to='/register' onClick={handleDropdownItemClick}><button className="bg-customBlue hover:bg-customBlue2 font-semibold text-white px-4 py-2 rounded">Register</button></Link>
           <div className="relative">
             <button
               className="flex items-center space-x-2"
