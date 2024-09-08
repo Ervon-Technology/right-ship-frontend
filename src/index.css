@@ -1,0 +1,16 @@
+@media (max-width: 768px) {
+    .filter-sidebar {
+      display: none;
+    }
+  
+    .mobile-filter-button {
+      display: block;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .mobile-filter-button {
+      display: none;
+    }
+  }
+  

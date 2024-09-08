@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 import './img.css';
 
 // Layout Imports
@@ -35,6 +36,7 @@ import PublicProfile from './job_seeker/employeeProfile/PublicProfile'; // Impor
 import ContactUs from './contactUs';
 import VerificationPending from './Pages/AccountVerify';
 import AllCandidatesTable from './company/candidates/allCandidateList';
+import WantToHire from './Pages/WantToHire';
 
 
 
@@ -74,6 +76,7 @@ const App = () => {
                   <Route path="/post/job/detail/:id" element={<JobDetail />} />
                   <Route path="/job/candidates" element={<CandidatesTable />} />
                   <Route path="/all/candidates" element={<AllCandidatesTable />} />
+                 
                   <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
                   <Route path="/manage/company/team" element={<CompanyManageUsers />} />
                   <Route path="/setting" element={<CompanyProfile />} />
@@ -103,7 +106,9 @@ const App = () => {
               <Route path='/email-register' element={<SignupWithEmail />} />
               <Route path='/verify-signup-otp' element={<VerifySignupOtp />} />
               <Route path="/employee-registration" element={<EmployeeRegistration />} />
-              <Route path="*" element={<NotFoundPage />} />     
+              <Route path="*" element={<NotFoundPage />} />    
+
+              <Route path="/company" element={<WantToHire />} /> 
               
             </Route>
             <Route path="/company/register" element={<RegistrationForm />} />
@@ -111,6 +116,8 @@ const App = () => {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
+
+            
           </>
         )}
         

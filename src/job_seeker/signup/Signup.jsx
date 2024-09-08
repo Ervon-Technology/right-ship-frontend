@@ -38,7 +38,7 @@ const EmployeeSignup = () => {
 
   return (
     <section
-    className="relative flex flex-col items-center py-20 h-screen bg-gray-100 bgImage"
+    className="relative flex flex-col items-center py-8 h-screen bg-gray-100 bgImage"
    
   >
     {/* Overlay */}
@@ -52,9 +52,13 @@ const EmployeeSignup = () => {
       </div>
   
       <div className="bg-white p-10 mt-3 rounded-lg shadow-lg border w-full max-w-md">
-        <h2 className="text-center text-2xl font-semibold mb-6">
-          Signup with Phone Number
+      <p className="text-sm mb-3 font-bold text-gray-600">
+         Find your dream job with Right Ships
+        </p>
+        <h2 className="text-2xl font-semibold mb-6">
+          Register using Number
         </h2>
+        
         <input
           type="tel"
           placeholder="Enter the phone number"
@@ -81,7 +85,7 @@ const EmployeeSignup = () => {
             to="/email-register"
             className="text-blue-600 block text-center text-md underline mt-6 hover:text-customBlue2"
           >
-            Signup with Email
+            Register with Email
           </Link>
         </p>
       </div>

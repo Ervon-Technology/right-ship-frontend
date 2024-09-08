@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FiX, FiCheckCircle, FiXCircle } from 'react-icons/fi';
+import { Search } from 'lucide-react';
 
 const Loader = () => (
   <div className="fixed inset-0 flex items-center justify-center bg-gray-50 z-50">
@@ -444,6 +445,39 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
   );
 };
 
+// STep 2 Filter Create a new component for the filter modal that will be displayed on mobile:
+const MobileFilterModal = ({ isOpen, onClose, children }) => (
+  <AnimatePresence>
+    {isOpen && (
+      <>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black z-40"
+          onClick={onClose}
+        />
+        <motion.div
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '100%' }}
+          className="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-lg z-50 overflow-y-auto"
+        >
+          <div className="p-6">
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
+            >
+              <FiX className="w-6 h-6 text-gray-500" />
+            </button>
+            {children}
+          </div>
+        </motion.div>
+      </>
+    )}
+  </AnimatePresence>
+);
+
 
 const App = () => {
   const [selectedRanks, setSelectedRanks] = useState([]);
@@ -465,6 +499,9 @@ const App = () => {
   const jobsPerPage = 10;
 
   const user = useSelector(state => state.auth.user);
+
+  // Setp 1 Filter Add a state for showing the filter modal on mobile:
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   // Fetch rank and ship options on mount
   useEffect(() => {
@@ -589,7 +626,7 @@ const App = () => {
     <div className="bg-gray-50 min-h-screen relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="w-full md:w-1/4">
+          <div className="filter-sidebar w-full md:w-1/4">
             <div className="bg-white p-6 rounded-xl shadow-sm sticky top-8">
               <h2 className="text-2xl font-bold mb-6 text-gray-800">Filters</h2>
 
@@ -634,11 +671,18 @@ const App = () => {
                 value={inputSearchTerm}
                 onChange={(e) => setInputSearchTerm(e.target.value)}
               />
+              
               <button
                 onClick={handleSearchClick}
                 className="px-4 py-3 bg-blue-600 text-white font-medium rounded-r-lg hover:bg-blue-700 transition duration-200"
               >
-                Search
+               <Search className="text-white" />
+              </button>
+              <button
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="ml-2 px-4 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition duration-200 md:hidden"
+              >
+                Filters
               </button>
             </div>
 
@@ -673,6 +717,25 @@ const App = () => {
           </div>
         </div>
       </div>
+
+
+      {/* Mobile Filter Modal */}
+      <MobileFilterModal isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)}>
+        <JobTypeFilter
+          selectedTypes={selectedRanks}
+          setSelectedTypes={setSelectedRanks}
+          options={rankOptions}
+          title="Rank"
+          onFilterChange={() => fetchJobDetails(searchTerm)}
+        />
+        <JobTypeFilter
+          selectedTypes={selectedVessels}
+          setSelectedTypes={setSelectedVessels}
+          options={shipOptions}
+          title="Vessel Type"
+          onFilterChange={() => fetchJobDetails(searchTerm)}
+        />
+      </MobileFilterModal>
 
       <AnimatePresence>
         {selectedJob && companyDetails && ( // Ensure both selectedJob and companyDetails are present

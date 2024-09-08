@@ -14,7 +14,7 @@ const Header = () => (
           </Link>
         </div>
         <div className="w-full md:w-1/2 px-2">
-          <Link to="/company/register">
+          <Link to="/company">
             <img src={Iwanttohire} alt="I Want to Hire" className="w-full h-auto opacity-75" />
           </Link>
         </div>

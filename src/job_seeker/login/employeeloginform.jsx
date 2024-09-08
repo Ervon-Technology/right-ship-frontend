@@ -2,19 +2,48 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 import logo from '../../images/logo.png';
 
 const MobileNumberForm = ({ onOtpRequested }) => {
+    
     const [contactInfo, setContactInfo] = useState('');
     const [otpStatus, setOtpStatus] = useState('idle');
     const [otpError, setOtpError] = useState('');
 
+    const verifyUserExists = async () => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/details`, {
+                mobile_no: contactInfo,
+                user_type: 'employee' // Assuming 'employee' is the user type; modify as needed
+            });
+
+            return response.data; // Assuming 'exists' is a field that returns true if the user exists
+        } catch (error) {
+            console.error('Error verifying user existence:', error);
+            return false;
+        }
+    };
+
     const handleRequestOtp = async () => {
         setOtpStatus('loading');
         try {
+            // Step 1: Verify if the user exists
+            const userExists = await verifyUserExists();
+            
+            if (!userExists) {
+                setOtpStatus('failed');
+                setOtpError('User does not exist. Please register.');
+                toast.error('User does not exist. Please register.');
+                return;
+            }
+
+            // Step 2: Send OTP if the user exists
+            console.log("============> 1");
             const isEmail = contactInfo.includes('@');
+            console.log("============> 2");
             const payload = isEmail ? { email: contactInfo } : { mobile_no: contactInfo };
+            console.log("============> 3");
 
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, payload);
             console.log(response.data);
@@ -36,7 +65,7 @@ const MobileNumberForm = ({ onOtpRequested }) => {
     };
 
     return (
-        <section className="relative flex flex-col items-center py-20 h-screen bg-gray-100 bgImage">
+        <section className="relative flex flex-col items-center py-8 h-screen bg-gray-100 bgImage">
             {/* Overlay */}
             <div className="absolute inset-0 bg-white opacity-80 z-10"></div>
 
@@ -47,7 +76,16 @@ const MobileNumberForm = ({ onOtpRequested }) => {
                     <img src={logo} alt="Logo" className="h-24 w-20" />
                 </div>
                 <div className="bg-white p-10 mt-3 rounded-lg shadow-lg border w-full max-w-md">
-                    <h2 className="text-center text-2xl font-semibold mb-6">Log in to Rightship</h2>
+                
+                    {/* Register Link as a button */}
+                    <Link
+                        to="/register"
+                        className="w-full block text-center mt-4 py-4 rounded-md text-customBlue font-medium border border-customBlue transition duration-300 hover:bg-customBlue hover:text-white"
+                    >
+                        Create New Account
+                    </Link>
+                    <hr className='my-7 border-b-2'/>
+                    <h2 className="text-2xl font-semibold mb-6">Login as Candidate</h2>
                     <input
                         type="text"
                         value={contactInfo}
@@ -69,14 +107,7 @@ const MobileNumberForm = ({ onOtpRequested }) => {
                     {otpStatus === 'failed' && (
                         <p className="text-red-600 mt-4 text-center">{otpError}</p>
                     )}
-                    <div className='text-center'>- or -</div>
-                    {/* Register Link as a button */}
-                    <Link
-                        to="/register"
-                        className="w-full block text-center mt-4 py-4 rounded-md text-customBlue font-medium border border-customBlue transition duration-300 hover:bg-customBlue hover:text-white"
-                    >
-                        Create New Account
-                    </Link>
+                   
                 </div>
             </div>
         </section>
