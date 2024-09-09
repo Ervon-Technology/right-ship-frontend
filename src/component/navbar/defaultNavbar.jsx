@@ -3,14 +3,10 @@ import Logo from '../../images/logo.png';
 import { Link } from 'react-router-dom';
 
 const DefaultNavbar = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
 
-  const handleDropdownItemClick = () => {
-    setIsDropdownOpen(false);
-    setIsMobileDropdownOpen(false);
-    setIsMobileMenuOpen(false);
+  const handleMenuItemClick = () => {
+    setIsMobileMenuOpen(false); // Close mobile menu after clicking
   };
 
   return (
@@ -35,18 +31,14 @@ const DefaultNavbar = () => {
             
             {/* ------------------------------------------------------------  */}
             <div className=" md:flex hidden items-center space-x-6 z-20">
-              <Link to='/login'><button className="text-customBlue border border-customBlue font-semibold p-2 px-6 hover:bg-customBlue hover:text-white rounded">Candidate Login</button></Link>
-             
-            
-                <Link
-                  to={"/company"}
-                  className="flex items-center space-x-2"
-                >
-                  <span>Company Login</span>
-                 
-                </Link>
-    
-            
+              <Link to='/login'>
+                <button className="text-customBlue border border-customBlue font-semibold p-2 px-6 hover:bg-customBlue hover:text-white rounded">
+                  Candidate Login
+                </button>
+              </Link>
+              <Link to={"/company"} className="flex items-center space-x-2">
+                <span>Company Login</span>
+              </Link>
             </div>
             {/* ------------------------------------------------------------  */}
 
@@ -70,8 +62,9 @@ const DefaultNavbar = () => {
             {/* ------------------------------------------------------------  */}
           </nav>
 
+          {/* Full-width mobile menu */}
           <div
-            className={`fixed top-0 z-50 right-0 w-64 h-full bg-white shadow-lg border-l border-gray-200 transform ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            className={`fixed top-0 z-50 right-0 w-full h-full bg-white shadow-lg border-l border-gray-200 transform ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
               } transition-transform duration-300 ease-in-out`}
           >
             <div className="px-4 flex flex-col space-y-4 relative">
@@ -83,49 +76,28 @@ const DefaultNavbar = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              <Link to="/" className='flex items-center'>
+              <Link to="/" className='flex items-center' onClick={handleMenuItemClick}>
                 <img src={Logo} alt="Logo" height={40} width={40} />
                 <span className="font-bold text-gray-800 px-4">RIGHTSHIP</span>
               </Link>
-              <Link to="/myjobs" className="block">Jobs</Link>
-              <Link onClick={handleDropdownItemClick} to='/login'><button className="text-customBlue border border-customBlue font-semibold p-2 px-6 hover:bg-customBlue hover:text-white rounded">Sign In</button></Link>
-              <Link to='/register' onClick={handleDropdownItemClick}><button className="bg-customBlue hover:bg-customBlue2 font-semibold text-white px-4 py-2 rounded">Register</button></Link>
-              <div className="relative">
-                <button
-                  className="flex items-center space-x-2"
-                  onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
-                >
-                  <span>For Company</span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
+              <Link to="/jobs" className="block" onClick={handleMenuItemClick}>Jobs</Link>
+              <Link to='/login' onClick={handleMenuItemClick}>
+                <button className="text-customBlue border border-customBlue font-semibold p-2 px-6 hover:bg-customBlue hover:text-white rounded">
+                  Candidate Login
                 </button>
-                {isMobileDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg">
-                    <Link
-                      to="/company/login"
-                      className="block px-4 py-2 hover:bg-gray-200"
-                      onClick={handleDropdownItemClick}
-                    >
-                      Sign In
-                    </Link>
-                    <Link
-                      to="/company/register"
-                      className="block px-4 py-2 hover:bg-gray-200"
-                      onClick={handleDropdownItemClick}
-                    >
-                      Register
-                    </Link>
-                  </div>
-                )}
-              </div>
+              </Link>
+              <Link to='/company' onClick={handleMenuItemClick}>
+                <button className="bg-customBlue hover:bg-customBlue2 font-semibold text-white px-4 py-2 rounded">
+                  Company Login
+                </button>
+              </Link>
             </div>
           </div>
 
           {isMobileMenuOpen && (
             <div
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black opacity-50"
+              className="fixed inset-0 bg-black opacity-50 z-[1]"
             ></div>
           )}
         </div>

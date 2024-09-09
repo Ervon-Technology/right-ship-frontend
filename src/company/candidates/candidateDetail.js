@@ -76,13 +76,26 @@ const CandidateDetail = () => {
               {candidate.firstName}
             </h1>
             <div className="mt-4">
-              <a
+              {candidate.resume != null || candidate.resume == '' ? (
+                    <a
+                    href={candidate.resume}
+                    download={`${candidate.firstName}-resume.pdf`}
+                    className="inline-block px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1"
+                    >
+                    Download Resume
+                    </a>
+              ): (
+
+                <a
                 href={candidate.resume}
                 download={`${candidate.firstName}-resume.pdf`}
                 className="inline-block px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 ease-in-out transform hover:-translate-y-1"
-              >
-                Download Resume
-              </a>
+                >
+                Resume Not Available
+                </a>
+
+              )}
+             
             </div>
             <div className="mt-4">
               {!showEmail ? (

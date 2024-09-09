@@ -5,16 +5,44 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import logo from '../../images/logo.png';
 
+
 const MobileNumberForm = ({ onOtpRequested }) => {
     
     const [mobileNumber, setMobileNumber] = useState('');
     const [otpStatus, setOtpStatus] = useState('idle');
     const [otpError, setOtpError] = useState('');
 
+    const verifyUserExists = async () => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/details`, {
+                mobile_no: mobileNumber,
+                user_type: 'company' // Assuming 'employee' is the user type; modify as needed
+            });
+
+            return response.data; // Assuming 'exists' is a field that returns true if the user exists
+        } catch (error) {
+            console.error('Error verifying user existence:', error);
+            return false;
+        }
+    };
+
     const handleRequestOtp = async () => {
         
         setOtpStatus('loading');
+
         try {
+
+            const userExists = await verifyUserExists();
+            
+            if (!userExists) {
+                console.log("============> 1swww");
+                setOtpStatus('failed');
+                setOtpError('Company User does not exist. Please register.');
+                toast.error('Company User does not exist. Please register.');
+                return;
+            }
+            console.log("============> 2swww");
+
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, { mobile_no: mobileNumber });
             console.log(response.data);
             if (response.data.code === 200) {

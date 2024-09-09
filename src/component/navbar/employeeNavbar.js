@@ -24,7 +24,7 @@ const EmployeeNavbar = () => {
     const fetchProfilePhoto = async () => {
       try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, {
-          employee_id: employeeId, // Replace with actual employee ID
+          employee_id: employeeId,
         });
         const result = response.data.data[0];
         setProfilePhoto(result?.profile || ''); // Set the profile photo URL
@@ -33,8 +33,10 @@ const EmployeeNavbar = () => {
       }
     };
 
-    fetchProfilePhoto();
-  }, []);
+    if (employeeId) {
+      fetchProfilePhoto();
+    }
+  }, [employeeId]);
 
   const handleUserDropdownClick = () => {
     setUserDropdownOpen(!userDropdownOpen);
@@ -70,10 +72,15 @@ const EmployeeNavbar = () => {
     window.location.reload();
   };
 
-  const handleDropdownItemClick = () => {
-    setUserDropdownOpen(false);
-    setNotificationDropdownOpen(false);
-  };
+  const MenuLink = ({ to, icon: Icon, label, onClick, children }) => (
+    <Link
+      to={to}
+      className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold"
+      onClick={onClick}
+    >
+      {Icon && <Icon size={20} className="mr-2" />} {children || label}
+    </Link>
+  );
 
   return (
     <>
@@ -91,65 +98,52 @@ const EmployeeNavbar = () => {
           </div>
           <div className='hidden sm:block'>
             <div className=" flex items-center space-x-6">
-            <a href="/contact-us" className="text-black flex items-center font-bold">
-              <CircleHelp size={20} className="mr-2" /> Help & Support
-            </a>
-            <div className="relative z-50" ref={notificationDropdownRef}>
-              <button onClick={handleNotificationDropdownClick} className="flex items-center text-black font-bold">
-                <Bell size={20} className="mr-2" /> Notification
-              </button>
-            </div>
-            <div className="relative z-50" ref={userDropdownRef}>
-              <button onClick={handleUserDropdownClick} className="flex items-center text-black font-bold">
-                {profilePhoto ? (
-                  <img
-                    src={profilePhoto}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full object-cover mr-2"
-                  />
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center mr-2">
-                    <span className="text-white">U</span> {/* Placeholder if no profile photo */}
+              <a href="/contact-us" className="text-black flex items-center font-bold">
+                <CircleHelp size={20} className="mr-2" /> Help & Support
+              </a>
+              <div className="relative z-50" ref={notificationDropdownRef}>
+                <button onClick={handleNotificationDropdownClick} className="flex items-center text-black font-bold">
+                  <Bell size={20} className="mr-2" /> Notification
+                </button>
+              </div>
+              <div className="relative z-50" ref={userDropdownRef}>
+                <button onClick={handleUserDropdownClick} className="flex items-center text-black font-bold">
+                  {profilePhoto ? (
+                    <img
+                      src={profilePhoto}
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full object-cover mr-2"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center mr-2">
+                      <span className="text-white">U</span>
+                    </div>
+                  )}
+                  <ChevronDown className="ml-2" />
+                </button>
+                {userDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-50">
+                    <MenuLink to="/profile" icon={UserRound} label="Profile" onClick={() => setUserDropdownOpen(false)}>
+                      {profilePhoto && (
+                        <img
+                          src={profilePhoto}
+                          alt="Profile"
+                          className="w-6 h-6 rounded-full object-cover mr-2"
+                        />
+                      )}
+                      Profile
+                    </MenuLink>
+                    <MenuLink to="/my-jobs" icon={BriefcaseBusiness} label="My Jobs" onClick={() => setUserDropdownOpen(false)} />
+                    <MenuLink to="/settings" icon={Settings} label="Settings" onClick={() => setUserDropdownOpen(false)} />
+                    <div className="border-t">
+                      <MenuLink to="/" icon={LogOut} label="Sign Out" onClick={handleLogout} />
+                    </div>
                   </div>
                 )}
-                <ChevronDown className="ml-2" />
-              </button>
-              {userDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-50">
-                  <Link 
-                    to="/profile" 
-                    className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold"
-                    onClick={handleDropdownItemClick}
-                  >
-                    <UserRound size={20} className="mr-2" /> Profile
-                  </Link>
-                  <Link 
-                    to="/my-jobs" 
-                    className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold"
-                    onClick={handleDropdownItemClick}
-                  >
-                    <BriefcaseBusiness size={20} className="mr-2" /> My Jobs
-                  </Link>
-                  <Link 
-                    to="/settings" 
-                    className="px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center font-semibold"
-                    onClick={handleDropdownItemClick}
-                  >
-                    <Settings size={20} className="mr-2" /> Settings
-                  </Link>
-                  <Link 
-                    to="/" 
-                    onClick={() => { handleLogout(); handleDropdownItemClick(); }} 
-                    className="px-4 py-2 mt-1 text-gray-800 hover:bg-gray-100 flex justify-center border-t font-bold"
-                  >
-                    Sign Out
-                  </Link>
-                </div>
-              )}
-            </div>
+              </div>
             </div>
           </div>
-          <button onClick={toggleOffCanvas} className="md:hidden text-black focus:outline-none">
+          <button onClick={toggleOffCanvas} className="md:hidden text-black focus:outline-none" aria-label="Menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-16 6h16" />
             </svg>
@@ -157,13 +151,14 @@ const EmployeeNavbar = () => {
         </nav>
       </header>
 
+      {/* Full-width mobile menu with higher z-index */}
       <div
-        className={`lg:hidden fixed top-0 right-0 w-64 h-full bg-white shadow-lg border-l border-gray-200 transform ${
+        className={`lg:hidden fixed top-0 left-0 w-full h-full bg-white shadow-lg z-[1000] transform ${
           isOffCanvasOpen ? 'translate-x-0' : 'translate-x-full'
-        } transition-transform duration-300 ease-in-out z-40`}
+        } transition-transform duration-300 ease-in-out`}
       >
         <div className="flex flex-col space-y-4">
-          <button onClick={toggleOffCanvas} className="text-black self-end absolute top-7 right-7">
+          <button onClick={toggleOffCanvas} className="text-black self-end absolute top-7 right-7" aria-label="Close">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -171,59 +166,30 @@ const EmployeeNavbar = () => {
           <Link className="flex px-6 py-3 border-b-2 font-bold">
             <span className="text-gray-800">MENU</span>
           </Link>
-          <Link to="/jobs" className="text-black pb-4 px-6 font-semibold border-b-2 hover:text-customBlue">Jobs</Link>
+          <Link to="/jobs" className="text-black pb-4 px-6 font-semibold border-b-2 hover:text-customBlue" onClick={toggleOffCanvas}>Jobs</Link>
 
           <div className="pb-4 px-6 border-b-2">
-            <button
-              className="w-full text-left text-black font-bold flex items-center justify-between"
-            >
-              User
-            </button>         
-              <div className="mt-2 space-y-2">
-                <Link 
-                  to="/profile" 
-                  className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2"
-                  onClick={handleDropdownItemClick}
-                >
+            <div className="space-y-2">
+              <MenuLink to="/profile" label="Profile" onClick={toggleOffCanvas}>
+                {profilePhoto && (
                   <img
                     src={profilePhoto}
                     alt="Profile"
-                    className="w-8 h-8 rounded-full object-cover mr-2"
-                  /> Profile
-                </Link>
-                <Link 
-                  to="/my-jobs" 
-                  className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2"
-                  onClick={handleDropdownItemClick}
-                >
-                  <BriefcaseBusiness size={20} className="mr-2" /> My Jobs
-                </Link>
-                <Link 
-                  to="/settings" 
-                  className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2"
-                  onClick={handleDropdownItemClick}
-                >
-                  <Settings size={20} className="mr-2" /> Settings
-                </Link>
-                <Link 
-                  to="/" 
-                  onClick={() => { handleLogout(); handleDropdownItemClick(); }} 
-                  className="text-gray-800 hover:bg-gray-100 flex items-center font-semibold ps-3 py-2"
-                >
-                  <LogOut size={20} className="mr-2" /> Sign Out
-                </Link>
-              </div>
+                    className="w-6 h-6 rounded-full object-cover mr-2"
+                  />
+                )}
+                Profile
+              </MenuLink>
+              <MenuLink to="/my-jobs" icon={BriefcaseBusiness} label="My Jobs" onClick={toggleOffCanvas} />
+              <MenuLink to="/settings" icon={Settings} label="Settings" onClick={toggleOffCanvas} />
+              <MenuLink to="/" icon={LogOut} label="Sign Out" onClick={handleLogout} />
+            </div>
           </div>
-
           <div className="pb-4 px-6 border-b-2">
-            <button
-              onClick={handleNotificationDropdownClick}
-              className="w-full text-left text-black font-bold flex items-center justify-between"
-            >
+            <button onClick={handleNotificationDropdownClick} className="w-full text-left text-black font-bold flex items-center justify-between">
               Notification
             </button>
           </div>
-
           <a href="/contact-us" className="px-6 text-black flex items-center font-bold">
             <CircleHelp size={20} className="mr-2" /> Help & Support
           </a>
@@ -233,7 +199,7 @@ const EmployeeNavbar = () => {
       {isOffCanvasOpen && (
         <div
           onClick={toggleOffCanvas}
-          className="fixed inset-0 bg-black opacity-50 z-20"
+          className="fixed inset-0 bg-black opacity-50 z-[999]"
         ></div>
       )}
     </>

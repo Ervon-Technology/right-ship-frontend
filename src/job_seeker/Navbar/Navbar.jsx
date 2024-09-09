@@ -108,7 +108,7 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div
           onClick={() => setIsMobileMenuOpen(false)}
-          className="fixed inset-0 bg-black opacity-50"
+          className="fixed inset-0 bg-black opacity-50 z-[1]"
         ></div>
       )}
     </>
