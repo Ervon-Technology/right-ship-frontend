@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../component/form/button';
+import Pagination from '../../component/pagination';
 
 const JobPostList = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const message = location.state?.message;
-
+  const [postsPerPage] = useState(10); // Number of posts per page
+  const [totalDocuments, setTotalDocuments] = useState(0); // Total documents from the API
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
   const [sortField, setSortField] = useState('created_date');
+  const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
 
@@ -28,6 +26,8 @@ const JobPostList = () => {
       try {
         const requestData = {
           company_id: user.company_id,
+          page: currentPage,
+          limit: postsPerPage, // Pass limit for pagination
         };
 
         const response = await axios.post(
@@ -37,6 +37,7 @@ const JobPostList = () => {
 
         if (response.data.code === 200) {
           setPosts(response.data.applications);
+          setTotalDocuments(response.data.total_documents); // Set total_documents from API
         } else {
           console.error('Failed to fetch posts:', response.data);
           setError('Failed to fetch posts.');
@@ -50,70 +51,24 @@ const JobPostList = () => {
     };
 
     fetchPosts();
-  }, [user?.company_id]);
-
-  const handleActionClick = async (action, postId) => {
-    console.log(`Action: ${action} on post ID: ${postId}`);
-
-    const data = {
-      application_id: postId,
-      status: action,
-    };
-
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/company/application/edit`,
-        data
-      );
-      console.log('Job status updated:', response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Error updating job status:', error);
-      return null;
-    }
-  };
-
-  const filteredPosts = posts
-    .sort((a, b) => {
-      if (sortField === 'created_date') {
-        return sortOrder === 'asc'
-          ? new Date(a.created_date) - new Date(b.created_date)
-          : new Date(b.created_date) - new Date(a.created_date);
-      } else if (sortField === 'status') {
-        return sortOrder === 'asc'
-          ? a.status.localeCompare(b.status)
-          : b.status.localeCompare(a.status);
-      }
-      return 0;
-    });
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  }, [user?.company_id, currentPage]); // Fetch posts whenever currentPage changes
 
   const handleStatusChange = async (postId, newStatus) => {
     try {
-      console.log(postId, newStatus);
-
       const postStateData = {
         application_id: postId,
         status: newStatus,
-      }
+      };
 
-      const JobStatusResponse = axios.post(`${process.env.REACT_APP_API_URL}/company/application/edit`, postStateData );
-     
-     
-        console.log(posts);
-         setPosts((posts) =>
-          posts.map((post) =>
-            post.application_id === postId
-              ? { ...post, status: newStatus }
-              : post
-          )
-        );
-     
+      await axios.post(`${process.env.REACT_APP_API_URL}/company/application/edit`, postStateData);
+
+      setPosts((posts) =>
+        posts.map((post) =>
+          post.application_id === postId
+            ? { ...post, status: newStatus }
+            : post
+        )
+      );
     } catch (error) {
       console.error('Error while updating status:', error);
       alert('An error occurred while updating status.');
@@ -128,21 +83,17 @@ const JobPostList = () => {
     return <p className="text-center text-red-500">{error}</p>;
   }
 
+  const totalPages = Math.ceil(totalDocuments / postsPerPage); // Calculate total pages
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {message && (
-        <div className="mb-4 p-4 bg-green-100 text-green-700 rounded-md">
-          {message}
-        </div>
-      )}
-
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Job Posts</h2>
 
       {/* Search and Sorting Section */}
       <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
         <input
           type="text"
-          placeholder="Search by Job Title, Rank, or Benefits"
+          placeholder="Search by Job Title, Rank, or Ship Type"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="px-4 py-2 border rounded-md w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -156,9 +107,8 @@ const JobPostList = () => {
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
-         
-          <Button text="Add Job" to="/create/job" color="blue" />
 
+          <Button text="Add Job" to="/create/job" color="blue" />
         </div>
       </div>
 
@@ -182,8 +132,8 @@ const JobPostList = () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {currentPosts.length > 0 ? (
-              currentPosts.map((post) => (
+            {posts.length > 0 ? (
+              posts.map((post) => (
                 <tr
                   key={post.application_id}
                   className="hover:bg-gray-100 cursor-pointer"
@@ -255,46 +205,11 @@ const JobPostList = () => {
       </div>
 
       {/* Pagination Section */}
-      <div className="flex justify-center mt-6 space-x-2">
-        <button
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
-        >
-          <FaChevronLeft className="mr-1" />
-          Previous
-        </button>
-        {Array.from(
-          { length: Math.ceil(filteredPosts.length / postsPerPage) },
-          (_, index) => (
-            <button
-              key={index + 1}
-              onClick={() => paginate(index + 1)}
-              className={`px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                currentPage === index + 1 ? 'bg-blue-700' : ''
-              }`}
-            >
-              {index + 1}
-            </button>
-          )
-        )}
-        <button
-          onClick={() => paginate(currentPage + 1)}
-          disabled={
-            currentPage === Math.ceil(filteredPosts.length / postsPerPage)
-          }
-          className={`flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            currentPage === Math.ceil(filteredPosts.length / postsPerPage)
-              ? 'opacity-50 cursor-not-allowed'
-              : ''
-          }`}
-        >
-          Next
-          <FaChevronRight className="ml-1" />
-        </button>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

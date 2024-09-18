@@ -10,7 +10,7 @@ const JobFooter = () => {
           <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Privacy Policy</a>
           <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:underline">Terms</a>
           <a href="/contact-us" target="_blank" rel="noopener noreferrer" className="hover:underline">Contact US</a>
-          <a href="/contact-us" target="_blank" rel="noopener noreferrer" className="hover:underline">Power by @ervon Technology</a>
+          <a href="https://www.ervon.tech/" target="_blank" rel="noopener noreferrer" className="hover:underline">Power by Ervon Technology PVT LTD</a>
         </div>
         <div className="flex space-x-4">
           <a href="https://www.facebook.com/profile.php?id=61565469260372" target="_blank" rel="noopener noreferrer">

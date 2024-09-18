@@ -1,88 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Select from 'react-select';
 
 const StepOne = ({ nextStep, shipDatas, rankDatas, formData, handleInputChange }) => {
-  const [isShipOpen, setIsShipOpen] = useState(true);
-  const [isRankOpen, setIsRankOpen] = useState(true);
-
-  const handleShipSelect = (ship) => {
-    const updatedShips = formData.ships.includes(ship)
-      ? formData.ships.filter((s) => s !== ship)
-      : [...formData.ships, ship];
-    handleInputChange('ships')(updatedShips);
+  // Handle changes for ships and ranks using react-select
+  const handleShipsChange = (selectedOptions) => {
+    handleInputChange('ships')(selectedOptions ? selectedOptions.map(option => option.value) : []);
   };
 
-  const handleRankSelect = (rank) => {
-    const updatedRanks = formData.ranks.includes(rank)
-      ? formData.ranks.filter((r) => r !== rank)
-      : [...formData.ranks, rank];
-    handleInputChange('ranks')(updatedRanks);
+  const handleRanksChange = (selectedOptions) => {
+    handleInputChange('ranks')(selectedOptions ? selectedOptions.map(option => option.value) : []);
   };
 
   return (
-    <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-md border-2">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Job Details</h2>
+    <div>
+      <h2 className="text-xl font-bold mb-4">Step 1: Job Details</h2>
 
+      {/* Select Ships with Searchable Dropdown */}
       <div className="mb-4">
-        <div
-          className="flex justify-between items-center cursor-pointer"
-          onClick={() => setIsShipOpen(!isShipOpen)}
-        >
-          <h3 className="text-md font-medium text-gray-600">Ships</h3>
-          <span className="text-lg text-gray-600">{isShipOpen ? '−' : '+'}</span>
-        </div>
-        {isShipOpen && (
-          <div className="grid grid-cols-4 gap-2 mt-2 max-h-48 overflow-y-auto">
-            {shipDatas.map((ship, index) => (
-              <button
-                key={index}
-                className={`py-2 px-3 rounded border transition-colors ${
-                  formData.ships.includes(ship)
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-gray-200 text-gray-800 border-gray-300 hover:bg-gray-300'
-                }`}
-                onClick={() => handleShipSelect(ship)}
-              >
-                {ship}
-              </button>
-            ))}
-          </div>
-        )}
+        <label className="block text-gray-700 text-sm font-bold mb-2">Select Ships:</label>
+        <Select
+          isMulti
+          options={shipDatas.map(ship => ({ label: ship, value: ship }))}
+          value={formData.ships.map(ship => ({ label: ship, value: ship }))}
+          onChange={handleShipsChange}
+          placeholder="Search and select ships..."
+          className="w-full"
+        />
       </div>
 
+      {/* Select Ranks with Searchable Dropdown */}
       <div className="mb-4">
-        <div
-          className="flex justify-between items-center cursor-pointer"
-          onClick={() => setIsRankOpen(!isRankOpen)}
-        >
-          <h3 className="text-md font-medium text-gray-600">Ranks</h3>
-          <span className="text-lg text-gray-600">{isRankOpen ? '−' : '+'}</span>
-        </div>
-        {isRankOpen && (
-          <div className="grid grid-cols-4 gap-2 mt-2 max-h-48 overflow-y-auto">
-            {rankDatas.map((rank, index) => (
-              <button
-                key={index}
-                className={`py-2 px-3 rounded border transition-colors ${
-                  formData.ranks.includes(rank)
-                    ? 'bg-blue-600 text-white border-blue-600'
-                    : 'bg-gray-200 text-gray-800 border-gray-300 hover:bg-gray-300'
-                }`}
-                onClick={() => handleRankSelect(rank)}
-              >
-                {rank}
-              </button>
-            ))}
-          </div>
-        )}
+        <label className="block text-gray-700 text-sm font-bold mb-2">Select Ranks:</label>
+        <Select
+          isMulti
+          options={rankDatas.map(rank => ({ label: rank, value: rank }))}
+          value={formData.ranks.map(rank => ({ label: rank, value: rank }))}
+          onChange={handleRanksChange}
+          placeholder="Search and select ranks..."
+          className="w-full"
+        />
       </div>
 
-      <button
-        className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-        onClick={nextStep}
-        disabled={formData.ships.length === 0 || formData.ranks.length === 0}
-      >
-        Next
-      </button>
+      {/* Job Description Input */}
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Job Description:</label>
+        <textarea
+          value={formData.jobDescription}
+          onChange={(e) => handleInputChange('jobDescription')(e.target.value)}
+          placeholder="Enter job description..."
+          className="w-full p-2 border border-gray-300 rounded"
+        />
+      </div>
+
+      <button onClick={nextStep} className="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
     </div>
   );
 };
