@@ -13,9 +13,9 @@ const AllCandidatesTable = ({ jobId }) => {
   const [rankFilter, setRankFilter] = useState(null);
   const [shipTypeFilter, setShipTypeFilter] = useState(null);
 
-  const [cocFilter, setCocFilter] = useState([]);
-  const [copFilter, setCopFilter] = useState([]);
-  const [watchKeepingFilter, setWatchKeepingFilter] = useState([]);
+  const [cocFilter, setCocFilter] = useState(null); // Changed to single value
+  const [copFilter, setCopFilter] = useState(null); // Changed to single value
+  const [watchKeepingFilter, setWatchKeepingFilter] = useState(null); // Changed to single value
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -28,6 +28,7 @@ const AllCandidatesTable = ({ jobId }) => {
   const user = useSelector((state) => state.auth.user);
 
   const fetchEmployeeDetails = useCallback(async (page = 1, limit = 20) => {
+    setLoading(true);  // Start loading when making API call
     try {
       const requestData = {
         page,
@@ -43,16 +44,16 @@ const AllCandidatesTable = ({ jobId }) => {
         requestData.appliedVessel = shipTypeFilter.value;
       }
 
-      if (cocFilter.length > 0) {
-        requestData.coc = cocFilter.map(opt => opt.value);
+      if (cocFilter && cocFilter.value) {
+        requestData.coc = cocFilter.value; // Updated to single value
       }
 
-      if (copFilter.length > 0) {
-        requestData.cop = copFilter.map(opt => opt.value);
+      if (copFilter && copFilter.value) {
+        requestData.cop = copFilter.value; // Updated to single value
       }
 
-      if (watchKeepingFilter.length > 0) {
-        requestData.watchkeeping = watchKeepingFilter.map(opt => opt.value);
+      if (watchKeepingFilter && watchKeepingFilter.value) {
+        requestData.watchkeeping = watchKeepingFilter.value; // Updated to single value
       }
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
@@ -62,14 +63,19 @@ const AllCandidatesTable = ({ jobId }) => {
         const totalRecords = response.data.total_documents || 0;
         setTotalPages(Math.ceil(totalRecords / limit) || 1);
       } else {
+        setCandidates([]);
         console.error("Failed to fetch employee details:", response.data);
         throw new Error('Failed to fetch employee details');
       }
     } catch (error) {
       console.error("Error fetching employee details:", error.message);
       setError('Error fetching employee details.');
+    } finally {
+      setLoading(false);  // Stop loading after fetching is done
     }
   }, [rankFilter, shipTypeFilter, cocFilter, copFilter, watchKeepingFilter]);
+
+
 
   // Fetch candidates on initial render and when filters or pagination change
   useEffect(() => {
@@ -116,17 +122,17 @@ const AllCandidatesTable = ({ jobId }) => {
           // Populate COC Options
           const cocAttribute = attributes.find(attr => attr.name.toLowerCase() === 'coc');
           const cocData = cocAttribute ? cocAttribute.values.map(value => ({ label: value, value })).sort((a, b) => a.label.localeCompare(b.label)) : [];
-          setCocOptions(cocData);
+          setCocOptions([{ label: "All", value: "" }, ...cocData]);
 
           // Populate COP Options
           const copAttribute = attributes.find(attr => attr.name.toLowerCase() === 'cop');
           const copData = copAttribute ? copAttribute.values.map(value => ({ label: value, value })).sort((a, b) => a.label.localeCompare(b.label)) : [];
-          setCopOptions(copData);
+          setCopOptions([{ label: "All", value: "" }, ...copData]);
 
           // Populate Watchkeeping Options
           const watchKeepingAttribute = attributes.find(attr => attr.name.toLowerCase() === 'watch keeping');
           const watchKeepingData = watchKeepingAttribute ? watchKeepingAttribute.values.map(value => ({ label: value, value })).sort((a, b) => a.label.localeCompare(b.label)) : [];
-          setWatchKeepingOptions(watchKeepingData);
+          setWatchKeepingOptions([{ label: "All", value: "" }, ...watchKeepingData]);
         } else {
           throw new Error('Failed to fetch attributes');
         }
@@ -168,7 +174,6 @@ const AllCandidatesTable = ({ jobId }) => {
 
         {/* COC Filter */}
         <Select
-          isMulti
           value={cocFilter}
           onChange={setCocFilter}
           options={cocOptions}
@@ -178,7 +183,6 @@ const AllCandidatesTable = ({ jobId }) => {
 
         {/* COP Filter */}
         <Select
-          isMulti
           value={copFilter}
           onChange={setCopFilter}
           options={copOptions}
@@ -188,7 +192,6 @@ const AllCandidatesTable = ({ jobId }) => {
 
         {/* Watchkeeping Filter */}
         <Select
-          isMulti
           value={watchKeepingFilter}
           onChange={setWatchKeepingFilter}
           options={watchKeepingOptions}
@@ -203,8 +206,8 @@ const AllCandidatesTable = ({ jobId }) => {
           <thead>
             <tr>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Name</th>
-              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Applied Rank</th>
-              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Last Rank</th>
+              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Rank</th>
+              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Cerificate</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Applied Vessel</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Exp. Last Vessel</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Date of Availability</th>
@@ -219,18 +222,26 @@ const AllCandidatesTable = ({ jobId }) => {
                       <ListView data={[candidate.firstName, `DOB: ${candidate.dob}`, `Gender: ${candidate.gender}`]} />
                     </Link>
                   </td>
-                  <td className="py-4 px-6 text-gray-700">{candidate.appliedRank}</td>
-                  <td className="py-4 px-6 text-gray-700">{candidate.presentRank}</td>
+                  <td className="py-4 px-6 text-gray-700 text-sm">
+                    <ListView data={[`Applied Rank : ${candidate.appliedRank}`, `Present Rank : ${candidate.presentRank}`]} />
+                  </td>
+                  <td className="py-4 px-6 text-gray-700 text-sm">
+                    <ListView data={[
+                      `Coc : ${candidate.coc ? candidate.coc : "N/A" }`, 
+                      `Cop : ${candidate.cop ? candidate.cop : "N/A" }`, 
+                      `Watch Keeping : ${candidate.watchkeeping ? candidate.watchkeeping : "N/A" }`
+                      ]} />
+                  </td> 
                   <td className="py-4 px-6 text-gray-700">{candidate.appliedVessel}</td>
-                  <td className="py-4 px-6 text-gray-700">
+                  <td className="py-4 px-6 text-gray-700 text-sm">
                     <ListView data={candidate.vesselExp} />
                   </td>
-                  <td className="py-4 px-6 text-gray-700">{candidate.availability?.split('T')[0]}</td>
+                  <td className="py-4 px-6 text-gray-700 text-sm">{candidate.availability?.split('T')[0]}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="py-4 px-6 text-center text-gray-600">No candidates found.</td>
+                <td colSpan="6" className="py-4 px-6 text-center text-gray-600 ">No candidates found.</td>
               </tr>
             )}
           </tbody>
