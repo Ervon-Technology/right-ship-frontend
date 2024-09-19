@@ -496,7 +496,7 @@ const App = () => {
   const [error, setError] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 10;
+  const jobsPerPage = 40;
 
   const user = useSelector(state => state.auth.user);
 
@@ -761,6 +761,5 @@ const App = () => {
 };
 
 export default App;
-
 
 
