@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom'; // Updated import for navigation
 import Pagination from '../../component/pagination';
 import Select from 'react-select';  // Importing react-select
 
@@ -27,33 +27,34 @@ const AllCandidatesTable = ({ jobId }) => {
 
   const user = useSelector((state) => state.auth.user);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const fetchEmployeeDetails = useCallback(async (page = 1, limit = 20) => {
-    setLoading(true);  // Start loading when making API call
+    setLoading(true);
     try {
       const requestData = {
         page,
         limit,
+        availability: { "$exists": true, "$ne": "" },
+        appliedRank: { "$exists": true, "$ne": "" },
       };
 
       // Add filters if they are selected
       if (rankFilter && rankFilter.value) {
         requestData.appliedRank = rankFilter.value;
       }
-
       if (shipTypeFilter && shipTypeFilter.value) {
         requestData.appliedVessel = shipTypeFilter.value;
       }
-
       if (cocFilter && cocFilter.value) {
-        requestData.coc = cocFilter.value; // Updated to single value
+        requestData.coc = cocFilter.value;
       }
-
       if (copFilter && copFilter.value) {
-        requestData.cop = copFilter.value; // Updated to single value
+        requestData.cop = copFilter.value;
       }
-
       if (watchKeepingFilter && watchKeepingFilter.value) {
-        requestData.watchkeeping = watchKeepingFilter.value; // Updated to single value
+        requestData.watchkeeping = watchKeepingFilter.value;
       }
 
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
@@ -64,18 +65,15 @@ const AllCandidatesTable = ({ jobId }) => {
         setTotalPages(Math.ceil(totalRecords / limit) || 1);
       } else {
         setCandidates([]);
-        console.error("Failed to fetch employee details:", response.data);
         throw new Error('Failed to fetch employee details');
       }
     } catch (error) {
       console.error("Error fetching employee details:", error.message);
       setError('Error fetching employee details.');
     } finally {
-      setLoading(false);  // Stop loading after fetching is done
+      setLoading(false);
     }
   }, [rankFilter, shipTypeFilter, cocFilter, copFilter, watchKeepingFilter]);
-
-
 
   // Fetch candidates on initial render and when filters or pagination change
   useEffect(() => {
@@ -92,12 +90,21 @@ const AllCandidatesTable = ({ jobId }) => {
       }
     };
 
+    const searchParams = new URLSearchParams(location.search);
+    const pageFromUrl = parseInt(searchParams.get('page'), 10);
+    if (pageFromUrl) {
+      setCurrentPage(pageFromUrl);
+    }
+
     fetchInitialData();
-  }, [fetchEmployeeDetails, currentPage]);
+  }, [fetchEmployeeDetails, currentPage, location.search]);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('page', newPage); // Update the 'page' parameter in the URL
+      navigate({ search: searchParams.toString() });
     }
   };
 
@@ -207,7 +214,7 @@ const AllCandidatesTable = ({ jobId }) => {
             <tr>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Name</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Rank</th>
-              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Cerificate</th>
+              <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Certificate</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Applied Vessel</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Exp. Last Vessel</th>
               <th className="py-3 px-6 bg-blue-600 text-white font-semibold text-sm text-left">Date of Availability</th>
