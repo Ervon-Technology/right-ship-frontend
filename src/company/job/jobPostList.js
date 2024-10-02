@@ -87,32 +87,13 @@ const JobPostList = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Job Posts</h2>
-
-      {/* Search and Sorting Section */}
-      <div className="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
-        <input
-          type="text"
-          placeholder="Search by Job Title, Rank, or Ship Type"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="px-4 py-2 border rounded-md w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <div className="flex items-center gap-4">
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-            className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </select>
-
-          <Button text="Add Job" to="/create/job" color="blue" />
-        </div>
+      <div className='flex flex-row justify-between mb-4'>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">Job Posts</h2>
+        <Button text="Add Job" to="/create/job" color="blue" size='md'/>
       </div>
 
-      {/* Table for displaying job posts */}
+
+            {/* Table for displaying job posts */}
       <div className="overflow-x-auto shadow rounded-lg">
         <table className="min-w-full bg-white border border-gray-200">
           <thead className="bg-gray-50">
@@ -122,9 +103,6 @@ const JobPostList = () => {
               </th>
               <th className="px-6 py-3 border-b bg-blue-600 text-white font-semibold text-sm text-left">
                 Open Positions
-              </th>
-              <th className="px-6 py-3 border-b bg-blue-600 text-white font-semibold text-sm text-left">
-                Other Details
               </th>
               <th className="px-6 py-3 border-b bg-blue-600 text-white font-semibold text-sm text-left">
                 Status
@@ -161,24 +139,15 @@ const JobPostList = () => {
                     {post.open_positions.join(', ')}
                   </td>
                   <td className="px-6 py-4 border-b">
-                    <p className="text-sm font-medium text-slate-500">
-                      Downloads: 56
-                    </p>
-                    <p className="text-sm font-medium text-slate-500">
-                      Applications: 76
-                    </p>
-                  </td>
-                  <td className="px-6 py-4 border-b">
                     <select
                       value={post.status ? post.status : 'inactive'}
                       onChange={(e) =>
                         handleStatusChange(post.application_id, e.target.value)
                       }
-                      className={`px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        post.status === 'active'
+                      className={`px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${post.status === 'active'
                           ? 'bg-green-500 text-white'
                           : 'bg-red-500 text-white'
-                      }`}
+                        }`}
                     >
                       <option value="active" className="bg-green-500">
                         Active

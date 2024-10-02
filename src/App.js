@@ -37,7 +37,7 @@ import ContactUs from './contactUs';
 import VerificationPending from './Pages/AccountVerify';
 import AllCandidatesTable from './company/candidates/allCandidateList';
 import WantToHire from './Pages/WantToHire';
-
+import { CandidateContextProvider } from './context/candidateCont';
 
 
 const App = () => {
@@ -45,6 +45,7 @@ const App = () => {
   const isLoggedIn = !!user; // Determine if a user is logged in
 
   return (
+    <CandidateContextProvider>
     <BrowserRouter>
       <Routes>
         {isLoggedIn ? (
@@ -123,6 +124,7 @@ const App = () => {
         
       </Routes>
     </BrowserRouter>
+    </CandidateContextProvider>
   );
 };
 

@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom'; // Updated import for navigation
 import Pagination from '../../component/pagination';
 import Select from 'react-select';  // Importing react-select
-
+import CandidateContext from '../../context/candidateCont';
 const AllCandidatesTable = ({ jobId }) => {
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,9 +24,8 @@ const AllCandidatesTable = ({ jobId }) => {
   const [cocOptions, setCocOptions] = useState([]);
   const [copOptions, setCopOptions] = useState([]);
   const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
-
+const {filterRank, setFilterRank} = useContext(CandidateContext)
   const user = useSelector((state) => state.auth.user);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,8 +40,8 @@ const AllCandidatesTable = ({ jobId }) => {
       };
 
       // Add filters if they are selected
-      if (rankFilter && rankFilter.value) {
-        requestData.appliedRank = rankFilter.value;
+      if (filterRank && filterRank.value) {
+        requestData.appliedRank = filterRank.value;
       }
       if (shipTypeFilter && shipTypeFilter.value) {
         requestData.appliedVessel = shipTypeFilter.value;
@@ -73,7 +72,7 @@ const AllCandidatesTable = ({ jobId }) => {
     } finally {
       setLoading(false);
     }
-  }, [rankFilter, shipTypeFilter, cocFilter, copFilter, watchKeepingFilter]);
+  }, [filterRank, shipTypeFilter, cocFilter, copFilter, watchKeepingFilter]);
 
   // Fetch candidates on initial render and when filters or pagination change
   useEffect(() => {
@@ -105,9 +104,13 @@ const AllCandidatesTable = ({ jobId }) => {
       const searchParams = new URLSearchParams(location.search);
       searchParams.set('page', newPage); // Update the 'page' parameter in the URL
       navigate({ search: searchParams.toString() });
-    }
+}
   };
 
+  const handleSearchParam = (option) => {
+ 
+    setFilterRank(option)
+  }
   // Fetching options for filters
   useEffect(() => {
     const fetchAttributes = async () => {
@@ -155,7 +158,6 @@ const AllCandidatesTable = ({ jobId }) => {
   if (loading) {
     return <p className="text-center text-gray-600">Loading candidates...</p>;
   }
-
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Candidates</h2>
@@ -163,11 +165,11 @@ const AllCandidatesTable = ({ jobId }) => {
       <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Rank Filter */}
         <Select
-          value={rankFilter}
-          onChange={setRankFilter}
+          value={filterRank}
+          onChange={handleSearchParam}
           options={rankOptions}
           placeholder="Filter by Rank Applied"
-          className="w-full"
+          className="w-full"         
         />
 
         {/* Ship Type Filter */}
@@ -259,7 +261,6 @@ const AllCandidatesTable = ({ jobId }) => {
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
 
       {/* Error Message */}
-      {error && <p className="text-red-500 mt-4">Error: {error}</p>}
     </div>
   );
 };

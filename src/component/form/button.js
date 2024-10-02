@@ -5,7 +5,7 @@ const Button = ({
   text,
   onClick,
   to, // Optional prop for navigation
-  size = 'md',
+  size,
   color = 'blue',
   disabled = false,
   additionalClasses = '',

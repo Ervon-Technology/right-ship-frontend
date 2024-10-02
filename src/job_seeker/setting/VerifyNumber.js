@@ -14,8 +14,6 @@ const VerifyNumber = ({ closeModal }) => {
   const state = useSelector((state) => state);
   console.log(state);
   console.log(employeeId)
-  const dispatch = useDispatch();
-  const [contact, setContact] = useState('');
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -39,7 +37,7 @@ const VerifyNumber = ({ closeModal }) => {
         }
 
         const data = await response.json();
-        setContact(data.data[0].mobile_no);
+        // setContact(data.data[0].mobile_no);
       } catch (error) {
         console.error('Error fetching contact information:', error);
       }

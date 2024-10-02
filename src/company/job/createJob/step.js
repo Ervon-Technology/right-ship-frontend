@@ -17,6 +17,8 @@ const CreateJobStepForm = () => {
     ranks: [],
     benefits: [],
     jobDescription: '',
+    startDate: '',
+    endDate: ''
   });
 
   const navigate = useNavigate();
@@ -72,7 +74,6 @@ const CreateJobStepForm = () => {
         if (response.data && response.data.code === 200) {
      
           setCompany(response.data.data[0]);
-          console.log("=========>", response);
           setLoading(false); // Set loading to false once data is fetched
         } else {
           console.error('Failed to fetch attributes:', response.data.msg);
