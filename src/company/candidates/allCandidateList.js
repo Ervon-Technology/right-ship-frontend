@@ -10,12 +10,6 @@ const AllCandidatesTable = ({ jobId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [rankFilter, setRankFilter] = useState(null);
-  const [shipTypeFilter, setShipTypeFilter] = useState(null);
-
-  const [cocFilter, setCocFilter] = useState(null); // Changed to single value
-  const [copFilter, setCopFilter] = useState(null); // Changed to single value
-  const [watchKeepingFilter, setWatchKeepingFilter] = useState(null); // Changed to single value
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -24,7 +18,16 @@ const AllCandidatesTable = ({ jobId }) => {
   const [cocOptions, setCocOptions] = useState([]);
   const [copOptions, setCopOptions] = useState([]);
   const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
-const {filterRank, setFilterRank} = useContext(CandidateContext)
+  const { filterRank, 
+    setFilterRank, 
+    shipTypeFilter, 
+    setShipTypeFilter, 
+    cocFilter, 
+    setCocFilter, 
+    copFilter, 
+    setCopFilter,
+    watchKeepingFilter, 
+    setWatchKeepingFilter } = useContext(CandidateContext)
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
@@ -104,13 +107,14 @@ const {filterRank, setFilterRank} = useContext(CandidateContext)
       const searchParams = new URLSearchParams(location.search);
       searchParams.set('page', newPage); // Update the 'page' parameter in the URL
       navigate({ search: searchParams.toString() });
-}
+    }
   };
 
-  const handleSearchParam = (option) => {
- 
-    setFilterRank(option)
-  }
+  const handleSearchParam = (option) => (setFilterRank(option))
+  const handleShipTypeFilterSearch = (option) => (setShipTypeFilter(option))
+  const handleCocFilterSearch = (option) => (setCocFilter(option))
+  const handleCopFilterSearch = (option) => (setCopFilter(option))
+  const handleWatchFilterSearch = (option) => (setWatchKeepingFilter(option))
   // Fetching options for filters
   useEffect(() => {
     const fetchAttributes = async () => {
@@ -169,13 +173,13 @@ const {filterRank, setFilterRank} = useContext(CandidateContext)
           onChange={handleSearchParam}
           options={rankOptions}
           placeholder="Filter by Rank Applied"
-          className="w-full"         
+          className="w-full"
         />
 
         {/* Ship Type Filter */}
         <Select
           value={shipTypeFilter}
-          onChange={setShipTypeFilter}
+          onChange={handleShipTypeFilterSearch}
           options={shipOptions}
           placeholder="Filter by Ship Type Applied"
           className="w-full"
@@ -184,7 +188,7 @@ const {filterRank, setFilterRank} = useContext(CandidateContext)
         {/* COC Filter */}
         <Select
           value={cocFilter}
-          onChange={setCocFilter}
+          onChange={handleCocFilterSearch}
           options={cocOptions}
           placeholder="Filter by COC"
           className="w-full"
@@ -193,7 +197,7 @@ const {filterRank, setFilterRank} = useContext(CandidateContext)
         {/* COP Filter */}
         <Select
           value={copFilter}
-          onChange={setCopFilter}
+          onChange={handleCopFilterSearch}
           options={copOptions}
           placeholder="Filter by COP"
           className="w-full"
@@ -202,7 +206,7 @@ const {filterRank, setFilterRank} = useContext(CandidateContext)
         {/* Watchkeeping Filter */}
         <Select
           value={watchKeepingFilter}
-          onChange={setWatchKeepingFilter}
+          onChange={handleWatchFilterSearch}
           options={watchKeepingOptions}
           placeholder="Filter by Watchkeeping"
           className="w-full"
@@ -236,11 +240,11 @@ const {filterRank, setFilterRank} = useContext(CandidateContext)
                   </td>
                   <td className="py-4 px-6 text-gray-700 text-sm">
                     <ListView data={[
-                      `Coc : ${candidate.coc ? candidate.coc : "N/A" }`, 
-                      `Cop : ${candidate.cop ? candidate.cop : "N/A" }`, 
-                      `Watch Keeping : ${candidate.watchkeeping ? candidate.watchkeeping : "N/A" }`
-                      ]} />
-                  </td> 
+                      `Coc : ${candidate.coc ? candidate.coc : "N/A"}`,
+                      `Cop : ${candidate.cop ? candidate.cop : "N/A"}`,
+                      `Watch Keeping : ${candidate.watchkeeping ? candidate.watchkeeping : "N/A"}`
+                    ]} />
+                  </td>
                   <td className="py-4 px-6 text-gray-700">{candidate.appliedVessel}</td>
                   <td className="py-4 px-6 text-gray-700 text-sm">
                     <ListView data={candidate.vesselExp} />
