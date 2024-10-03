@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebook, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaFacebook, FaLinkedin, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 const JobFooter = () => {
   return (
@@ -21,6 +21,9 @@ const JobFooter = () => {
           </a>
           <a href="https://www.instagram.com/rightships.services/" target="_blank" rel="noopener noreferrer">
             <FaInstagram className="w-6 h-6 text-red-500" />
+          </a>
+          <a href="https://www.youtube.com/@RightShips" target="_blank" rel="noopener noreferrer">
+            <FaYoutube className="w-6 h-6 text-red-500" />
           </a>
         </div>
       </div>
