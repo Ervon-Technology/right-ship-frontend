@@ -266,7 +266,7 @@ const EmployeeRegistration = () => {
           // Clear vessel-related fields when moving from Step 4 to Step 5
           setFormData(prevFormData => ({
             ...prevFormData,
-            presentVessel: '', 
+            presentVessel: '',
             appliedVessel: '',
             vesselExp: []
           }));
@@ -311,8 +311,8 @@ const EmployeeRegistration = () => {
       errorMessage = 'Invalid file type. Please upload a JPEG or PNG file.';
     } else if (type === 'resume') {
       validFileTypes = [
-        'application/pdf', 
-        'application/msword', 
+        'application/pdf',
+        'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'application/vnd.ms-excel',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -584,7 +584,7 @@ const EmployeeRegistration = () => {
             </div>
 
             <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">Exp. Type of Vessels<span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Types of Vessels Exp.<span className="text-red-500">*</span></label>
               <Select
                 isMulti
                 name="vesselExp"
@@ -593,7 +593,7 @@ const EmployeeRegistration = () => {
                 classNamePrefix="select"
                 value={vesselExpOptions.filter(option => formData.vesselExp.includes(option.value))}
                 onChange={handleVesselExpChange}
-                placeholder="Select Experience Type of Vessels"
+                placeholder="Select Types of Vessels Experience"
               />
             </div>
           </>
@@ -601,20 +601,25 @@ const EmployeeRegistration = () => {
       case 6:
         return (
           <>
-            <InputField
-              label="Total Sea Experience (Years)"
-              value={formData.totalSeaExperienceYear}
-              onChange={(value) => handleSeaExperienceChange('totalSeaExperienceYear', value)}
-              required
-              type="number"
-            />
-            <InputField
-              label="Total Sea Experience (Months)"
-              value={formData.totalSeaExperienceMonth}
-              onChange={(value) => handleSeaExperienceChange('totalSeaExperienceMonth', value)}
-              required
-              type="number"
-            />
+            <div className='flex flex-row'>
+              <InputField
+                label="Total Sea Experience"
+                value={formData.totalSeaExperienceYear}
+                onChange={(value) => handleSeaExperienceChange('totalSeaExperienceYear', value)}
+                required
+                type="number"
+                exp={true}
+                expPlaceholder="Years"
+              />
+              <InputField
+                value={formData.totalSeaExperienceMonth}
+                onChange={(value) => handleSeaExperienceChange('totalSeaExperienceMonth', value)}
+                required
+                type="number"
+                exp={true}
+                expPlaceholder="Months"
+              />
+            </div>
             <InputField
               label="Last Rank Experience (Months)"
               value={formData.presentRankExperienceInMonth}
@@ -631,7 +636,7 @@ const EmployeeRegistration = () => {
               <label className="block text-gray-700 text-lg font-medium mb-4">COP</label>
               <Select
                 label="COP"
-                value={copOptions.find(option => option.value === formData.cop)} 
+                value={copOptions.find(option => option.value === formData.cop)}
                 onChange={(selectedOption) => setFormData((prevFormData) => ({
                   ...prevFormData,
                   cop: selectedOption ? selectedOption.value : '',
@@ -644,7 +649,7 @@ const EmployeeRegistration = () => {
               <label className="block text-gray-700 text-lg font-medium mb-4">COC</label>
               <Select
                 label="COC"
-                value={cocOptions.find(option => option.value === formData.coc)} 
+                value={cocOptions.find(option => option.value === formData.coc)}
                 onChange={(selectedOption) => setFormData((prevFormData) => ({
                   ...prevFormData,
                   coc: selectedOption ? selectedOption.value : '',
@@ -656,7 +661,7 @@ const EmployeeRegistration = () => {
               <label className="block text-gray-700 text-lg font-medium mb-4">Watch keeping</label>
               <Select
                 label="Watchkeeping"
-                value={watchKeepingOptions.find(option => option.value === formData.watchkeeping)} 
+                value={watchKeepingOptions.find(option => option.value === formData.watchkeeping)}
                 onChange={(selectedOption) => setFormData((prevFormData) => ({
                   ...prevFormData,
                   watchkeeping: selectedOption ? selectedOption.value : '',
@@ -708,7 +713,7 @@ const EmployeeRegistration = () => {
                 {uploadingResume && (
                   <p className="text-blue-500">{`Uploading: ${uploadingResume}%`}</p>
                 )}
-                
+
               </div>
             </div>
           </>
@@ -757,7 +762,7 @@ const EmployeeRegistration = () => {
   );
 };
 
-const InputField = ({ label, value, onChange, required, type = 'text', options }) => (
+const InputField = ({ label, value, onChange, required, type = 'text', options, exp, expPlaceholder }) => (
   <div className="relative mb-6">
     <label className="block text-gray-700 text-lg font-medium mb-1">
       {label} {required && <span className="text-red-500">*</span>}
@@ -779,10 +784,11 @@ const InputField = ({ label, value, onChange, required, type = 'text', options }
     ) : (
       <input
         type={type}
-        className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+        className={`${exp ? 'w-64 mr-20' : 'w-full'} px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
+        placeholder={expPlaceholder}
       />
     )}
   </div>

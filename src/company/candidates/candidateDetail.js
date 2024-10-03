@@ -142,12 +142,12 @@ const CandidateDetail = () => {
         </InfoCard>
 
         <InfoCard title="Professional Experience">
-          <InfoItem label="Total Sea Experience (year's)" value={candidate.totalSeaExperienceMonth || 'N/A'} />
-          <InfoItem label="Total Sea Experience (month's)" value={candidate.totalSeaExperienceYear || 'N/A'} />
-          <InfoItem label="Last Sea Experience (month's)" value={candidate.presentRankExperienceInMonth || 'N/A'} />
+          <InfoItem label="Total Sea Experience (year's/month's)" value={candidate.totalSeaExperienceMonth || 'N/A'} />
+          {/* <InfoItem label="Total Sea Experience (month's)" value={candidate.totalSeaExperienceYear || 'N/A'} /> */}
+          <InfoItem label="Last Rank experience (month's)" value={candidate.presentRankExperienceInMonth || 'N/A'} />
           </InfoCard>
           <InfoCard title="Vessel & Rank Experience">
-          <InfoItem label="Experience In Vessel" value={candidate.vesselExp.join(', ') || 'N/A'} />
+          <InfoItem label="Types of Vessel Experience" value={candidate.vesselExp.join(', ') || 'N/A'} />
           <InfoItem label="Vessel Applied For" value={candidate.appliedVessel || 'N/A'} />
           <hr/>
           <InfoItem label="Applied Rank:" value={candidate.appliedRank || 'N/A'} />
