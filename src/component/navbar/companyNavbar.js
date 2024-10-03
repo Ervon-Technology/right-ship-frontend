@@ -34,13 +34,6 @@ const CompanyNavbar = () => {
         </div>
         
         <div className="flex items-center space-x-4 mt-1">
-          <Link
-            to="/contact-us"
-            className="text-black px-3 py-2 rounded flex items-center space-x-2 transition duration-200"
-          >
-            <CgProfile size={20} /> {/* Adjust the size as needed */}
-            <span>Help & Support</span>
-          </Link>
           
           <div className="relative">
             <button

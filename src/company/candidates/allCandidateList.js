@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'; // Updated im
 import Pagination from '../../component/pagination';
 import Select from 'react-select';  // Importing react-select
 import CandidateContext from '../../context/candidateCont';
+import '../../App.css'
 const AllCandidatesTable = ({ jobId }) => {
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -110,11 +111,41 @@ const AllCandidatesTable = ({ jobId }) => {
     }
   };
 
-  const handleSearchParam = (option) => (setFilterRank(option))
-  const handleShipTypeFilterSearch = (option) => (setShipTypeFilter(option))
-  const handleCocFilterSearch = (option) => (setCocFilter(option))
-  const handleCopFilterSearch = (option) => (setCopFilter(option))
-  const handleWatchFilterSearch = (option) => (setWatchKeepingFilter(option))
+  const handleParams = (val, option) => {
+    let queryString = window.location.search;
+
+    let decodedQueryString = decodeURIComponent(queryString);
+    const searchParams = new URLSearchParams(decodedQueryString);
+    searchParams.set(val, JSON.stringify(option.value));
+       
+    if(!option.value.length){
+      searchParams.delete(val)
+    }
+
+    navigate({ search: searchParams.toString() });
+   
+  }
+
+  const handleSearchParam = (option) => {
+    handleParams("rank", option)
+    setFilterRank(option)
+  }
+  const handleShipTypeFilterSearch = (option) => {
+    handleParams("shiptype", option)
+    setShipTypeFilter(option)
+  }
+  const handleCocFilterSearch = (option) => {
+    handleParams("coc", option)
+    setCocFilter(option)
+  }
+  const handleCopFilterSearch = (option) => {
+    handleParams("cop", option)
+    setCopFilter(option)
+  }
+  const handleWatchFilterSearch = (option) => {
+    handleParams("watchkeeping", option)
+    setWatchKeepingFilter(option)
+  }
   // Fetching options for filters
   useEffect(() => {
     const fetchAttributes = async () => {
@@ -231,7 +262,7 @@ const AllCandidatesTable = ({ jobId }) => {
               candidates.map((candidate) => (
                 <tr key={candidate._id} className="border-t">
                   <td className="py-4 px-6 text-gray-700">
-                    <Link to={`/job/candidates/detail/${candidate._id}`} className="text-blue-600 hover:underline">
+                    <Link to={`/job/candidates/detail/${candidate._id}`} className="text-blue-600 hover:underline candidate-link">
                       <ListView data={[candidate.firstName, `DOB: ${candidate.dob}`, `Gender: ${candidate.gender}`]} />
                     </Link>
                   </td>
