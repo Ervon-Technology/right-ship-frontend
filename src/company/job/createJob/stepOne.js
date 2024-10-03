@@ -51,22 +51,28 @@ const StepOne = ({ nextStep, shipDatas, rankDatas, formData, handleInputChange }
           className="w-full p-2 border border-gray-300 rounded"
         />
       </div>
+      <div className='flex flex-row'>
+        <div className='mr-20'>
+          <label className="block text-gray-700 text-sm font-bold mb-2">Start Date: (Optional)</label>
+          <input
+            type="date"
+            className="w-64 border p-2 rounded mb-8"
+            value={formData.startDate}
+            onChange={(e) => handleInputChange('startDate')(e.target.value)}
+          />
 
-      <label className="block text-gray-700 text-sm font-bold mb-2">Start Date: (Optional)</label>
-      <input
-        type="date"
-        className="w-full border p-2 rounded mb-8"
-        value={formData.selectDate}
-        onChange={(e) => handleInputChange('startDate')(e.target.value)}
-      />
+        </div>
 
-      <label className="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
-      <input
-        type="date"
-        className="w-full border p-2 rounded mb-8"
-        value={formData.endDate}
-        onChange={(e) => handleInputChange('endDate')(e.target.value)}
-      />
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
+          <input
+            type="date"
+            className="w-64 border p-2 rounded mb-8"
+            value={formData.endDate}
+            onChange={(e) => handleInputChange('endDate')(e.target.value)}
+          />
+        </div>
+      </div>
 
       <button onClick={nextStep} className="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
     </div>
