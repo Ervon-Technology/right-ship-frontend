@@ -29,7 +29,7 @@ const Preview = ({ formData, prevStep, handlePublish }) => {
 
       <div className="mb-4">
         <h3 className="text-md font-medium text-gray-600 mb-2">Job Description:</h3>
-        <p className="text-gray-700">{formData.jobDescription}</p>
+        <pre className="text-gray-700">{formData.jobDescription}</pre>
       </div>
 
       <hr className="border-gray-300 my-4" />
