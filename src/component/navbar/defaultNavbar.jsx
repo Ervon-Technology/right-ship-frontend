@@ -22,7 +22,7 @@ const DefaultNavbar = () => {
                 <img src={Logo} alt="Logo" height={40} width={40} />
                 <span className="font-bold text-gray-800 px-4">RIGHTSHIP</span>
               </Link>
-              <div className="hidden md:flex space-x-4">
+              <div className="hidden md:flex space-x-4 font-bold text-gray-800 border border-customBlue rounded cursor-pointer p-2 px-6">
                 <Link to="/jobs">Jobs</Link>
               </div>
             </div>
