@@ -34,6 +34,20 @@ const Preview = ({ formData, prevStep, handlePublish }) => {
 
       <hr className="border-gray-300 my-4" />
 
+      <div className="mb-4">
+        <h3 className="text-md font-medium text-gray-600 mb-2">Start Date: (Optional)</h3>
+        <p className="text-gray-700">{formData.startDate}</p>
+      </div>
+
+      <hr className="border-gray-300 my-4" />
+
+      <div className="mb-4">
+        <h3 className="text-md font-medium text-gray-600 mb-2">End Date:</h3>
+        <p className="text-gray-700">{formData.endDate}</p>
+      </div>
+
+      <hr className="border-gray-300 my-4" />
+
       <div className="">
         <button
           onClick={prevStep}

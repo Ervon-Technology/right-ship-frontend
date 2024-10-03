@@ -5,7 +5,6 @@ import { setContactInfo } from '../../features/contactSlice';
 import logo from "../../images/logo.png";
 import { ToastContainer, toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
-import backgroundImage from '../../images/bgImage.jpg'
 
 const EmployeeSignup = () => {
   const navigate = useNavigate();

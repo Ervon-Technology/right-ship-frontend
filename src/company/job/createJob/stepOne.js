@@ -52,6 +52,22 @@ const StepOne = ({ nextStep, shipDatas, rankDatas, formData, handleInputChange }
         />
       </div>
 
+      <label className="block text-gray-700 text-sm font-bold mb-2">Start Date: (Optional)</label>
+      <input
+        type="date"
+        className="w-full border p-2 rounded mb-8"
+        value={formData.selectDate}
+        onChange={(e) => handleInputChange('startDate')(e.target.value)}
+      />
+
+      <label className="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
+      <input
+        type="date"
+        className="w-full border p-2 rounded mb-8"
+        value={formData.endDate}
+        onChange={(e) => handleInputChange('endDate')(e.target.value)}
+      />
+
       <button onClick={nextStep} className="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
     </div>
   );
