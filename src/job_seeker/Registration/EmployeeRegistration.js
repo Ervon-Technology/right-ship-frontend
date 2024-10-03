@@ -584,7 +584,7 @@ const EmployeeRegistration = () => {
             </div>
 
             <div className='mb-8'>
-              <label className="block text-gray-700 text-lg font-medium mb-4">Exp. Type of Vessels<span className="text-red-500">*</span></label>
+              <label className="block text-gray-700 text-lg font-medium mb-4">Types of Vessels Exp.<span className="text-red-500">*</span></label>
               <Select
                 isMulti
                 name="vesselExp"
@@ -593,7 +593,7 @@ const EmployeeRegistration = () => {
                 classNamePrefix="select"
                 value={vesselExpOptions.filter(option => formData.vesselExp.includes(option.value))}
                 onChange={handleVesselExpChange}
-                placeholder="Select Experience Type of Vessels"
+                placeholder="Select Types of Vessels Experience"
               />
             </div>
           </>
