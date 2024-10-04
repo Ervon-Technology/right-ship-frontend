@@ -27,9 +27,8 @@ const JobDetail = () => {
                 const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/application/get`, requestData);
 
                 if (response.data.code === 200) {
-                    setJob(response.data.application); // Assuming the response contains a list of applications
+                    setJob(response.data.applications[0]); // Assuming the response contains a list of applications
                     setLoading(false);
-                    console.log("Job ====>", job);
                 } else {
                     setError('Failed to fetch job details.');
                     setLoading(false);
@@ -57,7 +56,6 @@ const JobDetail = () => {
                 if (response.data.code === 200) {
                     setCompany(response.data.data); 
                     setLoading(false);
-                    console.log("Company ====>", company);
                 } else {
                     setError('Failed to fetch job details.');
                     setLoading(false);
@@ -82,7 +80,6 @@ const JobDetail = () => {
     if (error) {
         return <div>{error}</div>;
     }
-
     return (
         <div className='p-6'>
         <div className="bg-white shadow-md rounded-lg p-6 mb-6">

@@ -105,7 +105,9 @@ const CreateJobStepForm = () => {
         open_positions: formData.ranks,
         description: formData.jobDescription,
         mobile_no: user.mobile_no,
-        email: null
+        email: null,
+        start_date: formData.startDate,
+        end_date: formData.endDate
       };
 
 

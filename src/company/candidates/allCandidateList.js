@@ -33,9 +33,9 @@ const AllCandidatesTable = ({ jobId }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchEmployeeDetails = useCallback(async (page = 1, limit = 20) => {
-    setLoading(true);
-    try {
+  const fetchEmployeeDetails = async(page, limit = 20) => {
+    setLoading(true)
+    try{
       const requestData = {
         page,
         limit,
@@ -59,9 +59,7 @@ const AllCandidatesTable = ({ jobId }) => {
       if (watchKeepingFilter && watchKeepingFilter.value) {
         requestData.watchkeeping = watchKeepingFilter.value;
       }
-
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
-
       if (response.data.code === 200) {
         setCandidates(response.data.data);
         const totalRecords = response.data.total_documents || 0;
@@ -70,13 +68,13 @@ const AllCandidatesTable = ({ jobId }) => {
         setCandidates([]);
         throw new Error('Failed to fetch employee details');
       }
-    } catch (error) {
+    }catch (error) {
       console.error("Error fetching employee details:", error.message);
       setError('Error fetching employee details.');
     } finally {
       setLoading(false);
     }
-  }, [filterRank, shipTypeFilter, cocFilter, copFilter, watchKeepingFilter]);
+  }
 
   // Fetch candidates on initial render and when filters or pagination change
   useEffect(() => {
@@ -84,7 +82,7 @@ const AllCandidatesTable = ({ jobId }) => {
       setLoading(true);
       setError(null);
       try {
-        await fetchEmployeeDetails(currentPage);
+        await fetchEmployeeDetails(window.location.search.split('page=')[1]);
       } catch (err) {
         setError(err.message);
         setCandidates([]);
@@ -100,7 +98,7 @@ const AllCandidatesTable = ({ jobId }) => {
     }
 
     fetchInitialData();
-  }, [fetchEmployeeDetails, currentPage, location.search]);
+  }, [ location.search]);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
