@@ -189,7 +189,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
     >
       <h3 className="text-xl font-bold text-gray-800">{job.open_positions.join(', ')}</h3>
       <p className="text-sm text-gray-600 mt-1"><span className='font-bold text-red-500 uppercase'>{job.company_name}</span> • {new Date(job.created_date).toLocaleDateString()}</p>
-      <p className="mt-3 text-gray-700">{job.description || ""}</p>
+      <pre className="mt-3 text-gray-700">{job.description || ""}</pre>
       <div className="mt-4 flex space-x-3">
         {isApplied ? (
           <button
