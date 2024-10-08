@@ -29,7 +29,7 @@ const CompanyLayout = ({ children }) => {
         </header>
 
         {/* Content Area */}
-        <main className="mt-14">
+        <main className="mt-14 flex-col min-h-screen">
 
           {children ? children : <Outlet />}
 
