@@ -19,23 +19,23 @@ const AllCandidatesTable = ({ jobId }) => {
   const [cocOptions, setCocOptions] = useState([]);
   const [copOptions, setCopOptions] = useState([]);
   const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
-  const { filterRank, 
-    setFilterRank, 
-    shipTypeFilter, 
-    setShipTypeFilter, 
-    cocFilter, 
-    setCocFilter, 
-    copFilter, 
+  const { filterRank,
+    setFilterRank,
+    shipTypeFilter,
+    setShipTypeFilter,
+    cocFilter,
+    setCocFilter,
+    copFilter,
     setCopFilter,
-    watchKeepingFilter, 
+    watchKeepingFilter,
     setWatchKeepingFilter } = useContext(CandidateContext)
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchEmployeeDetails = async(page, limit = 20) => {
+  const fetchEmployeeDetails = async (page, limit = 20) => {
     setLoading(true)
-    try{
+    try {
       const requestData = {
         page,
         limit,
@@ -68,7 +68,7 @@ const AllCandidatesTable = ({ jobId }) => {
         setCandidates([]);
         throw new Error('Failed to fetch employee details');
       }
-    }catch (error) {
+    } catch (error) {
       console.error("Error fetching employee details:", error.message);
       setError('Error fetching employee details.');
     } finally {
@@ -98,7 +98,7 @@ const AllCandidatesTable = ({ jobId }) => {
     }
 
     fetchInitialData();
-  }, [ location.search]);
+  }, [location.search]);
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
@@ -115,13 +115,12 @@ const AllCandidatesTable = ({ jobId }) => {
     let decodedQueryString = decodeURIComponent(queryString);
     const searchParams = new URLSearchParams(decodedQueryString);
     searchParams.set(val, JSON.stringify(option.value));
-       
-    if(!option.value.length){
+    if (!option.value.length) {
       searchParams.delete(val)
     }
 
     navigate({ search: searchParams.toString() });
-   
+
   }
 
   const handleSearchParam = (option) => {
@@ -143,6 +142,35 @@ const AllCandidatesTable = ({ jobId }) => {
   const handleWatchFilterSearch = (option) => {
     handleParams("watchkeeping", option)
     setWatchKeepingFilter(option)
+  }
+
+  const handleClearFilter = async () => {
+    const requestData = {
+      page: window.location.search.split('page=')[1],
+      limit: 20,
+      availability: { "$exists": true, "$ne": "" },
+      appliedRank: { "$exists": true, "$ne": "" },
+    };
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
+    if (response.data.code === 200) {
+      setCandidates(response.data.data);
+      setFilterRank(null)
+      setCocFilter(null)
+      setCopFilter(null)
+      setShipTypeFilter(null)
+      setWatchKeepingFilter(null)
+      const totalRecords = response.data.total_documents || 0;
+      setTotalPages(Math.ceil(totalRecords / 20) || 1);
+    } else {
+      setCandidates([]);
+      throw new Error('Failed to fetch employee details');
+    }
+
+    navigate({
+      pathname: location.pathname,
+      search: "", 
+    });
+
   }
   // Fetching options for filters
   useEffect(() => {
@@ -193,7 +221,10 @@ const AllCandidatesTable = ({ jobId }) => {
   }
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Candidates</h2>
+      <div className='flex flex-row justify-between'>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">Candidates</h2>
+        <button className="border-2 border-gray-800 text-sm px-2 py-2 rounded h-10 w-30" onClick={handleClearFilter}>clear filter</button>
+      </div>
 
       <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Rank Filter */}

@@ -32,35 +32,6 @@ const CompanyNavbar = () => {
             <h1 className="text-2xl font-semibold">Dashboard</h1>
           </Link>
         </div>
-        
-        <div className="flex items-center space-x-4 mt-1">
-          
-          <div className="relative">
-            <button
-              className="text-black border-l-2 px-4 py-2 flex items-center transition duration-200"
-              onClick={toggleDropdown}
-            >
-              <CgProfile size={24} /> {/* Adjust the size as needed */}
-            </button>
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  onClick={handleDropdownItemClick} // Close dropdown on click
-                >
-                  Profile
-                </Link>
-                <button
-                  className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  onClick={handleLogout} // Call handleLogout on click
-                >
-                  Sign Out
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
       </div>
     </nav>
   );
