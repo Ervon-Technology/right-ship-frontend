@@ -7,7 +7,7 @@ import Logo from '../../images/logo.png'
 
 const CompanyLayout = ({ children }) => {
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
       {/* Side Navbar */}
       <nav className="w-64 bg-customBlue text-white fixed top-0 left-0 h-full">
 

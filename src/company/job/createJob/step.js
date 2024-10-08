@@ -157,7 +157,6 @@ const CreateJobStepForm = () => {
                 handleInputChange={handleInputChange}
               />
             </div> 
-            <div className="w-3/12 bg-white h-100"></div> 
           </div>
       );
     case 2:
@@ -170,7 +169,6 @@ const CreateJobStepForm = () => {
       handlePublish={handlePublish}
     />
     </div> 
-        <div className="w-3/12 bg-white h-100"></div> 
       </div>
       );
    
