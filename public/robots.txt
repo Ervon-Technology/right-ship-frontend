@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: 
+Allow: /post/job
+Allow: /post/job/detail
+Allow: /job/candidates
+Allow: /all/candidates

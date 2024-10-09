@@ -38,93 +38,95 @@ import VerificationPending from './Pages/AccountVerify';
 import AllCandidatesTable from './company/candidates/allCandidateList';
 import WantToHire from './Pages/WantToHire';
 import { CandidateContextProvider } from './context/candidateCont';
-
+import { HelmetProvider } from 'react-helmet-async';
 
 const App = () => {
   const user = useSelector((state) => state.auth.user);
   const isLoggedIn = !!user; // Determine if a user is logged in
 
   return (
-    <CandidateContextProvider>
-    <BrowserRouter>
-      <Routes>
-        {isLoggedIn ? (
-          user.role === 'employee' ? (
-            <>
-            <Route element={<EmployeeLayout />}>
-              <Route path="/settings" element={<Setting />} />
-              <Route path="/jobs" element={<JobDashboard />} />
-              <Route path="/profile" element={<EmployeeProfile />} />
-              <Route path="/my-jobs" element={<JobBoard />} />
-              <Route path="*" element={<JobDashboard />} />
-              <Route path="/" element={<HomePage />} />
-              <Route path="/contact-us" element={<ContactUs />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
-            </Route>
-            <Route element={<DefaultLayout />}>
-              <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */} 
-            </Route>
-            </>
-          ) : (
-            <>
-            <Route element={<CompanyLayout />}>
-            {user.company && user.company.admin_verify === true ? (
+    <HelmetProvider>
+      <CandidateContextProvider>
+        <BrowserRouter>
+          <Routes>
+            {isLoggedIn ? (
+              user.role === 'employee' ? (
                 <>
-                  <Route path="/create/job" element={<CreateJobStepForm />} />
-                  <Route path="/post/job" element={<JobPostList />} />
-                  <Route path="/post/job/detail/:id" element={<JobDetail />} />
-                  <Route path="/job/candidates" element={<CandidatesTable />} />
-                  <Route path="/all/candidates" element={<AllCandidatesTable />} />
-                 
-                  <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
-                  <Route path="/manage/company/team" element={<CompanyManageUsers />} />
-                  <Route path="/setting" element={<CompanyProfile />} />
-                  <Route path="/contact-us" element={<ContactUs />} />
-                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="*" element={<JobPostList />} />
+                  <Route element={<EmployeeLayout />}>
+                    <Route path="/settings" element={<Setting />} />
+                    <Route path="/jobs" element={<JobDashboard />} />
+                    <Route path="/profile" element={<EmployeeProfile />} />
+                    <Route path="/my-jobs" element={<JobBoard />} />
+                    <Route path="*" element={<JobDashboard />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/contact-us" element={<ContactUs />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+                  </Route>
+                  <Route element={<DefaultLayout />}>
+                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+                  </Route>
                 </>
               ) : (
-                // If not verified, show a message or redirect
-                <Route path="/*" element={<VerificationPending />} />
-              )} 
-            </Route>
-            <Route element={<DefaultLayout />}>
-              <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */} 
-            </Route>
-            </>
-          )
-        ) : (
-          <>
-            <Route element={<DefaultLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/jobs" element={<JobDashboard />} />
-              <Route path="/company/login" element={<CompanyOtpAuth />} />
-              <Route path="/login" element={<EmployeeOtpAuth />} />
-              <Route path="/register" element={<EmployeeSignup />} />
-              <Route path='/email-register' element={<SignupWithEmail />} />
-              <Route path='/verify-signup-otp' element={<VerifySignupOtp />} />
-              <Route path="/employee-registration" element={<EmployeeRegistration />} />
-              <Route path="*" element={<NotFoundPage />} />    
+                <>
+                  <Route element={<CompanyLayout />}>
+                    {user.company && user.company.admin_verify === true ? (
+                      <>
+                        <Route path="/create/job" element={<CreateJobStepForm />} />
+                        <Route path="/post/job" element={<JobPostList />} />
+                        <Route path="/post/job/detail/:id" element={<JobDetail />} />
+                        <Route path="/job/candidates" element={<CandidatesTable />} />
+                        <Route path="/all/candidates" element={<AllCandidatesTable />} />
 
-              <Route path="/company" element={<WantToHire />} /> 
-              
-            </Route>
-            <Route path="/company/register" element={<RegistrationForm />} />
-            <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<Terms />} />
+                        <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
+                        <Route path="/manage/company/team" element={<CompanyManageUsers />} />
+                        <Route path="/setting" element={<CompanyProfile />} />
+                        <Route path="/contact-us" element={<ContactUs />} />
+                        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                        <Route path="/terms" element={<Terms />} />
+                        <Route path="*" element={<JobPostList />} />
+                      </>
+                    ) : (
+                      // If not verified, show a message or redirect
+                      <Route path="/*" element={<VerificationPending />} />
+                    )}
+                  </Route>
+                  <Route element={<DefaultLayout />}>
+                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+                  </Route>
+                </>
+              )
+            ) : (
+              <>
+                <Route element={<DefaultLayout />}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/jobs" element={<JobDashboard />} />
+                  <Route path="/company/login" element={<CompanyOtpAuth />} />
+                  <Route path="/login" element={<EmployeeOtpAuth />} />
+                  <Route path="/register" element={<EmployeeSignup />} />
+                  <Route path='/email-register' element={<SignupWithEmail />} />
+                  <Route path='/verify-signup-otp' element={<VerifySignupOtp />} />
+                  <Route path="/employee-registration" element={<EmployeeRegistration />} />
+                  <Route path="*" element={<NotFoundPage />} />
 
-            
-          </>
-        )}
-        
-      </Routes>
-    </BrowserRouter>
-    </CandidateContextProvider>
+                  <Route path="/company" element={<WantToHire />} />
+
+                </Route>
+                <Route path="/company/register" element={<RegistrationForm />} />
+                <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<Terms />} />
+
+
+              </>
+            )}
+
+          </Routes>
+        </BrowserRouter>
+      </CandidateContextProvider>
+    </HelmetProvider>
   );
 };
 
