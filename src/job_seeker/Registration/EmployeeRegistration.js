@@ -236,7 +236,7 @@ const EmployeeRegistration = () => {
     }
 
     if (currentStep === 6) {
-      requiredFields = ['totalSeaExperienceYear', 'totalSeaExperienceMonth', 'presentRankExperienceInMonth'];
+      requiredFields = ['totalSeaExperienceYear', 'presentRankExperienceInMonth'];
     }
     if (currentStep === 7) {
       requiredFields = [];
@@ -614,10 +614,10 @@ const EmployeeRegistration = () => {
               <InputField
                 value={formData.totalSeaExperienceMonth}
                 onChange={(value) => handleSeaExperienceChange('totalSeaExperienceMonth', value)}
-                required
                 type="number"
                 exp={true}
                 expPlaceholder="Months"
+                months={true}
               />
             </div>
             <InputField
@@ -762,7 +762,7 @@ const EmployeeRegistration = () => {
   );
 };
 
-const InputField = ({ label, value, onChange, required, type = 'text', options, exp, expPlaceholder }) => (
+const InputField = ({ label, value, onChange, required, type = 'text', options, exp, expPlaceholder, months }) => (
   <div className="relative mb-6">
     <label className="block text-gray-700 text-lg font-medium mb-1">
       {label} {required && <span className="text-red-500">*</span>}
@@ -784,7 +784,7 @@ const InputField = ({ label, value, onChange, required, type = 'text', options, 
     ) : (
       <input
         type={type}
-        className={`${exp ? 'w-64 mr-20' : 'w-full'} px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
+        className={`${exp ? months ? 'mt-7' : 'w-64 mr-20' : 'w-full'} px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
