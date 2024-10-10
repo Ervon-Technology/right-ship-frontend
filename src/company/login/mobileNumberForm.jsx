@@ -35,13 +35,11 @@ const MobileNumberForm = ({ onOtpRequested }) => {
             const userExists = await verifyUserExists();
             
             if (!userExists) {
-                console.log("============> 1swww");
                 setOtpStatus('failed');
                 setOtpError('Company User does not exist. Please register.');
                 toast.error('Company User does not exist. Please register.');
                 return;
             }
-            console.log("============> 2swww");
 
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, { mobile_no: mobileNumber });
             console.log(response.data);
