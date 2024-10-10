@@ -601,7 +601,7 @@ const EmployeeRegistration = () => {
       case 6:
         return (
           <>
-            <div className='flex flex-row'>
+            <div className='flex flex-col md:flex-row'>
               <InputField
                 label="Total Sea Experience"
                 value={formData.totalSeaExperienceYear}
@@ -784,7 +784,7 @@ const InputField = ({ label, value, onChange, required, type = 'text', options, 
     ) : (
       <input
         type={type}
-        className={`${exp ? months ? 'mt-7' : 'w-64 mr-20' : 'w-full'} px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
+        className={`${exp ? months ? 'mt-7 w-full' : 'w-full md:w-64 md:mr-20' : 'w-full'} px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200`}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
