@@ -12,7 +12,7 @@ const CompanyLayout = ({ children }) => {
       <nav className="w-64 bg-customBlue text-white fixed top-0 left-0 h-full">
 
         <div className='flex px-4 pt-4'>
-          <img src={Logo} alt="Logo" className='text-white' height={38} width={38} />
+          <img src={Logo} alt="Logo" className='text-white bg-white' height={100} width={38} />
           <span className="font-bold text-white ml-2 mt-2">RIGHTSHIP</span>
         </div>
 
