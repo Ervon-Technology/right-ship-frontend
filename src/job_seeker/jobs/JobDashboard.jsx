@@ -188,7 +188,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
     >
       <div className='flex flex-row'>
         <div className='mr-10'>
-          <img src={job.companyLogo || 'https://via.placeholder.com/150'} alt={job.company_name}  height={80} width={80}/>
+          <img src={job.companyLogo || 'https://via.placeholder.com/150'} alt={job.company_name} height={80} width={80} />
         </div>
         <div>
           <h3 className="text-xl font-bold text-gray-800">{job.open_positions.join(', ')}</h3>
