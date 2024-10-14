@@ -107,7 +107,8 @@ const CreateJobStepForm = () => {
         mobile_no: user.mobile_no,
         email: null,
         start_date: formData.startDate,
-        end_date: formData.endDate
+        end_date: formData.endDate,
+        companyLogo: company.companyLogo
       };
 
 

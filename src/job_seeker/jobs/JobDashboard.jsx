@@ -179,7 +179,6 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
       setUnsaving(false);
     }
   };
-
   return (
     <div
       className="bg-white p-6 transition duration-300 hover:bg-gray-200 border-opacity-50 cursor-pointer border-b-2 border-gray-400"
@@ -187,8 +186,15 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
-      <h3 className="text-xl font-bold text-gray-800">{job.open_positions.join(', ')}</h3>
-      <p className="text-sm text-gray-600 mt-1"><span className='font-bold text-red-500 uppercase'>{job.company_name}</span> • {new Date(job.created_date).toLocaleDateString()}</p>
+      <div className='flex flex-row'>
+        <div className='mr-10'>
+          <img src={job.companyLogo || 'https://via.placeholder.com/150'} alt={job.company_name}  height={80} width={80}/>
+        </div>
+        <div>
+          <h3 className="text-xl font-bold text-gray-800">{job.open_positions.join(', ')}</h3>
+          <p className="text-sm text-gray-600 mt-1"><span className='font-bold text-red-500 uppercase'>{job.company_name}</span> • {new Date(job.created_date).toLocaleDateString()}</p>
+        </div>
+      </div>
       <pre className="mt-3 text-gray-700">{job.description || ""}</pre>
       <div className="mt-4 flex space-x-3">
         {isApplied ? (
@@ -208,7 +214,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
             {applying ? 'Applying...' : 'Apply'}
           </button>
         )}
-        
+
         {isSaved ? (
           <button
             className="px-4 py-2 rounded-lg text-black-700 font-medium hover:bg-blue-200 transition duration-200"
@@ -227,7 +233,7 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
           </button>
         )}
       </div>
-      
+
     </div>
   );
 };
@@ -365,8 +371,8 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
     >
       <div className="sticky top-0 bg-white z-10 p-4 border-b">
         <h2 className="text-2xl font-bold text-gray-800 text-opacity-0">Job Details</h2>
-        <button 
-          onClick={onClose} 
+        <button
+          onClick={onClose}
           className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
         >
           <FiX className="w-6 h-6 text-gray-500" />
@@ -393,18 +399,18 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
                 )}
                 {typeof companyDetails.verified === 'boolean' && (
                   <p className="text-gray-700 flex items-center">
-                    <span className="font-medium mr-2">Verified:</span> 
-                    {companyDetails.verified ? 
-                      <FiCheckCircle className="text-green-500 w-5 h-5" /> : 
+                    <span className="font-medium mr-2">Verified:</span>
+                    {companyDetails.verified ?
+                      <FiCheckCircle className="text-green-500 w-5 h-5" /> :
                       <FiXCircle className="text-red-500 w-5 h-5" />
                     }
                   </p>
                 )}
                 {companyDetails.website_url && (
-                  <a 
-                    href={companyDetails.website_url} 
+                  <a
+                    href={companyDetails.website_url}
                     className="text-blue-600 hover:underline break-all"
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
                   >
                     {companyDetails.website_url}
@@ -431,7 +437,7 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
                 {job.total_applied !== undefined && (
                   <p className="text-gray-700"><span className="font-medium">Total Applied:</span> {job.total_applied}</p>
                 )}
-               
+
               </div>
             </section>
           </div>
@@ -595,7 +601,7 @@ const App = () => {
         company_id: job.company_id
       });
       if (response.data.code === 200) {
-        setCompanyDetails(response.data.data[0]);   
+        setCompanyDetails(response.data.data[0]);
       } else {
         setError('Failed to fetch company details.');
       }
@@ -613,15 +619,15 @@ const App = () => {
     return <Loader />;
   }
 
- const handleUpdateJobStatus = (updatedJob) => {
-  setJobs((prevJobs) => prevJobs.map(job => {
-    if (job.application_id === updatedJob.application_id) {
-      // Make sure you're spreading the correct updated job data here
-      return { ...job, ...updatedJob };
-    }
-    return job;
-  }));
-};
+  const handleUpdateJobStatus = (updatedJob) => {
+    setJobs((prevJobs) => prevJobs.map(job => {
+      if (job.application_id === updatedJob.application_id) {
+        // Make sure you're spreading the correct updated job data here
+        return { ...job, ...updatedJob };
+      }
+      return job;
+    }));
+  };
   return (
     <div className="bg-gray-50 min-h-screen relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -671,12 +677,12 @@ const App = () => {
                 value={inputSearchTerm}
                 onChange={(e) => setInputSearchTerm(e.target.value)}
               />
-              
+
               <button
                 onClick={handleSearchClick}
                 className="px-4 py-3 bg-blue-600 text-white font-medium rounded-r-lg hover:bg-blue-700 transition duration-200"
               >
-               <Search className="text-white" />
+                <Search className="text-white" />
               </button>
               <button
                 onClick={() => setIsMobileFilterOpen(true)}
@@ -692,7 +698,7 @@ const App = () => {
                   <CardLoader key={index} />
                 ))
                 : jobs.map(job => (
-                  <JobCard key={job.application_id} job={job} onCardClick={handleCardClick} currentUserId={user?._id}  onUpdateJobStatus={handleUpdateJobStatus} />
+                  <JobCard key={job.application_id} job={job} onCardClick={handleCardClick} currentUserId={user?._id} onUpdateJobStatus={handleUpdateJobStatus} />
                 ))}
             </div>
 
@@ -746,12 +752,12 @@ const App = () => {
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black z-40"
             />
-            <JobDetailsCanvas 
-            job={selectedJob} 
-            companyDetails={companyDetails}
-            currentUserId={user?._id} 
-            onUpdateJobStatus={handleUpdateJobStatus} 
-            onClose={() => setSelectedJob(null)} />
+            <JobDetailsCanvas
+              job={selectedJob}
+              companyDetails={companyDetails}
+              currentUserId={user?._id}
+              onUpdateJobStatus={handleUpdateJobStatus}
+              onClose={() => setSelectedJob(null)} />
           </>
         )}
       </AnimatePresence>

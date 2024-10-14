@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { FiEdit3, FiCheck, FiX } from 'react-icons/fi';
+import { FiEdit3 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 
 const CompanyProfile = () => {
@@ -10,6 +10,7 @@ const CompanyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedCompany, setEditedCompany] = useState(null);
   const user = useSelector((state) => state.auth.user);
+  const [companyLogo, setCompanyLogo] = useState("https://static.vecteezy.com/system/resources/previews/011/883/284/non_2x/colorful-star-logo-good-for-technology-logo-vintech-logo-company-logo-browser-logo-dummy-logo-bussiness-logo-free-vector.jpg")
 
   useEffect(() => {
     const fetchCompanyData = async () => {
@@ -25,6 +26,7 @@ const CompanyProfile = () => {
           }
         );
         setCompany(response.data.data[0]);
+        setCompanyLogo(response.data.data[0].companyLogo || companyLogo)
         setEditedCompany(response.data.data[0]);
         setLoading(false);
       } catch (error) {
@@ -49,7 +51,7 @@ const CompanyProfile = () => {
     editedCompany.company_id = user.company_id;
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_API_URL}/company/update`,
         editedCompany
       );
@@ -68,9 +70,45 @@ const CompanyProfile = () => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
-    setEditedCompany((prev) => ({ ...prev, [name]: value }));
+    setEditedCompany((prev) => ({ ...prev, [name]: value}));
+  };
+
+  const handleFileChange = async (e) => {
+    const { name, files } = e.target;
+    const formDataFile = new FormData();
+    formDataFile.append('file', files[0]);
+
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/upload`, formDataFile, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      const fileUrl = response.data.file_url;
+      const apiField = 'companyLogo'
+      setEditedCompany((prevFormData) => ({
+        ...prevFormData,
+        [apiField]: fileUrl,
+      }));
+
+      const updatePayload = {
+        company_id: user.company_id,
+        [apiField]: fileUrl,
+      };
+      setCompanyLogo(fileUrl)
+      await axios.post(`${process.env.REACT_APP_API_URL}/company/update`, updatePayload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      setEditedCompany((prev) => ({ ...prev, [name]: fileUrl}));
+
+    } catch (error) {
+      console.error('Upload error:', error.response ? error.response.data : error.message);
+    }
   };
 
   if (loading) {
@@ -85,15 +123,26 @@ const CompanyProfile = () => {
     <div className="mb-4">
       <label className="block text-gray-700 text-sm font-bold mb-1">{label}:</label>
       {isEditing ? (
-        <input
-          type={type}
-          name={field}
-          value={editedCompany[field] || ''}
-          onChange={handleChange}
-          className="w-full p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
-        />
+        field === "companyLogo" ? (
+          <input
+            type={type}
+            name={field}
+            onChange={handleFileChange}
+            className="w-full p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
+          />
+        ) : (
+          <input
+            type={type}
+            name={field}
+            value={editedCompany[field] || ''}
+            onChange={handleChange}
+            className="w-full p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
+          />
+        )
+
       ) : (
-        <p className="text-gray-800">{company[field] || 'Not Provided'}</p>
+        field === 'companyLogo' ? <img src={companyLogo} alt='company logo' height={150} width={150}/> :
+          <p className="text-gray-800">{company[field] || 'Not Provided'}</p>
       )}
     </div>
   );
@@ -124,6 +173,7 @@ const CompanyProfile = () => {
               {renderField('Website', 'website_url', 'url')}
               {renderField('City', 'city')}
               {renderField('Country', 'country')}
+              {renderField('Company Logo', 'companyLogo', 'file')}
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
@@ -161,7 +211,7 @@ const CompanyProfile = () => {
                 onClick={handleSave}
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none transition duration-300"
               >
-                 Save
+                Save
               </button>
             </div>
           )}
