@@ -27,7 +27,6 @@ const JobDetail = () => {
                 };
 
                 const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/application/get`, requestData);
-
                 if (response.data.code === 200) {
                     setJob(response.data.applications[0]); // Assuming the response contains a list of applications
                     setLoading(false);
@@ -75,7 +74,7 @@ const JobDetail = () => {
 
 
 
-    if (loading) {
+    if (loading || !job) {
         return <div>Loading job details...</div>;
     }
 
