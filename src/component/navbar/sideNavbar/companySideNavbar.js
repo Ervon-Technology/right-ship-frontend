@@ -30,7 +30,7 @@ const CompanySidebar = () => {
         <Link to="/create/job" className={`flex items-center px-4 py-3 hover:bg-customBlue3 rounded ${linkClasses('/create/job')}`}
           onClick={() => handleSetActive('/create/job')}>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg h-4 w-4 mr-3"  viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+  <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
 </svg>
           Create Jobs
         </Link>
@@ -85,7 +85,7 @@ const CompanySidebar = () => {
       <li>
         <button to="/sign-out" className={`w-full flex items-center px-4 py-3 hover:bg-customBlue3 rounded ${linkClasses('/sign-out')}`} onClick={handleLogout}>
         <svg width="800px" height="800px" viewBox="0 0 15 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className='h-4 w-4 mr-3 text-white'>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M1 1L8 1V2L2 2L2 13H8V14H1L1 1ZM10.8536 4.14645L14.1932 7.48614L10.8674 11.0891L10.1326 10.4109L12.358 8L4 8V7L12.2929 7L10.1464 4.85355L10.8536 4.14645Z" />
+<path fillRule="evenodd" clipRule="evenodd" d="M1 1L8 1V2L2 2L2 13H8V14H1L1 1ZM10.8536 4.14645L14.1932 7.48614L10.8674 11.0891L10.1326 10.4109L12.358 8L4 8V7L12.2929 7L10.1464 4.85355L10.8536 4.14645Z" />
 </svg>
           Sign Out
         </button>
