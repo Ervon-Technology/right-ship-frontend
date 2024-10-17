@@ -13,7 +13,7 @@ const CompanyLayout = ({ children }) => {
 
         <div className='flex px-4 pt-4'>
           <img src={Logo} alt="Logo" className='text-white bg-white' height={100} width={38} />
-          <span className="font-bold text-white ml-2 mt-2">RIGHTSHIP</span>
+          <span className="font-bold text-white ml-2 mt-2">RIGHTSHIPS</span>
         </div>
 
         <div className="p-4">
