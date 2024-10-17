@@ -12,7 +12,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-4 px-4">
             <Link to="/" className='flex items-center'>
               <img src={Logo} alt="Logo" height={40} width={40} />
-              <span className="font-bold text-gray-800 px-4">RIGHTSHIP</span>
+              <span className="font-bold text-gray-800 px-4">RIGHTSHIPS</span>
             </Link>
           {/* Desktop Links */}
           <div className="hidden md:flex space-x-4">
@@ -79,7 +79,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className='flex items-center'>
             <img src={Logo} alt="Logo" height={40} width={40} />
-            <span className="font-bold text-gray-800 px-4">RIGHTSHIP</span>
+            <span className="font-bold text-gray-800 px-4">RIGHTSHIPS</span>
           </Link>
           <a href="/myjobs" className="block">Jobs</a>
           {/* <a href="#" className="block">Companies</a> */}
