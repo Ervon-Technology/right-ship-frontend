@@ -217,9 +217,6 @@ const AllCandidatesTable = ({ jobId }) => {
     fetchAttributes();
   }, []);
 
-  const activeFilterOptions = [
-  {label: "Active Candidates", value: "10d"}
-]
   if (loading) {
     return <p className="text-center text-gray-600">Loading candidates...</p>;
   }
