@@ -228,7 +228,7 @@ const AllCandidatesTable = ({ jobId }) => {
   }, []);
 
   const activeFilterOptions = [
-    { label: "Active Candidates", value: "0d" },
+    { label: "Active Candidates", value: "10d" },
   ]
 
   if (loading) {
