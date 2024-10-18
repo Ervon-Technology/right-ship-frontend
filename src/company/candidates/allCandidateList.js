@@ -226,10 +226,7 @@ const AllCandidatesTable = ({ jobId }) => {
   }, []);
 
   const activeFilterOptions = [
-  {label: "Recent Active", value: "1d"}, 
-  {label: "Within Two Weeks", value: "15d"}, 
-  {label: "Within One Month", value: "1m"}, 
-  {label: "Within Six Months", value: "6m"}
+  {label: "Active Candidates", value: "10d"}
 ]
   if (loading) {
     return <p className="text-center text-gray-600">Loading candidates...</p>;
