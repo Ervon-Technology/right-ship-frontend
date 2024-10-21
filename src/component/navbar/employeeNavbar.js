@@ -90,7 +90,7 @@ const EmployeeNavbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <img src={Logo} alt="Logo" height={40} width={40} />
-              <span className="font-bold text-gray-800 ml-4">RIGHTSHIP</span>
+              <span className="font-bold text-gray-800 ml-4">RIGHTSHIPS</span>
             </Link>
             <div className="hidden lg:flex items-center space-x-6 ml-8">
               <Link to="/jobs" className="text-black font-bold hover:text-customBlue">Jobs</Link>
