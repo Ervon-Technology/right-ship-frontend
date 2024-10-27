@@ -13,10 +13,20 @@ const MobileNumberForm = ({ onOtpRequested }) => {
 
     const verifyUserExists = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/details`, {
-                mobile_no: contactInfo,
-                user_type: 'employee' // Assuming 'employee' is the user type; modify as needed
-            });
+            const isEmail = contactInfo.includes('@');
+            let response
+            if(isEmail){
+                response = await axios.post(`${process.env.REACT_APP_API_URL}/user/details`, {
+                    email: contactInfo,
+                    user_type: 'employee' // Assuming 'employee' is the user type; modify as needed
+                });
+            }
+            else{
+                response = await axios.post(`${process.env.REACT_APP_API_URL}/user/details`, {
+                    mobile_no: contactInfo,
+                    user_type: 'employee' // Assuming 'employee' is the user type; modify as needed
+                });
+            }
 
             return response.data; // Assuming 'exists' is a field that returns true if the user exists
         } catch (error) {

@@ -5,6 +5,9 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import ShareComponent from '../../component/shareComponent';
 import { Helmet } from 'react-helmet';
+import { FiEdit3 } from 'react-icons/fi';
+import CreateJobStepForm from './createJob/step';
+
 
 const JobDetail = () => {
 
@@ -13,7 +16,7 @@ const JobDetail = () => {
     const [company, setCompany] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+    const [showJobEdit, setShowJobEdit] = useState(false)
     const user = useSelector(state => state.auth.user);
 
     useEffect(() => {
@@ -99,26 +102,36 @@ const JobDetail = () => {
                 <meta name="twitter:image" content={imageUrl} />
             </Helmet>
 
-            <div className='p-6'>
-                <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-                    <div className='flex flex-row justify-between'>
-                        <h1 className="text-3xl font-semibold text-gray-800 mb-4">{job.hiring_for.join(', ')}</h1>
-                        <ShareComponent url={jobUrl} title={`${job.open_positions.join(', ')}`} description={jobDescription}/>
-                    </div>
+            {
+                showJobEdit ?
+                    <CreateJobStepForm job={job}/>
+                    :
+                    <div className='p-6'>
+                        <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+                            <div className='flex flex-row justify-between'>
+                                <h1 className="text-3xl font-semibold text-gray-800 mb-4">{job.hiring_for.join(', ')}</h1>
+                                <div className='flex flex-row mr-10 items-center'>
+                                    <button onClick={() => setShowJobEdit(true)}>
+                                        <FiEdit3 size={20} />
+                                    </button>
+                                    <ShareComponent url={jobUrl} title={`${job.open_positions.join(', ')}`} description={jobDescription} />
+                                </div>
+                            </div>
 
-                    <div className="text-gray-700">
-                        <p className="text-lg font-medium">Company Name: <span className="font-normal">{job.company_name}</span></p>
-                        <p className="text-lg font-medium">Mobile No: <span className="font-normal">{job.mobile_no}</span></p>
-                        <p className="text-lg font-medium">Open Positions: <span className="font-normal">{job.open_positions.join(', ')}</span></p>
-                        <p className="text-lg font-medium">Status: <span className="font-normal">{job.status}</span></p>
-                        <p className="text-lg font-medium">Posted On: <span className="font-normal">{new Date(job.created_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span></p>
-                        {job.description && (
-                            <p className="mt-6 text-base text-gray-600">{job.description}</p>
-                        )}
-                    </div>
-                </div>
+                            <div className="text-gray-700">
+                                <p className="text-lg font-medium">Company Name: <span className="font-normal">{job.company_name}</span></p>
+                                <p className="text-lg font-medium">Mobile No: <span className="font-normal">{job.mobile_no}</span></p>
+                                <p className="text-lg font-medium">Open Positions: <span className="font-normal">{job.open_positions.join(', ')}</span></p>
+                                <p className="text-lg font-medium">Status: <span className="font-normal">{job.status}</span></p>
+                                <p className="text-lg font-medium">Posted On: <span className="font-normal">{new Date(job.created_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span></p>
+                                {job.description && (
+                                    <p className="mt-6 text-base text-gray-600">{job.description}</p>
+                                )}
+                            </div>
+                        </div>
 
-            </div>
+                    </div>
+            }
         </div>
     );
 };
