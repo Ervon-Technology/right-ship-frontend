@@ -9,10 +9,17 @@ import Preview from './preview';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-const CreateJobStepForm = () => {
+const CreateJobStepForm = ({job}) => {
   const [step, setStep] = useState(1);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState(job ? {
+    ships: job.hiring_for,
+    ranks: job.open_positions,
+    benefits: [],
+    jobDescription: job.description,
+    startDate: job.start_date,
+    endDate: job.end_date
+  } : {
     ships: [],
     ranks: [],
     benefits: [],
@@ -30,7 +37,6 @@ const CreateJobStepForm = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // New loading state
   const [company, setCompany]  = useState([]);
-
 
   useEffect(() => {
     const fetchAttributes = async () => {
