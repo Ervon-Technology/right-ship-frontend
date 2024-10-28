@@ -7,7 +7,8 @@ export const CandidateContextProvider = ({children}) => {
     const [shipTypeFilter, setShipTypeFilter] = useState(null)
     const [cocFilter,setCocFilter] = useState(null)
     const [copFilter, setCopFilter] = useState(null)
-    const [watchKeepingFilter, setWatchKeepingFilter] = useState(null) 
+    const [watchKeepingFilter, setWatchKeepingFilter] = useState(null)
+    const [isLoggedIn, setIsLoggedIn]  = useState(false)
     return(
         <CandidateContext.Provider value={{
             filterRank,
@@ -19,7 +20,9 @@ export const CandidateContextProvider = ({children}) => {
             copFilter, 
             setCopFilter,
             watchKeepingFilter, 
-            setWatchKeepingFilter
+            setWatchKeepingFilter,
+            isLoggedIn,
+            setIsLoggedIn
         }}>
             {children}
         </CandidateContext.Provider>
