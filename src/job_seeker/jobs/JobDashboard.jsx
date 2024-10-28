@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FiX, FiCheckCircle, FiXCircle } from 'react-icons/fi';
 import { Search } from 'lucide-react';
-
+import CandidateContext from '../../context/candidateCont';
 const Loader = () => (
   <div className="fixed inset-0 flex items-center justify-center bg-gray-50 z-50">
     <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600"></div>
@@ -243,9 +243,20 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
   const [unsaving, setUnsaving] = useState(false);
   const [applying, setApplying] = useState(false);
   const [unapplying, setUnapplying] = useState(false);
-
-  console.log("============>", currentUserId);
-
+  const { isLoggedIn } = useContext(CandidateContext)
+  const { user } = useSelector((state) => state.auth);
+  const { setIsLoggedIn } = useContext(CandidateContext);
+  const [infoMsg, setInfoMsg] = useState('')
+  // Update context when the user state changes
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);  // Updates context if the user is logged in
+      setInfoMsg("")
+    } else {
+      setIsLoggedIn(false);
+      setInfoMsg("To view contact details, register with us")
+    }
+  }, [user, setIsLoggedIn]);
   const isSaved = job.save_jobs_applications ? job.save_jobs_applications.some(save => save.employee_id === currentUserId) : false;
   const isApplied = job.applied_by ? job.applied_by.some(application => application.employee_id === currentUserId) : false;
 
@@ -361,6 +372,7 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
     }
   };
 
+  console.log("isLoggedin>", isLoggedIn);
   return (
     <motion.div
       initial={{ x: '100%' }}
@@ -391,10 +403,10 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
                 {companyDetails.license_rpsl && (
                   <p className="text-gray-700"><span className="font-medium">RPSL:</span> {companyDetails.license_rpsl}</p>
                 )}
-                {companyDetails.mobile_no && (
+                {companyDetails.mobile_no && isLoggedIn && (
                   <p className="text-gray-700"><span className="font-medium">Contact:</span> {companyDetails.mobile_no}</p>
                 )}
-                {companyDetails.email && (
+                {companyDetails.email && isLoggedIn && (
                   <p className="text-gray-700"><span className="font-medium">Email:</span> {companyDetails.email}</p>
                 )}
                 {typeof companyDetails.verified === 'boolean' && (
@@ -418,7 +430,11 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
                 )}
               </div>
             </section>
-
+            {!isLoggedIn ?
+              <p class="text-blue-600 bg-blue-50 border-l-4 border-blue-500 px-4 py-2 text-sm font-medium">
+                {infoMsg}
+              </p> : null
+            }
             <section>
               <h3 className="text-xl font-semibold mb-4 text-gray-800">Job Information</h3>
               <div className="space-y-2">
