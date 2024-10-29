@@ -13,11 +13,9 @@ const MobileNumberForm = ({ onOtpRequested }) => {
 
     const verifyUserExists = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/details`, {
-                mobile_no: contactInfo,
-                user_type: 'employee' // Assuming 'employee' is the user type; modify as needed
-            });
-
+            const isEmail = contactInfo.includes('@');
+                const payload = isEmail ? { email: contactInfo, user_type: 'employee' } : { mobile_no: contactInfo, user_type: 'employee' };
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/details`, payload);
             return response.data; // Assuming 'exists' is a field that returns true if the user exists
         } catch (error) {
             console.error('Error verifying user existence:', error);
@@ -39,15 +37,10 @@ const MobileNumberForm = ({ onOtpRequested }) => {
             }
 
             // Step 2: Send OTP if the user exists
-            console.log("============> 1");
             const isEmail = contactInfo.includes('@');
-            console.log("============> 2");
             const payload = isEmail ? { email: contactInfo } : { mobile_no: contactInfo };
-            console.log("============> 3");
 
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/otp/send_otp`, payload);
-            console.log(response.data);
-
             if (response.data.code === 200) {
                 onOtpRequested(contactInfo);
                 setOtpStatus('success');
