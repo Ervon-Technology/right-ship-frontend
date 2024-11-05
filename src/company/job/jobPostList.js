@@ -12,9 +12,9 @@ const JobPostList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10); // Number of posts per page
   const [totalDocuments, setTotalDocuments] = useState(0); // Total documents from the API
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [sortField, setSortField] = useState('created_date');
+  // const [searchTerm, setSearchTerm] = useState('');
+  // const [sortOrder, setSortOrder] = useState('asc');
+  // const [sortField, setSortField] = useState('created_date');
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
