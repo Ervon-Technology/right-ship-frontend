@@ -408,89 +408,81 @@ const EmployeeProfile = () => {
       <aside className="w-full lg:w-1/3 p-6 my-8 lg:ms-8 lg:p-8 bg-white shadow-lg flex flex-col space-y-6">
         <div className="bg-white p-6 lg:p-8 rounded-lg shadow-md flex flex-col items-center text-center relative">
         <div className="absolute right-4 top-4">
-            <div className="relative">
-              <FaShareSquare 
-                className="cursor-pointer text-gray-600 hover:text-gray-900" 
-                size={21} 
-                onClick={() => setShowShareOptions(!showShareOptions)}
-              />
-              
-              {showShareOptions && (
-                <div className="absolute right-0 top-8 bg-white rounded-lg shadow-xl p-4 z-50 min-w-[200px]">
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-semibold text-gray-700">Share Profile</h3>
-                    <FaTimes 
-                      className="cursor-pointer text-gray-500 hover:text-gray-700"
-                      onClick={() => setShowShareOptions(false)}
-                    />
-                  </div>
+        <div className="relative">
+            <FaShareSquare 
+              className="cursor-pointer text-gray-600 hover:text-gray-900" 
+              size={21} 
+              onClick={() => setShowShareOptions(!showShareOptions)}
+            />
+            
+            {showShareOptions && (
+              <div className="absolute right-0 top-8 bg-white rounded-lg shadow-xl p-4 z-50 min-w-[200px]">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-semibold text-gray-700">Share Profile</h3>
+                  <FaTimes 
+                    className="cursor-pointer text-gray-500 hover:text-gray-700"
+                    onClick={() => setShowShareOptions(false)}
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <a
+                    href={getShareLinks().whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                  >
+                    <FaWhatsapp className="text-green-500" />
+                    <span>WhatsApp</span>
+                  </a>
                   
-                  <div className="space-y-3">
-                    {navigator.share && (
-                      <button
-                        onClick={handleNativeShare}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
-                      >
-                        <FaShareSquare />
-                        <span>Share</span>
-                      </button>
-                    )}
-                    
-                    <a
-                      href={getShareLinks().whatsapp}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
-                    >
-                      <FaWhatsapp className="text-green-500" />
-                      <span>WhatsApp</span>
-                    </a>
-                    
-                    <a
-                      href={getShareLinks().email}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
-                    >
-                      <FaEnvelope className="text-blue-500" />
-                      <span>Email</span>
-                    </a>
-                    
-                    <a
-                      href={getShareLinks().linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
-                    >
-                      <FaLinkedin className="text-blue-700" />
-                      <span>LinkedIn</span>
-                    </a>
-                    
-                    <a
-                      href={getShareLinks().facebook}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
-                    >
-                      <FaFacebook className="text-blue-600" />
-                      <span>Facebook</span>
-                    </a>
-                    
-                    <button
-                      onClick={handleCopyProfileLink}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
-                    >
-                      <FaCopy />
-                      <span>Copy Link</span>
-                    </button>
-                  </div>
+                  <a
+                    href={getShareLinks().email}
+                    className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                  >
+                    <FaEnvelope className="text-blue-500" />
+                    <span>Email</span>
+                  </a>
+                  
+                  <a
+                    href={getShareLinks().linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                  >
+                    <FaLinkedin className="text-blue-700" />
+                    <span>LinkedIn</span>
+                  </a>
+                  
+                  <a
+                    href={getShareLinks().facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                  >
+                    <FaFacebook className="text-blue-600" />
+                    <span>Facebook</span>
+                  </a>
+                  
+                  <button
+                    onClick={handleCopyProfileLink}
+                    className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                  >
+                    <FaCopy />
+                    <span>Copy Link</span>
+                  </button>
                 </div>
-              )}
-              {/* Share Notification */}
-              {showShareAlert && (
-                <div className="absolute right-0 top-20 bg-blue-500 text-white rounded px-4 py-2 shadow-lg">
-                  {shareAlertMessage}
-                </div>
-              )}
-            </div>
+              </div>
+            )}
+          
+            {/* Share Notification */}
+            {showShareAlert && (
+              <div className="absolute right-0 top-20 bg-blue-500 text-white rounded px-4 py-2 shadow-lg">
+                {shareAlertMessage}
+              </div>
+            )}
+          </div>
+
           </div>
           <div className="relative">
             <img
