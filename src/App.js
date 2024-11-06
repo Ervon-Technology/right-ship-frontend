@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'; // Changed BrowserRouter to HashRouter
 import { useSelector } from 'react-redux';
 
 import './img.css';
@@ -32,7 +32,7 @@ import CompanyManageUsers from './company/ManageUsers';
 import CompanyProfile from './company/setting';
 import Setting from './job_seeker/setting/Setting';
 import JobBoard from './job_seeker/jobs/MyJobs';
-import PublicProfile from './job_seeker/employeeProfile/PublicProfile'; // Import the PublicProfile component
+import PublicProfile from './job_seeker/employeeProfile/PublicProfile';
 import ContactUs from './contactUs';
 import VerificationPending from './Pages/AccountVerify';
 import AllCandidatesTable from './company/candidates/allCandidateList';
@@ -47,7 +47,7 @@ const App = () => {
   return (
     <HelmetProvider>
       <CandidateContextProvider>
-        <BrowserRouter>
+        <Router>
           <Routes>
             {isLoggedIn ? (
               user.role === 'employee' ? (
@@ -62,10 +62,10 @@ const App = () => {
                     <Route path="/contact-us" element={<ContactUs />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<Terms />} />
-                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} />
                   </Route>
                   <Route element={<DefaultLayout />}>
-                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} />
                   </Route>
                 </>
               ) : (
@@ -78,7 +78,6 @@ const App = () => {
                         <Route path="/post/job/detail/:id" element={<JobDetail />} />
                         <Route path="/job/candidates" element={<CandidatesTable />} />
                         <Route path="/all/candidates" element={<AllCandidatesTable />} />
-
                         <Route path="/job/candidates/detail/:candidateId" element={<CandidateDetail />} />
                         <Route path="/manage/company/team" element={<CompanyManageUsers />} />
                         <Route path="/setting" element={<CompanyProfile />} />
@@ -88,12 +87,11 @@ const App = () => {
                         <Route path="*" element={<JobPostList />} />
                       </>
                     ) : (
-                      // If not verified, show a message or redirect
                       <Route path="/*" element={<VerificationPending />} />
                     )}
                   </Route>
                   <Route element={<DefaultLayout />}>
-                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+                    <Route path="/public-profile/:employeeId" element={<PublicProfile />} />
                   </Route>
                 </>
               )
@@ -109,22 +107,17 @@ const App = () => {
                   <Route path='/verify-signup-otp' element={<VerifySignupOtp />} />
                   <Route path="/employee-registration" element={<EmployeeRegistration />} />
                   <Route path="*" element={<NotFoundPage />} />
-
                   <Route path="/company" element={<WantToHire />} />
-
                 </Route>
                 <Route path="/company/register" element={<RegistrationForm />} />
-                <Route path="/public-profile/:employeeId" element={<PublicProfile />} /> {/* Public profile route */}
+                <Route path="/public-profile/:employeeId" element={<PublicProfile />} />
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms" element={<Terms />} />
-
-
               </>
             )}
-
           </Routes>
-        </BrowserRouter>
+        </Router>
       </CandidateContextProvider>
     </HelmetProvider>
   );

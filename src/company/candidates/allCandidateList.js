@@ -19,6 +19,7 @@ const AllCandidatesTable = ({ jobId }) => {
   const [cocOptions, setCocOptions] = useState([]);
   const [copOptions, setCopOptions] = useState([]);
   const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
+  const [activeFilter, setActiveFilter] = useState(null)
   const { filterRank,
     setFilterRank,
     shipTypeFilter,
@@ -58,6 +59,10 @@ const AllCandidatesTable = ({ jobId }) => {
       }
       if (watchKeepingFilter && watchKeepingFilter.value) {
         requestData.watchkeeping = watchKeepingFilter.value;
+      }
+
+      if (activeFilter && activeFilter.value) {
+        requestData.active_within = activeFilter.value
       }
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
       if (response.data.code === 200) {
@@ -144,6 +149,11 @@ const AllCandidatesTable = ({ jobId }) => {
     setWatchKeepingFilter(option)
   }
 
+  const handleActiveFilter = (option) => {
+    handleParams("lastActive", option)
+    setActiveFilter(option)
+  }
+
   const handleClearFilter = async () => {
     const requestData = {
       page: window.location.search.split('page=')[1],
@@ -159,6 +169,7 @@ const AllCandidatesTable = ({ jobId }) => {
       setCopFilter(null)
       setShipTypeFilter(null)
       setWatchKeepingFilter(null)
+      setActiveFilter(null)
       const totalRecords = response.data.total_documents || 0;
       setTotalPages(Math.ceil(totalRecords / 20) || 1);
     } else {
@@ -168,7 +179,7 @@ const AllCandidatesTable = ({ jobId }) => {
 
     navigate({
       pathname: location.pathname,
-      search: "", 
+      search: "",
     });
 
   }
@@ -215,6 +226,10 @@ const AllCandidatesTable = ({ jobId }) => {
 
     fetchAttributes();
   }, []);
+
+  const activeFilterOptions = [
+    { label: "Active Candidates", value: "10d" },
+  ]
 
   if (loading) {
     return <p className="text-center text-gray-600">Loading candidates...</p>;
@@ -269,6 +284,14 @@ const AllCandidatesTable = ({ jobId }) => {
           onChange={handleWatchFilterSearch}
           options={watchKeepingOptions}
           placeholder="Filter by Watchkeeping"
+          className="w-full"
+        />
+
+        <Select
+          value={activeFilter}
+          onChange={handleActiveFilter}
+          options={activeFilterOptions}
+          placeholder="Filter by Active Candidate"
           className="w-full"
         />
       </div>

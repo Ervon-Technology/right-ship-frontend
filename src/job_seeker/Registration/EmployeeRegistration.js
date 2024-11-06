@@ -241,6 +241,9 @@ const EmployeeRegistration = () => {
     if (currentStep === 7) {
       requiredFields = [];
     }
+    if (currentStep === 8) {
+      requiredFields = ["resume"];
+    }
 
     const missingFields = requiredFields.filter(field => !formData[field]);
 
@@ -709,6 +712,7 @@ const EmployeeRegistration = () => {
                   ref={resumeFileInputRef}
                   onChange={(e) => handleFileChange(e, 'resume')}
                   accept=".pdf,.doc,.docx,.xls,.xlsx"
+                  required
                 />
                 {uploadingResume && (
                   <p className="text-blue-500">{`Uploading: ${uploadingResume}%`}</p>

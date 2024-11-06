@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FiX, FiCheckCircle, FiXCircle } from 'react-icons/fi';
 import { Search } from 'lucide-react';
-
+import CandidateContext from '../../context/candidateCont';
 const Loader = () => (
   <div className="fixed inset-0 flex items-center justify-center bg-gray-50 z-50">
     <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600"></div>
@@ -239,128 +239,139 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
 };
 
 const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdateJobStatus }) => {
-  const [saving, setSaving] = useState(false);
-  const [unsaving, setUnsaving] = useState(false);
-  const [applying, setApplying] = useState(false);
-  const [unapplying, setUnapplying] = useState(false);
+  // const [unsaving, setUnsaving] = useState(false);
+  // const [applying, setApplying] = useState(false);
+  // const [unapplying, setUnapplying] = useState(false);
+  const { isLoggedIn } = useContext(CandidateContext)
+  const { user } = useSelector((state) => state.auth);
+  const { setIsLoggedIn } = useContext(CandidateContext);
+  const [infoMsg, setInfoMsg] = useState('')
+  // Update context when the user state changes
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);  // Updates context if the user is logged in
+      setInfoMsg("")
+    } else {
+      setIsLoggedIn(false);
+      setInfoMsg("To view contact details, register with us")
+    }
+  }, [user, setIsLoggedIn]);
+  // const isSaved = job.save_jobs_applications ? job.save_jobs_applications.some(save => save.employee_id === currentUserId) : false;
+  // const isApplied = job.applied_by ? job.applied_by.some(application => application.employee_id === currentUserId) : false;
 
-  console.log("============>", currentUserId);
+  // const handleApply = async () => {
+  //   if (!currentUserId) {
+  //     toast.error("Please log in to continue.");
+  //     return;
+  //   }
+  //   setApplying(true);
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/apply_job`, {
+  //       employee_id: currentUserId,
+  //       application_id: job.application_id,
+  //       company_id: job.company_id
+  //     });
+  //     if (response.data.code == 200) {
+  //       toast.success('Successfully applied for the job');
+  //       onUpdateJobStatus({
+  //         ...job,
+  //         applied_by: [...(job.applied_by || []), { employee_id: currentUserId }]
+  //       });
+  //     } else {
+  //       toast.error('Failed to apply for the job');
+  //     }
+  //   } catch (error) {
+  //     toast.error(`An error occurred while applying: ${error.message}`);
+  //   } finally {
+  //     setApplying(false);
+  //   }
+  // };
 
-  const isSaved = job.save_jobs_applications ? job.save_jobs_applications.some(save => save.employee_id === currentUserId) : false;
-  const isApplied = job.applied_by ? job.applied_by.some(application => application.employee_id === currentUserId) : false;
+  // const handleUnapply = async () => {
+  //   if (!currentUserId) {
+  //     toast.error("Please log in to continue.");
+  //     return;
+  //   }
+  //   setUnapplying(true);
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unapply`, {
+  //       employee_id: currentUserId,
+  //       application_id: job.application_id,
+  //       company_id: job.company_id
+  //     });
+  //     if (response.data.code == 200) {
+  //       toast.success('Successfully unapplied from the job');
+  //       onUpdateJobStatus({
+  //         ...job,
+  //         applied_by: job.applied_by.filter(application => application.employee_id !== currentUserId)
+  //       });
+  //     } else {
+  //       toast.error('Failed to unapply from the job');
+  //     }
+  //   } catch (error) {
+  //     toast.error(`An error occurred while unapplying: ${error.message}`);
+  //   } finally {
+  //     setUnapplying(false);
+  //   }
+  // };
 
-  const handleApply = async () => {
-    if (!currentUserId) {
-      toast.error("Please log in to continue.");
-      return;
-    }
-    setApplying(true);
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/apply_job`, {
-        employee_id: currentUserId,
-        application_id: job.application_id,
-        company_id: job.company_id
-      });
-      if (response.data.code == 200) {
-        toast.success('Successfully applied for the job');
-        onUpdateJobStatus({
-          ...job,
-          applied_by: [...(job.applied_by || []), { employee_id: currentUserId }]
-        });
-      } else {
-        toast.error('Failed to apply for the job');
-      }
-    } catch (error) {
-      toast.error(`An error occurred while applying: ${error.message}`);
-    } finally {
-      setApplying(false);
-    }
-  };
+  // const handleSave = async () => {
+  //   let saving = false;
 
-  const handleUnapply = async () => {
-    if (!currentUserId) {
-      toast.error("Please log in to continue.");
-      return;
-    }
-    setUnapplying(true);
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unapply`, {
-        employee_id: currentUserId,
-        application_id: job.application_id,
-        company_id: job.company_id
-      });
-      if (response.data.code == 200) {
-        toast.success('Successfully unapplied from the job');
-        onUpdateJobStatus({
-          ...job,
-          applied_by: job.applied_by.filter(application => application.employee_id !== currentUserId)
-        });
-      } else {
-        toast.error('Failed to unapply from the job');
-      }
-    } catch (error) {
-      toast.error(`An error occurred while unapplying: ${error.message}`);
-    } finally {
-      setUnapplying(false);
-    }
-  };
+  //   if (!currentUserId) {
+  //     toast.error("Please log in to continue.");
+  //     return;
+  //   }
+  //   saving = true;
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/save_jobs`, {
+  //       employee_id: currentUserId,
+  //       application_id: job.application_id,
+  //       company_id: job.company_id
+  //     });
+  //     if (response.data.code == 200) {
+  //       toast.success('Successfully saved the job');
+  //       onUpdateJobStatus({
+  //         ...job,
+  //         save_jobs_applications: [...(job.save_jobs_applications || []), { employee_id: currentUserId }]
+  //       });
+  //     } else {
+  //       toast.error('Failed to save the job');
+  //     }
+  //   } catch (error) {
+  //     toast.error(`An error occurred while saving: ${error.message}`);
+  //   }
+  // };
 
-  const handleSave = async () => {
-    if (!currentUserId) {
-      toast.error("Please log in to continue.");
-      return;
-    }
-    setSaving(true);
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/save_jobs`, {
-        employee_id: currentUserId,
-        application_id: job.application_id,
-        company_id: job.company_id
-      });
-      if (response.data.code == 200) {
-        toast.success('Successfully saved the job');
-        onUpdateJobStatus({
-          ...job,
-          save_jobs_applications: [...(job.save_jobs_applications || []), { employee_id: currentUserId }]
-        });
-      } else {
-        toast.error('Failed to save the job');
-      }
-    } catch (error) {
-      toast.error(`An error occurred while saving: ${error.message}`);
-    } finally {
-      setSaving(false);
-    }
-  };
+  // const handleUnsave = async () => {
+  //   if (!currentUserId) {
+  //     toast.error("Please log in to continue.");
+  //     return;
+  //   }
+  //   setUnsaving(true);
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unsave`, {
+  //       employee_id: currentUserId,
+  //       application_id: job.application_id,
+  //       company_id: job.company_id
+  //     });
+  //     if (response.data.code == 200) {
+  //       toast.success('Successfully unsaved the job');
+  //       onUpdateJobStatus({
+  //         ...job,
+  //         save_jobs_applications: job.save_jobs_applications.filter(save => save.employee_id !== currentUserId)
+  //       });
+  //     } else {
+  //       toast.error('Failed to unsave the job');
+  //     }
+  //   } catch (error) {
+  //     toast.error(`An error occurred while unsaving: ${error.message}`);
+  //   } finally {
+  //     setUnsaving(false);
+  //   }
+  // };
 
-  const handleUnsave = async () => {
-    if (!currentUserId) {
-      toast.error("Please log in to continue.");
-      return;
-    }
-    setUnsaving(true);
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/unsave`, {
-        employee_id: currentUserId,
-        application_id: job.application_id,
-        company_id: job.company_id
-      });
-      if (response.data.code == 200) {
-        toast.success('Successfully unsaved the job');
-        onUpdateJobStatus({
-          ...job,
-          save_jobs_applications: job.save_jobs_applications.filter(save => save.employee_id !== currentUserId)
-        });
-      } else {
-        toast.error('Failed to unsave the job');
-      }
-    } catch (error) {
-      toast.error(`An error occurred while unsaving: ${error.message}`);
-    } finally {
-      setUnsaving(false);
-    }
-  };
-
+  console.log("isLoggedin>", isLoggedIn);
   return (
     <motion.div
       initial={{ x: '100%' }}
@@ -391,10 +402,10 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
                 {companyDetails.license_rpsl && (
                   <p className="text-gray-700"><span className="font-medium">RPSL:</span> {companyDetails.license_rpsl}</p>
                 )}
-                {companyDetails.mobile_no && (
+                {companyDetails.mobile_no && isLoggedIn && (
                   <p className="text-gray-700"><span className="font-medium">Contact:</span> {companyDetails.mobile_no}</p>
                 )}
-                {companyDetails.email && (
+                {companyDetails.email && isLoggedIn && (
                   <p className="text-gray-700"><span className="font-medium">Email:</span> {companyDetails.email}</p>
                 )}
                 {typeof companyDetails.verified === 'boolean' && (
@@ -418,7 +429,11 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
                 )}
               </div>
             </section>
-
+            {!isLoggedIn ?
+              <p class="text-blue-600 bg-blue-50 border-l-4 border-blue-500 px-4 py-2 text-sm font-medium">
+                {infoMsg}
+              </p> : null
+            }
             <section>
               <h3 className="text-xl font-semibold mb-4 text-gray-800">Job Information</h3>
               <div className="space-y-2">
@@ -499,7 +514,7 @@ const App = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [fetchingJobs, setFetchingJobs] = useState(false);
-  const [error, setError] = useState('');
+  // const [error, setError] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 40;
@@ -522,10 +537,11 @@ const App = () => {
           setShipOptions(shipAttribute ? shipAttribute.values : []);
           setRankOptions(rankAttribute ? rankAttribute.values : []);
         } else {
-          setError('Failed to fetch options data.');
+          throw new Error("Failed to fetch Options Data")
+
         }
       } catch (error) {
-        setError('An error occurred while fetching options data.');
+        throw new Error('An error occurred while fetching options data.')
       }
     };
 
@@ -563,10 +579,10 @@ const App = () => {
       if (response.data.code === 200) {
         setJobs(response.data.applications);
       } else {
-        setError('Failed to fetch job details.');
+        throw new Error("Failed to fetch Job Details")
       }
     } catch (error) {
-      setError('An error occurred while fetching job details.');
+      throw new Error("Error occurred while fetching job details.")
     } finally {
       setFetchingJobs(false);
     }
@@ -603,10 +619,10 @@ const App = () => {
       if (response.data.code === 200) {
         setCompanyDetails(response.data.data[0]);
       } else {
-        setError('Failed to fetch company details.');
+        throw new Error("Failed to fetch Company Details")
       }
     } catch (error) {
-      setError('An error occurred while fetching company details.');
+      throw new Error("Error occurred while fetching Company details.")
     }
   };
 

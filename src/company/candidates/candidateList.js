@@ -128,7 +128,7 @@ const CandidatesTable = ({ jobId }) => {
                   </td>
                   <td className="py-4 px-6 text-gray-700">{candidate.appliedRank}</td>
                   <td className="py-4 px-6 text-gray-700">{candidate.presentRank}</td>
-                  <td className="py-4 px-6 text-gray-700">{candidate.appliedRank}</td>
+                  <td className="py-4 px-6 text-gray-700">{candidate.appliedVessel}</td>
                   <td className="py-4 px-6 text-gray-700">
                     <ListView data={candidate.vesselExp} />
                   </td>

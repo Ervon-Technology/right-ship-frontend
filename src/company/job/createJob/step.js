@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
@@ -9,10 +9,16 @@ import Preview from './preview';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-const CreateJobStepForm = () => {
+const CreateJobStepForm = ({job}) => {
   const [step, setStep] = useState(1);
-
-  const [formData, setFormData] = useState({
+  const initialData = useRef(job ? {
+    ships: job.hiring_for,
+    ranks: job.open_positions,
+    benefits: [],
+    jobDescription: job.description,
+    startDate: job.start_date,
+    endDate: job.end_date
+  } : {
     ships: [],
     ranks: [],
     benefits: [],
@@ -20,6 +26,7 @@ const CreateJobStepForm = () => {
     startDate: '',
     endDate: ''
   });
+  const [formData, setFormData] = useState(initialData.current);
 
   const navigate = useNavigate();
   
@@ -30,7 +37,6 @@ const CreateJobStepForm = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // New loading state
   const [company, setCompany]  = useState([]);
-
 
   useEffect(() => {
     const fetchAttributes = async () => {
@@ -94,6 +100,16 @@ const CreateJobStepForm = () => {
     setFormData({ ...formData, [input]: value });
   };
 
+  const getChangedFields = (initial, current) => {
+    const changes = {};
+    Object.keys(current).forEach(key => {
+      if (current[key] !== initial[key]) {
+        changes[key] = current[key];
+      }
+    });
+    return changes;
+  };
+
   const handlePublish = async () => {
     try {
       // Prepare the data in the format required by the API
@@ -112,24 +128,27 @@ const CreateJobStepForm = () => {
       };
 
 
-
-      // Make the API request
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/application/create`, requestData, {
-      
+      const changedFields = getChangedFields(initialData.current, formData);
+      const endpoint = job && Object.keys(changedFields).length > 0
+      ? '/company/application/edit'
+      : '/company/application/create';
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}${endpoint}`, {
+        ...requestData,
+        ...changedFields,
+        ...(job ? { application_id: job.application_id } : {}) 
       });
 
       // Handle the response
       if (response.status === 200) {
-        console.log('Job successfully published:', response.data);
-        alert('Job successfully published!');
-        navigate('/post/job', { state: { message: 'Job successfully created!' } }); 
+        alert(`Job successfully ${job ? 'updated' : 'created'}!`);
+        navigate('/post/job', { state: { message: `Job successfully ${job ? 'updated' : 'created'}!`  } }); 
       } else {
         console.error('Failed to publish job:', response.data);
         alert('Failed to publish job.');
       }
     } catch (error) {
-      console.error('Error while publishing job:', error);
-      alert('An error occurred while publishing the job.');
+      console.error(`Error while ${job ? 'updating' : 'creating'} job:`, error);
+      alert(`An error occurred while ${job ? 'updating' : 'creating'} the job.`);
     }
   };
 

@@ -19,7 +19,7 @@ const JobFooter = () => {
           <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
             <FaLinkedin className="w-6 h-6 text-blue-800" />
           </a>
-          <a href="https://www.instagram.com/rightships.services/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.instagram.com/rightshipsdotcom?igsh=N2Uyd3o1aDcyNHRr" target="_blank" rel="noopener noreferrer">
             <FaInstagram className="w-6 h-6 text-red-500" />
           </a>
           <a href="https://www.youtube.com/@RightShips" target="_blank" rel="noopener noreferrer">

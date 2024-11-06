@@ -20,7 +20,7 @@ const DefaultNavbar = () => {
             <div className="flex items-center space-x-4 px-4">
               <Link to="/" className='flex items-center'>
                 <img src={Logo} alt="Logo" height={40} width={40} />
-                <span className="font-bold text-gray-800 px-4">RIGHTSHIP</span>
+                <span className="font-bold text-gray-800 px-4">RIGHTSHIPS</span>
               </Link>
               <div className="hidden md:flex space-x-4 font-bold text-gray-800 border border-customBlue rounded cursor-pointer p-2 px-6">
                 <Link to="/jobs">Jobs</Link>
@@ -78,7 +78,7 @@ const DefaultNavbar = () => {
               </button>
               <Link to="/" className='flex items-center' onClick={handleMenuItemClick}>
                 <img src={Logo} alt="Logo" height={40} width={40} />
-                <span className="font-bold text-gray-800 px-4">RIGHTSHIP</span>
+                <span className="font-bold text-gray-800 px-4">RIGHTSHIPS</span>
               </Link>
               <Link to="/jobs" className="block" onClick={handleMenuItemClick}>Jobs</Link>
               <Link to='/login' onClick={handleMenuItemClick}>

@@ -8,6 +8,7 @@ const CandidateDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPhoneNumber, setShowPhoneNumber] = useState(false);
+  const [whatsappNumber, setWhatsappNumber] = useState(false)
   const [showEmail, setShowEmail] = useState(false);
 
   const data = {
@@ -56,6 +57,7 @@ const CandidateDetail = () => {
     return <p className="text-center text-xl mt-8 text-gray-600">No candidate found.</p>;
   }
 
+  console.log("candidate>", candidate);
   return (
     <div className="max-w-7xl mx-auto p-6 bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen ">
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -119,6 +121,18 @@ const CandidateDetail = () => {
                 </button>
               ) : (
                 <p className="text-gray-600">{candidate.mobile_no || 'N/A'}</p>
+              )}
+            </div>
+            <div className="mt-2">
+              {!whatsappNumber ? (
+                <button
+                  onClick={() => setWhatsappNumber(true)}
+                  className="text-blue-600 underline"
+                >
+                  View WhatsApp Number
+                </button>
+              ) : (
+                <p className="text-gray-600">{candidate.whatsappNumber || 'N/A'}</p>
               )}
             </div>
           </div>
