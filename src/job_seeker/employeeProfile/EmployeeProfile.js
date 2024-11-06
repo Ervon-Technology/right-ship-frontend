@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaRegEdit, FaEdit, FaShareSquare } from "react-icons/fa";
+import { FaRegEdit, FaEdit, FaShareSquare, FaLinkedin, FaFacebook, FaCopy, FaTimes, FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import EditModal from './EditModal';
@@ -13,6 +13,9 @@ const EmployeeProfile = () => {
   const [editValue, setEditValue] = useState(''); // Initialize as an empty string
   const [isDropdown, setIsDropdown] = useState(false);
   const [options, setOptions] = useState([]);
+  const [showShareOptions, setShowShareOptions] = useState(false);
+  const [showShareAlert, setShowShareAlert] = useState(false);
+  const [shareAlertMessage, setShareAlertMessage] = useState('');
   const [sectionData, setSectionData] = useState({
     appliedVessel: null,
     presentVessel: null,
@@ -351,16 +354,144 @@ const EmployeeProfile = () => {
     }
   };
   
+  const showShareNotification = (message) => {
+    setShareAlertMessage(message);
+    setShowShareAlert(true);
+    setTimeout(() => setShowShareAlert(false), 3000);
+  };
+
+  const handleCopyProfileLink = async () => {
+    const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
+    try {
+      await navigator.clipboard.writeText(profileUrl);
+      showShareNotification('Profile link copied to clipboard!');
+    } catch (error) {
+      console.error('Failed to copy:', error);
+      showShareNotification('Failed to copy link. Please try again.');
+    }
+    setShowShareOptions(false);
+  };
+
+  const handleNativeShare = async () => {
+    const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `${profileData.name}'s Maritime Profile`,
+          text: `Check out ${profileData.name}'s profile - ${profileData.presentRank}`,
+          url: profileUrl
+        });
+        showShareNotification('Profile shared successfully!');
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          console.error('Error sharing:', error);
+        }
+      }
+    }
+    setShowShareOptions(false);
+  };
+
+  const getShareLinks = () => {
+    const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
+    const text = `Check out ${profileData.name}'s maritime profile`;
+    
+    return {
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(`Check out ${profileData.name}'s maritime profile: ${profileUrl}`)}`,
+      email: `mailto:?subject=${encodeURIComponent(`${profileData.name}'s Maritime Profile`)}&body=${encodeURIComponent(`Check out ${profileData.name}'s maritime profile: ${profileUrl}`)}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(profileUrl)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`,
+    };
+  };
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-100">
       <aside className="w-full lg:w-1/3 p-6 my-8 lg:ms-8 lg:p-8 bg-white shadow-lg flex flex-col space-y-6">
         <div className="bg-white p-6 lg:p-8 rounded-lg shadow-md flex flex-col items-center text-center relative">
-          <FaShareSquare 
-            className="absolute right-4 top-4 cursor-pointer text-gray-600 hover:text-gray-900" 
-            size={21} 
-            onClick={handleShareClick} 
-          />
+        <div className="absolute right-4 top-4">
+            <div className="relative">
+              <FaShareSquare 
+                className="cursor-pointer text-gray-600 hover:text-gray-900" 
+                size={21} 
+                onClick={() => setShowShareOptions(!showShareOptions)}
+              />
+              
+              {showShareOptions && (
+                <div className="absolute right-0 top-8 bg-white rounded-lg shadow-xl p-4 z-50 min-w-[200px]">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="font-semibold text-gray-700">Share Profile</h3>
+                    <FaTimes 
+                      className="cursor-pointer text-gray-500 hover:text-gray-700"
+                      onClick={() => setShowShareOptions(false)}
+                    />
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {navigator.share && (
+                      <button
+                        onClick={handleNativeShare}
+                        className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                      >
+                        <FaShareSquare />
+                        <span>Share</span>
+                      </button>
+                    )}
+                    
+                    <a
+                      href={getShareLinks().whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                    >
+                      <FaWhatsapp className="text-green-500" />
+                      <span>WhatsApp</span>
+                    </a>
+                    
+                    <a
+                      href={getShareLinks().email}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                    >
+                      <FaEnvelope className="text-blue-500" />
+                      <span>Email</span>
+                    </a>
+                    
+                    <a
+                      href={getShareLinks().linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                    >
+                      <FaLinkedin className="text-blue-700" />
+                      <span>LinkedIn</span>
+                    </a>
+                    
+                    <a
+                      href={getShareLinks().facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                    >
+                      <FaFacebook className="text-blue-600" />
+                      <span>Facebook</span>
+                    </a>
+                    
+                    <button
+                      onClick={handleCopyProfileLink}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                    >
+                      <FaCopy />
+                      <span>Copy Link</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+              {/* Share Notification */}
+              {showShareAlert && (
+                <div className="absolute right-0 top-20 bg-blue-500 text-white rounded px-4 py-2 shadow-lg">
+                  {shareAlertMessage}
+                </div>
+              )}
+            </div>
+          </div>
           <div className="relative">
             <img
               src={profileImage}
