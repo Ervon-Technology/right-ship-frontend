@@ -55,9 +55,7 @@ const JobBoard = ({ employeeId }) => {
         const appliedJobsResponse = await axios.post(
           `${process.env.REACT_APP_API_URL}/company/application/get`,
           {
-            application_id: {
-              "$in": appliedJobIds,
-            },
+            application_id: appliedJobIds
           }
         );
         setAppliedJobs(appliedJobsResponse.data.applications);
@@ -67,9 +65,7 @@ const JobBoard = ({ employeeId }) => {
         const savedJobsResponse = await axios.post(
           `${process.env.REACT_APP_API_URL}/company/application/get`,
           {
-            application_id: {
-              "$in": savedJobIds,
-            },
+            application_id: savedJobIds
           }
         );
         setSavedJobs(savedJobsResponse.data.applications);
