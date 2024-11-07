@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import StepOne from './stepOne';
-
+import StepTwo from './stepTwo';
 import Preview from './preview';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CreateJobStepForm = ({job}) => {
   const [step, setStep] = useState(1);
