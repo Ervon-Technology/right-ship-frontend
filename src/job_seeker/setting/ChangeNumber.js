@@ -8,9 +8,9 @@ Modal.setAppElement('#root'); // Required for accessibility, make sure your root
 
 const ChangeNumber = () => {
   const contactInfo = useSelector((state) => state.contact.contactInfo);
-  const email = useSelector((state) => state.contact.email);
-  const employeeId = useSelector((state) => state.employee.employee_id);
-  const dispatch = useDispatch();
+  // const email = useSelector((state) => state.contact.email);
+  // const employeeId = useSelector((state) => state.employee.employee_id);
+  // const dispatch = useDispatch();
   const [number, setNumber] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [contactPlaceholder, setContactPlaceholder] = useState('+91 6372778345');

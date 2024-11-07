@@ -339,20 +339,20 @@ const EmployeeProfile = () => {
     setEditValue(selectedValues);
   };
 
-  const handleShareClick = () => {
-    const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
-    if (navigator.share) {
-      navigator.share({
-        title: `Employee Profile of ${profileData.name}`,
-        text: `Check out the profile of ${profileData.name} - ${profileData.presentRank}`,
-        url: profileUrl,
-      })
-        .then(() => console.log('Profile shared successfully'))
-        .catch((error) => console.error('Error sharing profile:', error));
-    } else {
-      alert('Web Share API is not supported in your browser.');
-    }
-  };
+  // const handleShareClick = () => {
+  //   const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
+  //   if (navigator.share) {
+  //     navigator.share({
+  //       title: `Employee Profile of ${profileData.name}`,
+  //       text: `Check out the profile of ${profileData.name} - ${profileData.presentRank}`,
+  //       url: profileUrl,
+  //     })
+  //       .then(() => console.log('Profile shared successfully'))
+  //       .catch((error) => console.error('Error sharing profile:', error));
+  //   } else {
+  //     alert('Web Share API is not supported in your browser.');
+  //   }
+  // };
   
   const showShareNotification = (message) => {
     setShareAlertMessage(message);
@@ -372,28 +372,27 @@ const EmployeeProfile = () => {
     setShowShareOptions(false);
   };
 
-  const handleNativeShare = async () => {
-    const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `${profileData.name}'s Maritime Profile`,
-          text: `Check out ${profileData.name}'s profile - ${profileData.presentRank}`,
-          url: profileUrl
-        });
-        showShareNotification('Profile shared successfully!');
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          console.error('Error sharing:', error);
-        }
-      }
-    }
-    setShowShareOptions(false);
-  };
+  // const handleNativeShare = async () => {
+  //   const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
+  //   if (navigator.share) {
+  //     try {
+  //       await navigator.share({
+  //         title: `${profileData.name}'s Maritime Profile`,
+  //         text: `Check out ${profileData.name}'s profile - ${profileData.presentRank}`,
+  //         url: profileUrl
+  //       });
+  //       showShareNotification('Profile shared successfully!');
+  //     } catch (error) {
+  //       if (error.name !== 'AbortError') {
+  //         console.error('Error sharing:', error);
+  //       }
+  //     }
+  //   }
+  //   setShowShareOptions(false);
+  // };
 
   const getShareLinks = () => {
     const profileUrl = `${window.location.origin}/public-profile/${employeeId}`;
-    const text = `Check out ${profileData.name}'s maritime profile`;
     
     return {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`Check out ${profileData.name}'s maritime profile: ${profileUrl}`)}`,

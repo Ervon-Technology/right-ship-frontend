@@ -1,4 +1,4 @@
-import { FaRegArrowAltCircleRight } from "react-icons/fa";
+// import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import './header.css';
 import Iwantjob from "../../images/landing/iwantajob.png";
 import Iwanttohire from "../../images/landing/iwanttohire.png";
