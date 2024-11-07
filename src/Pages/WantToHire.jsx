@@ -56,7 +56,6 @@ const HeroSection = () => {
 
             <h2
               className="mb-10 text-2xl font-bold text-gray-800 md:text-4xl xl:text-6xl"
-              role="heading"
               aria-level="2"
             >
               Finding Candidates <br />

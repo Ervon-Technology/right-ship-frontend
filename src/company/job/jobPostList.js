@@ -12,9 +12,6 @@ const JobPostList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10); // Number of posts per page
   const [totalDocuments, setTotalDocuments] = useState(0); // Total documents from the API
-  // const [searchTerm, setSearchTerm] = useState('');
-  // const [sortOrder, setSortOrder] = useState('asc');
-  // const [sortField, setSortField] = useState('created_date');
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
@@ -51,7 +48,7 @@ const JobPostList = () => {
     };
 
     fetchPosts();
-  }, [user?.company_id, currentPage]); // Fetch posts whenever currentPage changes
+  }, [user?.company_id, currentPage, postsPerPage]); // Added postsPerPage to the dependency array
 
   const handleStatusChange = async (postId, newStatus) => {
     try {
@@ -92,8 +89,7 @@ const JobPostList = () => {
         <Button text="Add Job" to="/create/job" color="blue" size='md'/>
       </div>
 
-
-            {/* Table for displaying job posts */}
+      {/* Table for displaying job posts */}
       <div className="overflow-x-auto shadow rounded-lg">
         <table className="min-w-full bg-white border border-gray-200">
           <thead className="bg-gray-50">

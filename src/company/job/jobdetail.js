@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ShareComponent from '../../component/shareComponent';
 import { Helmet } from 'react-helmet';
 import { FiEdit3 } from 'react-icons/fi';
@@ -75,6 +75,11 @@ const JobDetail = () => {
         fetchCompanyDetail();
     }, [user.company_id]);
 
+    useEffect(() => {
+        if (company) {
+            console.log('Fetched Company Data:', company); // Logs company data when it's set
+        }
+    }, [company]);
 
 
     if (loading || !job) {

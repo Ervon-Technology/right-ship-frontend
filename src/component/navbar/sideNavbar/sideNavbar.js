@@ -1,14 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CompanySidebar from './companySideNavbar';
 import EmployeeSidebar from './employeeSideNavbar';
 
 
 
 const SideNavbar = ({}) => {
-
     const user = useSelector(state => state.auth.user);
     const userBoolean = !!user;
 

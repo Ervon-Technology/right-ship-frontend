@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import DefaultNavbar from '../navbar/defaultNavbar';
 import JobFooter from '../footer/JobFooter';
 

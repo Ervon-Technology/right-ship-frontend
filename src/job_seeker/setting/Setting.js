@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from 'react-modal';
 import ChangeMail from './ChangeMail';
 import ChangeNumber from './ChangeNumber';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 Modal.setAppElement('#root'); // Set the app root element for accessibility
 

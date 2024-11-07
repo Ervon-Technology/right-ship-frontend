@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import CandidateContext from '../context/candidateCont';
-import { useContext } from 'react';
+
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')) || null,
   token: localStorage.getItem('token') || null,
@@ -12,10 +11,10 @@ const initialState = {
 // Async thunk to send OTP
 export const sendOtp = createAsyncThunk(
   'auth/sendOtp',
-  async (contactInfo, { rejectWithValue }) => {
+  async (contact, { rejectWithValue }) => {
     try {
-      console.log("=====>", contactInfo);
-      const contactInfo = contactInfo.includes('@') ? { email: contactInfo } : { mobile_no: contactInfo } ;
+      console.log("=====>", contact);
+      const contactInfo = contact.includes('@') ? { email: contact } : { mobile_no: contact };
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/send_otp`, { contactInfo });
       return response.data;
     } catch (error) {
@@ -28,9 +27,9 @@ export const sendOtp = createAsyncThunk(
 // Async thunk to verify OTP
 export const verifyOtp = createAsyncThunk(
   'auth/verifyOtp',
-  async ({ contactInfo, otp }, { rejectWithValue }) => {
+  async ({ contact, otp }, { rejectWithValue }) => {
     try {
-      const contactInfo = contactInfo.includes('@') ? { email: contactInfo } : { mobile_no: contactInfo } ;
+      const contactInfo = contact.includes('@') ? { email: contact } : { mobile_no: contact };
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/verify_otp`, { contactInfo, otp });
       return response.data;
     } catch (error) {
@@ -63,7 +62,7 @@ export const login = createAsyncThunk(
       console.log("======>", credentials);
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/login`, credentials);
       console.log("======>", response);
-      const { _id, name, profile_photo, mobile_no, email, presentRank } = response.data.employee;
+      const { _id, name, profile_photo, mobile_no, email } = response.data.employee;
       const user = { _id, name, profile_photo, mobile_no, email, role: "employee" };
       return { user, token: response.data.token };
     } catch (error) {
@@ -84,9 +83,6 @@ export const loginCompany = createAsyncThunk(
 
       const responseVerify = await axios.post(`${process.env.REACT_APP_API_URL}/company/get`, { company_id });
 
-      // if ( responseVerify.responseVerify.data.data[0].admin_verify == false ) {
-      //   return true;
-      // }
       console.log("======> 2", response.data.data);
       const user = { _id, company_id, mobile_no, role: "company", company: responseVerify.data.data[0] };
       console.log("======> 2", user);
