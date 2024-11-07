@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import React from 'react';
 
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const CompanyManageUsers = () => {
   const [data, setData] = useState([]);

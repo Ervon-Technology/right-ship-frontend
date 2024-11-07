@@ -78,7 +78,7 @@ const CandidateDetail = () => {
               {candidate.firstName}
             </h1>
             <div className="mt-4">
-              {candidate.resume != null || candidate.resume == '' ? (
+              {candidate.resume != null || candidate.resume === '' ? (
                     <a
                     href={candidate.resume}
                     download={`${candidate.firstName}-resume.pdf`}
@@ -199,19 +199,19 @@ const InfoCard = ({ title, children }) => (
   </div>
 );
 
-const ItemList = ({ value }) => {
-  if (!Array.isArray(value) || value.length === 0) {
-    return <p className="text-gray-900">N/A</p>;
-  }
+// const ItemList = ({ value }) => {
+//   if (!Array.isArray(value) || value.length === 0) {
+//     return <p className="text-gray-900">N/A</p>;
+//   }
 
-  return (
-    <ul>
-      {value.map((val, index) => (
-        <li key={index}>{val}</li>
-      ))}
-    </ul>
-  );
-};
+//   return (
+//     <ul>
+//       {value.map((val, index) => (
+//         <li key={index}>{val}</li>
+//       ))}
+//     </ul>
+//   );
+// };
 
 const InfoItem = ({ icon, label, value }) => (
   <div className="flex items-center">

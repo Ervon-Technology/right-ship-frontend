@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const VerifyNumber = ({ closeModal }) => {
@@ -36,7 +36,7 @@ const VerifyNumber = ({ closeModal }) => {
           throw new Error('Failed to fetch contact information');
         }
 
-        const data = await response.json();
+        // const data = await response.json();
         // setContact(data.data[0].mobile_no);
       } catch (error) {
         console.error('Error fetching contact information:', error);

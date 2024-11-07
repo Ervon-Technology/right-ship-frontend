@@ -74,7 +74,7 @@ const VerifySignupOtp = () => {
       }
 
       if (data.code === 200) {
-        const employeeId = data.employee_id;
+        // const employeeId = data.employee_id;
 
         const registrationResponse = await fetch(`${process.env.REACT_APP_API_URL}/employee/register`, {
           method: 'POST',

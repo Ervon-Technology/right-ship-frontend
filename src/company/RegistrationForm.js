@@ -118,10 +118,11 @@ const RegistrationForm = () => {
           admin_verify: false,
         }),
       });
-
+  
       const data = await response.json();
       if (response.ok && data.code === 200) {
         setIsRegistered(true);
+        setShowPopup(true); // Show the popup on successful registration
         toast.success('Successfully registered! Please check your email to verify.');
       } else {
         toast.error(`Error ${data.code}: ${data.msg || 'Error while registering.'}`);
@@ -132,6 +133,7 @@ const RegistrationForm = () => {
       setLoading(false);
     }
   };
+  
 
   const nextStep = () => {
     if (validateCurrentStep()) {

@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import logo from '../../images/logo.png';
 
-
 const MobileNumberForm = ({ onOtpRequested }) => {
     
     const [mobileNumber, setMobileNumber] = useState('');
