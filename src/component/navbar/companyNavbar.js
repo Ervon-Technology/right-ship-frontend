@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { CgProfile } from "react-icons/cg";
-import { useDispatch } from 'react-redux';
-import { logout } from '../../features/authSlice'; // Import the logout action
+// import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+// import { CgProfile } from "react-icons/cg";
+// import { useDispatch } from 'react-redux';
+// import { logout } from '../../features/authSlice'; // Import the logout action
 
 const CompanyNavbar = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dispatch = useDispatch(); // Initialize dispatch
-  const navigate = useNavigate();
+  // const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const dispatch = useDispatch(); // Initialize dispatch
+  // const navigate = useNavigate();
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  // const toggleDropdown = () => {
+  //   setDropdownOpen(!dropdownOpen);
+  // };
 
-  const handleLogout = () => {
-    dispatch(logout()); // Dispatch the logout action
-    setDropdownOpen(false); // Close the dropdown
-    navigate('/');
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout()); // Dispatch the logout action
+  //   setDropdownOpen(false); // Close the dropdown
+  //   navigate('/');
+  // };
 
-  const handleDropdownItemClick = () => {
-    setDropdownOpen(false); // Close the dropdown
-  };
+  // const handleDropdownItemClick = () => {
+  //   setDropdownOpen(false); // Close the dropdown
+  // };
 
   return (
     <nav className="flex items-center h-full">

@@ -9,7 +9,7 @@ import '../../App.css'
 const AllCandidatesTable = ({ jobId }) => {
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,7 +75,6 @@ const AllCandidatesTable = ({ jobId }) => {
       }
     } catch (error) {
       console.error("Error fetching employee details:", error.message);
-      setError('Error fetching employee details.');
     } finally {
       setLoading(false);
     }
@@ -85,11 +84,11 @@ const AllCandidatesTable = ({ jobId }) => {
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true);
-      setError(null);
+      // setError(null);
       try {
         await fetchEmployeeDetails(window.location.search.split('page=')[1]);
       } catch (err) {
-        setError(err.message);
+        // setError(err.message);
         setCandidates([]);
       } finally {
         setLoading(false);
@@ -220,7 +219,7 @@ const AllCandidatesTable = ({ jobId }) => {
         }
       } catch (error) {
         console.error('Failed to fetch attributes:', error);
-        setError('Failed to fetch attributes');
+        // setError('Failed to fetch attributes');
       }
     };
 
