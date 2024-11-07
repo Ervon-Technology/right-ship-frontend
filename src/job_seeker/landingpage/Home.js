@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Header from './Header';
 import SearchBar from './SearchBar';
 
@@ -29,11 +29,6 @@ import Company23 from '../../images/companies/Company 23.jpeg';
 import Company24 from '../../images/companies/Company 24.jpg';
 
 const HomePage = () => {
-  const [topCompanies, setTopCompanies] = useState([]);
-  const [featuredCompanies, setFeaturedCompanies] = useState([]);
-  const [sponsoredCompanies, setSponsoredCompanies] = useState([]);
-  const [subscriptions, setSubscriptions] = useState([]);
-
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -51,26 +46,10 @@ const HomePage = () => {
           return data.data; // Ensure this matches the structure of your fetched data
         };
 
-        const [topCompaniesData, featuredCompaniesData, sponsoredCompaniesData, subscriptionData] = await Promise.all([
-          // fetchData(`${process.env.REACT_APP_API_URL}/company/get`),
-          // fetchData(`${process.env.REACT_APP_API_URL}/company/get`),
-          // fetchData(`${process.env.REACT_APP_API_URL}/company/get`),
-          fetchData(`${process.env.REACT_APP_API_URL}/subscription/get`),
-        ]);
-
-        setSubscriptions(subscriptionData);
-
-        const filterCompaniesWithSubscriptions = (companies) => {
-          return companies.filter((company) =>
-            subscriptionData.some((sub) => sub.company_id === company.company_id)
-          );
-        };
-
-        setTopCompanies(filterCompaniesWithSubscriptions(topCompaniesData));
-        setFeaturedCompanies(filterCompaniesWithSubscriptions(featuredCompaniesData));
-        setSponsoredCompanies(filterCompaniesWithSubscriptions(sponsoredCompaniesData));
+        // Removed subscriptions-related code
+        await fetchData(`${process.env.REACT_APP_API_URL}/subscription/get`);
       } catch (error) {
-        console.error('Error fetching companies or subscriptions:', error);
+        console.error('Error fetching companies:', error);
       }
     };
 
@@ -114,13 +93,17 @@ const HomePage = () => {
           <h2 className="text-3xl font-bold text-center mb-12">Top Companies</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8">
             {companyImages.map((image, index) => (
-              <a href="#" key={index} className="block hover:shadow-lg transition-shadow duration-200">
+              <button
+                key={index}
+                className="block hover:shadow-lg transition-shadow duration-200"
+                aria-label={`Company image ${index + 1}`}
+              >
                 <img
                   src={image.src}
                   alt={image.alt}
                   className="w-full object-cover rounded-md"
                 />
-              </a>
+              </button>
             ))}
           </div>
         </div>

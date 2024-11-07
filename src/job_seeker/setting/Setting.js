@@ -10,20 +10,13 @@ Modal.setAppElement('#root'); // Set the app root element for accessibility
 
 function Setting() {
   const contactInfo = useSelector((state) => state.auth.user.mobile_no);
-  let navigate=useNavigate()
-  // const state = useSelector((state) => state);
-  // console.log(state);
+  const navigate = useNavigate();
   
-  console.log(contactInfo)
-  // const stateEmail = useSelector((state) => state.employee.data.email);
+  console.log(contactInfo); // Check contactInfo value
 
-
-  // const employeeId = useSelector((state) => state.employee.employee_id);
   const [isMailModalOpen, setIsMailModalOpen] = useState(false);
   const [isNumberModalOpen, setIsNumberModalOpen] = useState(false);
   const [semail, setSemail] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  // const state = useSelector((state) => state); 
 
   const openMailModal = () => setIsMailModalOpen(true);
   const closeMailModal = () => setIsMailModalOpen(false);
@@ -31,9 +24,6 @@ function Setting() {
   const openNumberModal = () => setIsNumberModalOpen(true);
   const closeNumberModal = () => setIsNumberModalOpen(false);
 
-
-
-  
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
@@ -55,28 +45,24 @@ function Setting() {
             user_type: 'employee',
           }),
         });
-    
+
         if (!response.ok) {
           throw new Error(`Failed to fetch user details: ${response.statusText}`);
         }
-    
+
         const result = await response.json();
         console.log(result); // Check the structure here
-        console.log('Fetched data:', result);
-        const email = result.data?.email; // Use optional chaining to handle cases where data might be undefined
-        console.log('Email:', email);
-        // console.log(stateEmail)
-        setMobileNumber(contactInfo);
-        setSemail(email);
+        const email = result.data?.email;
+        setSemail(email || ''); // Set email if available, otherwise set to empty string
       } catch (error) {
         console.error('Error fetching user details:', error);
       }
     };
-    
+
     if (contactInfo) { // Ensure contactInfo is available before fetching
       fetchUserDetails();
     }
-  }, []); // Dependency array includes contactInfo
+  }, [contactInfo]); // Dependency array includes contactInfo
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
