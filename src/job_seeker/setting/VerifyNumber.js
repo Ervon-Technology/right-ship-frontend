@@ -36,7 +36,7 @@ const VerifyNumber = ({ closeModal }) => {
           throw new Error('Failed to fetch contact information');
         }
 
-        const data = await response.json();
+        // const data = await response.json();
         // setContact(data.data[0].mobile_no);
       } catch (error) {
         console.error('Error fetching contact information:', error);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import VerifyNumber from './VerifyNumber';
 import axios from 'axios';

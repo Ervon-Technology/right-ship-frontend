@@ -6,7 +6,7 @@ import EmployeeSidebar from './employeeSideNavbar';
 
 
 
-const SideNavbar = ({}) => {
+const SideNavbar = () => {
     const user = useSelector(state => state.auth.user);
     const userBoolean = !!user;
 

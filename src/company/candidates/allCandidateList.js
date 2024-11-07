@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom'; // Updated import for navigation
 import Pagination from '../../component/pagination';
@@ -30,7 +30,7 @@ const AllCandidatesTable = ({ jobId }) => {
     setCopFilter,
     watchKeepingFilter,
     setWatchKeepingFilter } = useContext(CandidateContext)
-  const user = useSelector((state) => state.auth.user);
+  // const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
 
