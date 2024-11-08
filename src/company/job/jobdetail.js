@@ -26,7 +26,7 @@ const JobDetail = () => {
 
                 const requestData = {
                     company_id: user.company_id, // Replace this with dynamic company_id if available
-                    application_id: id,
+                    application_id: [id],
                 };
 
                 const response = await axios.post(`${process.env.REACT_APP_API_URL}/company/application/get`, requestData);
