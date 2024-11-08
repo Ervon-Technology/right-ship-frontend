@@ -91,7 +91,8 @@ const JobDetail = () => {
     }
     const jobDescription = `Apply now for the ${job.hiring_for.join(', ')} position at Right Ships!`;
     const imageUrl = "/public/logo.png"; // Image URL
-    const jobUrl = `${process.env.REACT_APP_API_URL.includes('staging') ? process.env.WIP_URL : process.env.API_URL}/jobs/`;
+    const urlInitialiser = process.env.REACT_APP_API_URL.includes('staging') ? process.env.REACT_APP_WIP_URL : process.env.REACT_APP_API_URL
+    const jobUrl = `${urlInitialiser}/jobs/`;
     const title = `Apply for ${job.open_positions.join(', ')} on ${job.ships.join(', ')}`
     return (
         <div>
