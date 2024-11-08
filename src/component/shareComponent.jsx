@@ -12,7 +12,7 @@ import {
     WhatsappIcon
 } from 'react-share';
 
-const ShareComponent = ({ url }) => {
+const ShareComponent = ({ url, title, description }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const handleButtonClick = () => {
@@ -33,22 +33,22 @@ const ShareComponent = ({ url }) => {
                 <div className="absolute rounded top-full mt-0.1 right-0 bg-white border p-2 shadow">
                     <ul className="list-none p-0 flex">
                         <li className="inline-block mr-2">
-                            <FacebookShareButton url={url}>
+                            <FacebookShareButton url={url} title={title} description={description}>
                                 <FacebookIcon size={25} round={true} />
                             </FacebookShareButton>
                         </li>
                         <li className="inline-block mr-2">
-                            <TwitterShareButton url={url}>
+                            <TwitterShareButton url={url} title={title} description={description}>
                                 <TwitterIcon size={25} round={true} />
                             </TwitterShareButton>
                         </li>
                         <li className="inline-block mr-2">
-                            <LinkedinShareButton url={url}>
+                            <LinkedinShareButton url={url} title={title} description={description}>
                                 <LinkedinIcon size={25} round={true} />
                             </LinkedinShareButton>
                         </li>
                         <li className="inline-block">
-                            <WhatsappShareButton url={url}>
+                            <WhatsappShareButton url={url} title={title} description={description}>
                                 <WhatsappIcon size={25} round={true} />
                             </WhatsappShareButton>
                         </li>

@@ -91,7 +91,8 @@ const JobDetail = () => {
     }
     const jobDescription = `Apply now for the ${job.hiring_for.join(', ')} position at Right Ships!`;
     const imageUrl = "/public/logo.png"; // Image URL
-    const jobUrl = window.location.href;
+    const jobUrl = `${process.env.REACT_APP_API_URL}/jobs/${job.application_id}`;
+    const title = `Apply for ${job.open_positions.join(', ')} on ${job.ships.join(', ')}`
     return (
         <div>
             <Helmet>
@@ -119,7 +120,7 @@ const JobDetail = () => {
                                     <button onClick={() => setShowJobEdit(true)}>
                                         <FiEdit3 size={20} />
                                     </button>
-                                    <ShareComponent url={jobUrl} title={`${job.open_positions.join(', ')}`} description={jobDescription} />
+                                    <ShareComponent url={jobUrl} title={title} description={jobDescription} />
                                 </div>
                             </div>
 
