@@ -371,7 +371,6 @@ const JobDetailsCanvas = ({ job, companyDetails, onClose, currentUserId, onUpdat
   //   }
   // };
 
-  console.log("isLoggedin>", isLoggedIn);
   return (
     <motion.div
       initial={{ x: '100%' }}
@@ -629,6 +628,16 @@ const App = () => {
   const handleCardClick = async (job) => {
     setSelectedJob(job); // Set the job first to trigger the canvas opening
     await fetchCompanyDetails(job); // Fetch company details and then update the state
+    try{
+       await axios.post(`${process.env.REACT_APP_API_URL}/job_application_viewed`, {
+        application_id: job.application_id,
+        employee_id: user._id
+      })
+
+    }
+    catch(err){
+      console.log("err", err);
+    }
   };
 
   if (loading) {

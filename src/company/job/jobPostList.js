@@ -101,6 +101,9 @@ const JobPostList = () => {
                 Open Positions
               </th>
               <th className="px-6 py-3 border-b bg-blue-600 text-white font-semibold text-sm text-left">
+                Viewed by Candidates
+              </th>
+              <th className="px-6 py-3 border-b bg-blue-600 text-white font-semibold text-sm text-left">
                 Status
               </th>
             </tr>
@@ -133,6 +136,9 @@ const JobPostList = () => {
                   </td>
                   <td className="px-6 py-4 border-b">
                     {post.open_positions.join(', ')}
+                  </td>
+                  <td className="px-6 py-4 border-b">
+                    {post.views}
                   </td>
                   <td className="px-6 py-4 border-b">
                     <select
