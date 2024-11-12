@@ -178,7 +178,7 @@ const EmployeeProfile = () => {
       fetchProfileData();
       fetchAttributes();
     }
-  }, [employeeId]);
+  }, [employeeId, sectionData.coc, sectionData.cop, sectionData.watchkeeping, profileImage]);
 
   const handleFileChange = async (event, type) => {
     const selectedFile = event.target.files[0];
