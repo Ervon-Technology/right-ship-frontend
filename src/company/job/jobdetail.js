@@ -93,7 +93,7 @@ const JobDetail = () => {
     const imageUrl = "/public/logo.png"; // Image URL
     const urlInitialiser = process.env.REACT_APP_API_URL.includes('staging') ? process.env.REACT_APP_WIP_URL : process.env.REACT_APP_PROD_URL
     const jobUrl = `${urlInitialiser}/#/jobs/`;
-    const title = `Apply for ${job.open_positions.join(', ')} on ${job.ships.join(', ')}`
+    const title = `Rank- ${job.open_positions.join(', ')} Vessel- ${job.ships.join(', ')}.\n To know more visit 'https://rightships.com'`
     return (
         <div>
             <Helmet>
