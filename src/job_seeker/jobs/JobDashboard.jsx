@@ -214,6 +214,8 @@ const JobCard = ({ job, onCardClick, currentUserId }) => {
             {applying ? 'Applying...' : 'Apply'}
           </button>
         )}
+        <button onClick={() => onCardClick(job)}
+          className='px-6 py-2 rounded-md font-medium bg-customBlue text-white transition-all hover:bg-customBlue2'>Details</button>
 
         {isSaved ? (
           <button
@@ -628,14 +630,14 @@ const App = () => {
   const handleCardClick = async (job) => {
     setSelectedJob(job); // Set the job first to trigger the canvas opening
     await fetchCompanyDetails(job); // Fetch company details and then update the state
-    try{
-       await axios.post(`${process.env.REACT_APP_API_URL}/job_application_viewed`, {
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}/job_application_viewed`, {
         application_id: job.application_id,
         employee_id: user._id
       })
 
     }
-    catch(err){
+    catch (err) {
       console.log("err", err);
     }
   };
