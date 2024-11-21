@@ -91,7 +91,7 @@ const JobDetail = () => {
     }
     const jobDescription = `Apply now for the ${job.hiring_for.join(', ')} position at Right Ships!`;
     const imageUrl = "/public/logo.png"; // Image URL
-    const urlInitialiser = process.env.REACT_APP_API_URL.includes('staging') ? process.env.REACT_APP_WIP_URL : process.env.REACT_APP_PROD_URL
+    const urlInitialiser = process.env.REACT_APP_API_URL.includes('staging') ? process.env.REACT_APP_WIP_URL : 'https://rightships.com'
     const jobUrl = `${urlInitialiser}/#/jobs/`;
     const title = `*Rank- ${job.open_positions.join(', ')}*\n*Vessel-* *${job.ships.join(', ')}.*\n\n To know more visit 'https://rightships.com'\n Click on this link to apply:`;
     return (
