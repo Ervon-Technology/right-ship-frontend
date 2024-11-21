@@ -47,7 +47,7 @@ const HomePage = () => {
         };
 
         // Removed subscriptions-related code
-        await fetchData(`${process.env.REACT_APP_API_URL}/subscription/get`);
+        await fetchData(`https://api.rightships.com/subscription/get`);
       } catch (error) {
         console.error('Error fetching companies:', error);
       }
