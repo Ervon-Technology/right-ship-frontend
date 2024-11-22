@@ -95,7 +95,7 @@ const JobDetail = () => {
     const jobUrl = `${urlInitialiser}/#/jobs/`;
     
     console.log("job>", job);
-    const title = `*Rank- ${job.open_positions.join(', ')}*\n*Vessel-* *${job.ships.join(', ')}.*\n\n To know more visit 'https://rightships.com'\n Click on this link to apply:`;
+    const title = `*Rank- ${job.open_positions.join(', ')}*\n*Vessel-* *${job.hiring_for.join(', ')}.*\n\n To know more visit 'https://rightships.com'\n Click on this link to apply:`;
     return (
         <div>
             <Helmet>
