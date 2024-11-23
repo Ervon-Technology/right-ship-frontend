@@ -57,7 +57,6 @@ const CandidateDetail = () => {
     return <p className="text-center text-xl mt-8 text-gray-600">No candidate found.</p>;
   }
 
-  console.log("candidate>", candidate);
   return (
     <div className="max-w-7xl mx-auto p-6 bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen ">
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
