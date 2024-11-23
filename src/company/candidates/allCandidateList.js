@@ -84,7 +84,7 @@ const AllCandidatesTable = ({ jobId }) => {
       setLoading(true);
       // setError(null);
       try {
-        await fetchEmployeeDetails(currentPage);
+        await fetchEmployeeDetails(window.location.href.split('page=')[1]); 
       } catch (err) {
         // setError(err.message);
         setCandidates([]);
