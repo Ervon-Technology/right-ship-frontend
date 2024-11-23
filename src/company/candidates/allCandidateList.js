@@ -1,23 +1,17 @@
-// import React, { useEffect, useState, useCallback } from 'react';
-import React, { useEffect, useState, useCallback, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState, useContext } from 'react';
+// import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom'; // Updated import for navigation
 import Pagination from '../../component/pagination';
 import Select from 'react-select';  // Importing react-select
-
 import CandidateContext from '../../context/candidateCont';
+import '../../App.css'
 const AllCandidatesTable = ({ jobId }) => {
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
-  // const [rankFilter, setRankFilter] = useState(null);
-  // const [shipTypeFilter, setShipTypeFilter] = useState(null);
-
-  // const [cocFilter, setCocFilter] = useState(null); // Changed to single value
-  // const [copFilter, setCopFilter] = useState(null); // Changed to single value
-  // const [watchKeepingFilter, setWatchKeepingFilter] = useState(null); // Changed to single value
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -26,24 +20,22 @@ const AllCandidatesTable = ({ jobId }) => {
   const [cocOptions, setCocOptions] = useState([]);
   const [copOptions, setCopOptions] = useState([]);
   const [watchKeepingOptions, setWatchKeepingOptions] = useState([]);
-
-  const { filterRank, 
-    setFilterRank, 
-    shipTypeFilter, 
-    setShipTypeFilter, 
-    cocFilter, 
-    setCocFilter, 
-    copFilter, 
+  const [activeFilter, setActiveFilter] = useState(null)
+  const { filterRank,
+    setFilterRank,
+    shipTypeFilter,
+    setShipTypeFilter,
+    cocFilter,
+    setCocFilter,
+    copFilter,
     setCopFilter,
-    watchKeepingFilter, 
+    watchKeepingFilter,
     setWatchKeepingFilter } = useContext(CandidateContext)
-  const user = useSelector((state) => state.auth.user);
-
+  // const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const fetchEmployeeDetails = useCallback(async (page = 1, limit = 20) => {
-    setLoading(true);
+  const fetchEmployeeDetails = async (page, limit = 20) => {
+    setLoading(true)
     try {
       const requestData = {
         page,
@@ -51,10 +43,7 @@ const AllCandidatesTable = ({ jobId }) => {
         availability: { "$exists": true, "$ne": "" },
         appliedRank: { "$exists": true, "$ne": "" },
       };
-
       // Add filters if they are selected
-      // if (rankFilter && rankFilter.value) {
-      //   requestData.appliedRank = rankFilter.value;
       if (filterRank && filterRank.value) {
         requestData.appliedRank = filterRank.value;
       }
@@ -70,6 +59,9 @@ const AllCandidatesTable = ({ jobId }) => {
       if (watchKeepingFilter && watchKeepingFilter.value) {
         requestData.watchkeeping = watchKeepingFilter.value;
       }
+      if (activeFilter && activeFilter.value) {
+        requestData.active_within = activeFilter.value
+      }
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
       if (response.data.code === 200) {
         setCandidates(response.data.data);
@@ -81,22 +73,20 @@ const AllCandidatesTable = ({ jobId }) => {
       }
     } catch (error) {
       console.error("Error fetching employee details:", error.message);
-      setError('Error fetching employee details.');
+      // setError('Error fetching employee details.');
     } finally {
       setLoading(false);
     }
-  // }, [rankFilter, shipTypeFilter, cocFilter, copFilter, watchKeepingFilter]);
-  }, [filterRank, shipTypeFilter, cocFilter, copFilter, watchKeepingFilter]);
-
+  }
   // Fetch candidates on initial render and when filters or pagination change
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true);
-      setError(null);
+      // setError(null);
       try {
         await fetchEmployeeDetails(currentPage);
       } catch (err) {
-        setError(err.message);
+        // setError(err.message);
         setCandidates([]);
       } finally {
         setLoading(false);
@@ -108,7 +98,7 @@ const AllCandidatesTable = ({ jobId }) => {
       setCurrentPage(pageFromUrl);
     }
     fetchInitialData();
-  }, [fetchEmployeeDetails, currentPage, location.search]);
+  }, [location.search]);
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -117,12 +107,67 @@ const AllCandidatesTable = ({ jobId }) => {
       navigate({ search: searchParams.toString() });
     }
   };
-
-  const handleSearchParam = (option) => (setFilterRank(option))
-  const handleShipTypeFilterSearch = (option) => (setShipTypeFilter(option))
-  const handleCocFilterSearch = (option) => (setCocFilter(option))
-  const handleCopFilterSearch = (option) => (setCopFilter(option))
-  const handleWatchFilterSearch = (option) => (setWatchKeepingFilter(option))
+  const handleParams = (val, option) => {
+    let queryString = window.location.search;
+    let decodedQueryString = decodeURIComponent(queryString);
+    const searchParams = new URLSearchParams(decodedQueryString);
+    searchParams.set(val, JSON.stringify(option.value));
+    if (!option.value.length) {
+      searchParams.delete(val)
+    }
+    navigate({ search: searchParams.toString() });
+  }
+  const handleSearchParam = (option) => {
+    handleParams("rank", option)
+    setFilterRank(option)
+  }
+  const handleShipTypeFilterSearch = (option) => {
+    handleParams("shiptype", option)
+    setShipTypeFilter(option)
+  }
+  const handleCocFilterSearch = (option) => {
+    handleParams("coc", option)
+    setCocFilter(option)
+  }
+  const handleCopFilterSearch = (option) => {
+    handleParams("cop", option)
+    setCopFilter(option)
+  }
+  const handleWatchFilterSearch = (option) => {
+    handleParams("watchkeeping", option)
+    setWatchKeepingFilter(option)
+  }
+  const handleActiveFilter = (option) => {
+    handleParams("lastActive", option)
+    setActiveFilter(option)
+  }
+  const handleClearFilter = async () => {
+    const requestData = {
+      page: window.location.search.split('page=')[1],
+      limit: 20,
+      availability: { "$exists": true, "$ne": "" },
+      appliedRank: { "$exists": true, "$ne": "" },
+    };
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/employee/get`, requestData);
+    if (response.data.code === 200) {
+      setCandidates(response.data.data);
+      setFilterRank(null)
+      setCocFilter(null)
+      setCopFilter(null)
+      setShipTypeFilter(null)
+      setWatchKeepingFilter(null)
+      setActiveFilter(null)
+      const totalRecords = response.data.total_documents || 0;
+      setTotalPages(Math.ceil(totalRecords / 20) || 1);
+    } else {
+      setCandidates([]);
+      throw new Error('Failed to fetch employee details');
+    }
+    navigate({
+      pathname: location.pathname,
+      search: "",
+    });
+  }
   // Fetching options for filters
   useEffect(() => {
     const fetchAttributes = async () => {
@@ -155,24 +200,27 @@ const AllCandidatesTable = ({ jobId }) => {
         }
       } catch (error) {
         console.error('Failed to fetch attributes:', error);
-        setError('Failed to fetch attributes');
+        // setError('Failed to fetch attributes');
       }
     };
+
     fetchAttributes();
   }, []);
+  const activeFilterOptions = [
+    { label: "Active Candidates", value: "10d" },
+  ]
   if (loading) {
     return <p className="text-center text-gray-600">Loading candidates...</p>;
   }
-
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Candidates</h2>
-
+      <div className='flex flex-row justify-between'>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">Candidates</h2>
+        <button className="border-2 border-gray-800 text-sm px-2 py-2 rounded h-10 w-30" onClick={handleClearFilter}>clear filter</button>
+      </div>
       <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Rank Filter */}
         <Select
-          // value={rankFilter}
-          // onChange={setRankFilter}
           value={filterRank}
           onChange={handleSearchParam}
           options={rankOptions}
@@ -182,7 +230,6 @@ const AllCandidatesTable = ({ jobId }) => {
         {/* Ship Type Filter */}
         <Select
           value={shipTypeFilter}
-          // onChange={setShipTypeFilter}
           onChange={handleShipTypeFilterSearch}
           options={shipOptions}
           placeholder="Filter by Ship Type Applied"
@@ -191,7 +238,6 @@ const AllCandidatesTable = ({ jobId }) => {
         {/* COC Filter */}
         <Select
           value={cocFilter}
-          // onChange={setCocFilter}
           onChange={handleCocFilterSearch}
           options={cocOptions}
           placeholder="Filter by COC"
@@ -200,7 +246,6 @@ const AllCandidatesTable = ({ jobId }) => {
         {/* COP Filter */}
         <Select
           value={copFilter}
-          // onChange={setCopFilter}
           onChange={handleCopFilterSearch}
           options={copOptions}
           placeholder="Filter by COP"
@@ -209,10 +254,16 @@ const AllCandidatesTable = ({ jobId }) => {
         {/* Watchkeeping Filter */}
         <Select
           value={watchKeepingFilter}
-          // onChange={setWatchKeepingFilter}
           onChange={handleWatchFilterSearch}
           options={watchKeepingOptions}
           placeholder="Filter by Watchkeeping"
+          className="w-full"
+        />
+        <Select
+          value={activeFilter}
+          onChange={handleActiveFilter}
+          options={activeFilterOptions}
+          placeholder="Filter by Active Candidate"
           className="w-full"
         />
       </div>
@@ -234,7 +285,7 @@ const AllCandidatesTable = ({ jobId }) => {
               candidates.map((candidate) => (
                 <tr key={candidate._id} className="border-t">
                   <td className="py-4 px-6 text-gray-700">
-                    <Link to={`/job/candidates/detail/${candidate._id}`} className="text-blue-600 hover:underline">
+                    <Link to={`/job/candidates/detail/${candidate._id}`} className="text-blue-600 hover:underline candidate-link">
                       <ListView data={[candidate.firstName, `DOB: ${candidate.dob}`, `Gender: ${candidate.gender}`]} />
                     </Link>
                   </td>
@@ -243,11 +294,6 @@ const AllCandidatesTable = ({ jobId }) => {
                   </td>
                   <td className="py-4 px-6 text-gray-700 text-sm">
                     <ListView data={[
-                  //     `Coc : ${candidate.coc ? candidate.coc : "N/A" }`, 
-                  //     `Cop : ${candidate.cop ? candidate.cop : "N/A" }`, 
-                  //     `Watch Keeping : ${candidate.watchkeeping ? candidate.watchkeeping : "N/A" }`
-                  //     ]} />
-                  // </td> 
                       `Coc : ${candidate.coc ? candidate.coc : "N/A"}`,
                       `Cop : ${candidate.cop ? candidate.cop : "N/A"}`,
                       `Watch Keeping : ${candidate.watchkeeping ? candidate.watchkeeping : "N/A"}`
@@ -270,9 +316,7 @@ const AllCandidatesTable = ({ jobId }) => {
       </div>
       {/* Pagination */}
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-
       {/* Error Message */}
-      {/* {error && <p className="text-red-500 mt-4">Error: {error}</p>} */}
     </div>
   );
 };
