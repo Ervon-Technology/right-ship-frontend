@@ -39,6 +39,7 @@ import AllCandidatesTable from './company/candidates/allCandidateList';
 import WantToHire from './Pages/WantToHire';
 import { CandidateContextProvider } from './context/candidateCont';
 import { HelmetProvider } from 'react-helmet-async';
+import LogosScreen from './component/logoScreen';
 
 const App = () => {
   const user = useSelector((state) => state.auth.user);
@@ -59,6 +60,7 @@ const App = () => {
                     <Route path="/my-jobs" element={<JobBoard />} />
                     <Route path="*" element={<JobDashboard />} />
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/logos" element={<LogosScreen />} />
                     <Route path="/contact-us" element={<ContactUs />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<Terms />} />
@@ -99,6 +101,7 @@ const App = () => {
               <>
                 <Route element={<DefaultLayout />}>
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/logos" element={<LogosScreen />} />
                   <Route path="/jobs" element={<JobDashboard />} />
                   <Route path="/company/login" element={<CompanyOtpAuth />} />
                   <Route path="/login" element={<EmployeeOtpAuth />} />

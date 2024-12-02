@@ -27,6 +27,7 @@ import Company21 from '../../images/companies/Company 21.jpg';
 import Company22 from '../../images/companies/Company 22.jpg';
 import Company23 from '../../images/companies/Company 23.jpeg';
 import Company24 from '../../images/companies/Company 24.jpg';
+import ImageSlider from '../../features/imagesSlider';
 
 const HomePage = () => {
   useEffect(() => {
@@ -91,7 +92,7 @@ const HomePage = () => {
       <div className="container mx-auto px-4">
         <div className="my-8">
           <h2 className="text-3xl font-bold text-center mb-12">Top Companies</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8">
+          {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8">
             {companyImages.map((image, index) => (
               <button
                 key={index}
@@ -105,7 +106,8 @@ const HomePage = () => {
                 />
               </button>
             ))}
-          </div>
+          </div> */}
+          <ImageSlider /> 
         </div>
       </div>
     </div>
