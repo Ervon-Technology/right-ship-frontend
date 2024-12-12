@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import Header from './Header';
-import SearchBar from './SearchBar';
+import React, { useState, useRef, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Header from "./Header";
 
-// Importing the images
+// Import images for carousel
 import Company1 from '../../images/companies/Company 1.jpg';
 import Company2 from '../../images/companies/Company 2.jpg';
 import Company3 from '../../images/companies/Company 3.jpg';
@@ -29,84 +29,177 @@ import Company23 from '../../images/companies/Company 23.jpeg';
 import Company24 from '../../images/companies/Company 24.jpg';
 
 const HomePage = () => {
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const fetchData = async (url) => {
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-              'Accept': '*/*',
-              'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
-          });
-          const data = await response.json();
-          return data.data; // Ensure this matches the structure of your fetched data
-        };
+  const companyImages = [
+    Company1, Company2, Company3, Company4, Company5, Company6, 
+    Company7, Company8, Company9, Company10, Company11, Company12, 
+    Company13, Company14, Company15, Company16, Company17, Company18, 
+    Company19, Company20, Company21, Company22, Company23, Company24
+  ];
 
-        // Removed subscriptions-related code
-        await fetchData(`https://api.rightships.com/subscription/get`);
-      } catch (error) {
-        console.error('Error fetching companies:', error);
+  const Carousel = ({ 
+    title, 
+    companies, 
+    layout = "grid", 
+    autoSlide = false, 
+    autoSlideInterval = 3000,
+    responsive = true 
+  }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const carouselRef = useRef(null);
+
+    // Determine items per slide based on layout and responsive design
+    const getItemsPerSlide = () => {
+      if (!responsive) {
+        switch(layout) {
+          case "top": return 6;
+          case "standard": return 12;
+          case "listed": return 6; // Updated for listed layout
+          default: return companies.length;
+        }
+      }
+
+      // Responsive calculation based on screen width
+      const screenWidth = window.innerWidth;
+      if (screenWidth < 640) return 18;  // Small screens (2 items per slide)
+      if (screenWidth < 1024) return 6; // Medium screens (4 items per slide)
+      
+      return layout === "top" ? 6 : 12; // Large screens (6 for "top", 12 for "standard")
+    };
+
+    const itemsPerSlide = getItemsPerSlide();
+    const totalSlides = Math.ceil(companies.length / itemsPerSlide);
+
+    // Auto-sliding effect
+    useEffect(() => {
+      if (!autoSlide) return;
+
+      const slideInterval = setInterval(() => {
+        handleNext();
+      }, autoSlideInterval);
+
+      return () => clearInterval(slideInterval);
+    }, [autoSlide, currentIndex]);
+
+    const handlePrev = () => {
+      setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+    };
+
+    const handleNext = () => {
+      setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
+    };
+
+    // Background and styling variations
+    const getBackgroundStyle = () => {
+      switch(layout) {
+        case "top": return "bg-gray-50";
+        case "standard": return "bg-[#EFF7FF]";
+        case "listed": return "bg-gray-50";
+        default: return "bg-white";
       }
     };
 
-    fetchCompanies();
-  }, []);
+    // Grid columns and rows configuration
+    const getGridConfig = () => {
+      switch(layout) {
+        case "top": return "grid-cols-3 grid-rows-2";
+        case "standard": return "grid-cols-4 grid-rows-3";
+        case "listed": return "grid-cols-6 grid-rows-2"; // Updated for listed layout
+        default: return "grid-cols-4 grid-rows-3";
+      }
+    };
 
-  // Array of imported images
-  const companyImages = [
-    { src: Company1, alt: 'Company 1' },
-    { src: Company2, alt: 'Company 2' },
-    { src: Company3, alt: 'Company 3' },
-    { src: Company4, alt: 'Company 4' },
-    { src: Company5, alt: 'Company 5' },
-    { src: Company6, alt: 'Company 6' },
-    { src: Company7, alt: 'Company 7' },
-    { src: Company8, alt: 'Company 8' },
-    { src: Company9, alt: 'Company 9' },
-    { src: Company10, alt: 'Company 10' },
-    { src: Company11, alt: 'Company 11' },
-    { src: Company12, alt: 'Company 12' },
-    { src: Company13, alt: 'Company 13' },
-    { src: Company14, alt: 'Company 14' },
-    { src: Company15, alt: 'Company 15' },
-    { src: Company16, alt: 'Company 16' },
-    { src: Company17, alt: 'Company 17' },
-    { src: Company18, alt: 'Company 18' },
-    { src: Company19, alt: 'Company 19' },
-    { src: Company20, alt: 'Company 20' },
-    { src: Company21, alt: 'Company 21' },
-    { src: Company22, alt: 'Company 22' },
-    { src: Company23, alt: 'Company 23' },
-    { src: Company24, alt: 'Company 24' },
-  ];
+    return (
+      <div className={`py-10 ${getBackgroundStyle()}`}>
+        <h2 className="text-3xl font-bold text-center mb-6">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-red-500">
+            {title}
+          </span>
+        </h2>
 
-  return (
-    <div>
-      <Header />
-      <SearchBar />
-      <div className="container mx-auto px-4">
-        <div className="my-8">
-          <h2 className="text-3xl font-bold text-center mb-12">Top Companies</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-8">
-            {companyImages.map((image, index) => (
-              <button
+        <div className="relative group">
+          <div 
+            ref={carouselRef} 
+            className={`grid grid-cols-1 gap-4 transition-all duration-300 ease-in-out`}
+          >
+            <div className={`grid ${getGridConfig()} gap-4 mx-4`}>
+              {companies
+                .slice(currentIndex * itemsPerSlide, currentIndex * itemsPerSlide + itemsPerSlide)
+                .map((company, index) => (
+                  <div
+                    key={index}
+                    className="bg-white p-4 rounded-md shadow-md flex items-center justify-center transform transition hover:scale-105 hover:shadow-lg"
+                  >
+                    <img
+                      src={company}
+                      alt={`Company ${index + 1}`}
+                      className="w-full max-h-16 object-contain"
+                    />
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <button
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 
+                       bg-white shadow-md p-2 rounded-full 
+                       opacity-0 group-hover:opacity-100 
+                       transition-all duration-300 ease-in-out"
+            onClick={handlePrev}
+          >
+            <ChevronLeft className="text-gray-600" />
+          </button>
+          <button
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 
+                       bg-white shadow-md p-2 rounded-full 
+                       opacity-0 group-hover:opacity-100 
+                       transition-all duration-300 ease-in-out"
+            onClick={handleNext}
+          >
+            <ChevronRight className="text-gray-600" />
+          </button>
+
+          {/* Slide Indicators */}
+          <div className="flex justify-center mt-4">
+            {Array.from({ length: totalSlides }).map((_, index) => (
+              <div
                 key={index}
-                className="block hover:shadow-lg transition-shadow duration-200"
-                aria-label={`Company image ${index + 1}`}
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full object-cover rounded-md"
-                />
-              </button>
+                className={`w-3 h-3 rounded-full mx-1 cursor-pointer ${
+                  index === currentIndex
+                    ? "bg-blue-500 scale-125"
+                    : "bg-gray-400 hover:bg-gray-600"
+                } transition-all duration-300 ease-in-out`}
+                onClick={() => setCurrentIndex(index)}
+              ></div>
             ))}
           </div>
         </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="bg-gray-50">
+      <Header />
+      <div className="container mx-auto py-6">
+        <Carousel 
+          title="Top Companies" 
+          companies={companyImages} 
+          layout="top" 
+          autoSlide={true}
+        />
+        <Carousel 
+          title="Standard Companies" 
+          companies={companyImages} 
+          layout="standard" 
+          responsive={true}
+        />
+        <Carousel 
+          title="Listed Companies" 
+          companies={companyImages} 
+          layout="listed" 
+          responsive={true}
+        />
       </div>
     </div>
   );

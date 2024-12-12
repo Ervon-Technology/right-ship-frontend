@@ -1,26 +1,77 @@
-// import { FaRegArrowAltCircleRight } from "react-icons/fa";
-import './header.css';
-import Iwantjob from "../../images/landing/iwantajob.png";
-import Iwanttohire from "../../images/landing/iwanttohire.png";
+import React from 'react';
 import { Link } from "react-router-dom";
+import backgroundImage from '../../images/landing/background.png';
+import { ArrowUpRight } from 'lucide-react';
 
-const Header = () => (
-  <section className="landingShip py-9">
-    <div className="container mx-auto px-4">
-      <div className="flex flex-wrap ">
-        <div className="w-full md:w-1/2 px-2 mb-4 md:mb-0">
-          <Link to="/login">
-            <img src={Iwantjob} alt="I Want a Job" className="w-full h-auto opacity-75" />
-          </Link>
-        </div>
-        <div className="w-full md:w-1/2 px-2">
-          <Link to="/company">
-            <img src={Iwanttohire} alt="I Want to Hire" className="w-full h-auto opacity-75" />
-          </Link>
+const Header = () => {
+  return (
+    <section
+      className="z-0 relative bg-no-repeat min-h-screen flex items-center justify-center"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
+    >
+      {/* Light Blue Overlay */}
+      <div className="absolute inset-0 bg-blue-300/20"></div>
+      
+      {/* Content */}
+      <div className="relative z-10 text-center px-4 w-full max-w-7xl">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-12 sm:mb-16 leading-tight">
+          Fill your dreams here with RIGHTSHIPS.COM
+        </h1>
+        
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-8">
+          {/* Candidate Section */}
+          <div className="flex flex-col items-center w-full sm:w-auto">
+            <Link
+              to="/login"
+              className="group w-full sm:w-[258px] h-[58px] sm:h-[68px] flex justify-center items-center
+                         bg-blue-700 hover:bg-blue-800 text-white font-medium
+                         rounded-lg shadow-lg transition-all
+                         transform hover:-translate-y-2 hover:scale-105
+                         relative px-4 sm:px-0"
+            >
+              <span className="text-xl sm:text-2xl font-semibold">
+                I want a Job
+              </span>
+              <ArrowUpRight
+                className="absolute top-3 right-3 text-white/70 group-hover:text-white transition-colors"
+                size={24}
+              />
+            </Link>
+            <p className="mt-4 text-white text-base sm:text-lg font-medium">
+              For Candidate
+            </p>
+          </div>
+          
+          {/* Company Section */}
+          <div className="flex flex-col items-center w-full sm:w-auto">
+            <Link
+              to="/company"
+              className="group w-full sm:w-[258px] h-[58px] sm:h-[68px] flex justify-center items-center
+                         bg-red-700 hover:bg-red-800 text-white font-medium
+                         rounded-lg shadow-lg transition-all
+                         transform hover:-translate-y-2 hover:scale-105
+                         relative px-4 sm:px-0"
+            >
+              <span className="text-xl sm:text-2xl font-semibold">
+                I want to Hire
+              </span>
+              <ArrowUpRight
+                className="absolute top-3 right-3 text-white/70 group-hover:text-white transition-colors"
+                size={24}
+              />
+            </Link>
+            <p className="mt-4 text-white text-base sm:text-lg font-medium">
+              For Company
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Header;
