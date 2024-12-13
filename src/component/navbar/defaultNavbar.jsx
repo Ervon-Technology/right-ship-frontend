@@ -50,7 +50,7 @@ const DefaultNavbar = () => {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 sm:px-14">
         <nav className="flex items-center justify-between py-4">
           {/* Logo - Left Side */}
           <div className="flex items-center">

@@ -4,7 +4,7 @@ import { FaFacebook, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa";
 const JobFooter = () => {
   return (
     <footer className="bg-[#002A42] text-white">
-      <div className="container mx-auto px-4 py-8 md:py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+      <div className="container mx-auto px-14 py-8 md:py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
         {/* Left Section */}
         <div className="text-center md:text-left">
           <h2 className="text-xl font-bold mb-4">RIGHTSHIPS</h2>
@@ -130,7 +130,7 @@ const JobFooter = () => {
 
       {/* Footer Bottom Section */}
       <div className="border-t border-gray-600 text-sm py-4">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-2 md:space-y-0">
+        <div className="container mx-auto px-14 flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-2 md:space-y-0">
           <p className="order-2 md:order-1">© 2024 Rightships.com. All rights reserved.</p>
           <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 order-1 md:order-2 mb-2 md:mb-0">
             <a href="/privacy-policy" className="hover:underline">

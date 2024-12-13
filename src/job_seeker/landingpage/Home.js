@@ -49,21 +49,12 @@ const HomePage = () => {
 
     // Determine items per slide based on layout and responsive design
     const getItemsPerSlide = () => {
-      if (!responsive) {
-        switch(layout) {
-          case "top": return 6;
-          case "standard": return 12;
-          case "listed": return 6; // Updated for listed layout
-          default: return companies.length;
-        }
+      switch(layout) {
+        case "top": return 6;
+        case "standard": return 12;
+        case "listed": return 12;
+        default: return companies.length;
       }
-
-      // Responsive calculation based on screen width
-      const screenWidth = window.innerWidth;
-      if (screenWidth < 640) return 18;  // Small screens (2 items per slide)
-      if (screenWidth < 1024) return 6; // Medium screens (4 items per slide)
-      
-      return layout === "top" ? 6 : 12; // Large screens (6 for "top", 12 for "standard")
     };
 
     const itemsPerSlide = getItemsPerSlide();
@@ -101,22 +92,22 @@ const HomePage = () => {
     // Grid columns and rows configuration
     const getGridConfig = () => {
       switch(layout) {
-        case "top": return "grid-cols-3 grid-rows-2";
-        case "standard": return "grid-cols-4 grid-rows-3";
-        case "listed": return "grid-cols-6 grid-rows-2"; // Updated for listed layout
-        default: return "grid-cols-4 grid-rows-3";
+        case "top": return "grid-cols-2 sm:grid-cols-3 grid-rows-2";
+        case "standard": return "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 grid-rows-4";
+        case "listed": return "grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 grid-rows-2";
+        default: return "grid-cols-2 sm:grid-cols-3 grid-rows-3";
       }
     };
 
     return (
       <div className={`py-10 ${getBackgroundStyle()}`}>
         <h2 className="text-3xl font-bold text-center mb-6">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-red-500">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1079B5] to-[#C11010]">
             {title}
           </span>
         </h2>
 
-        <div className="relative group">
+        <div className="relative group px-10">
           <div 
             ref={carouselRef} 
             className={`grid grid-cols-1 gap-4 transition-all duration-300 ease-in-out`}
@@ -127,7 +118,7 @@ const HomePage = () => {
                 .map((company, index) => (
                   <div
                     key={index}
-                    className="bg-white p-4 rounded-md shadow-md flex items-center justify-center transform transition hover:scale-105 hover:shadow-lg"
+                    className="bg-white p-4 rounded-xl flex items-center justify-center shadow-md transition hover:shadow-xl"
                   >
                     <img
                       src={company}
@@ -139,24 +130,34 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Navigation Buttons */}
+          {/* Navigation Buttons - Always Visible with Hover Effect */}
           <button
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 
+            className="absolute left-8 top-1/2 transform -translate-y-1/2 
                        bg-white shadow-md p-2 rounded-full 
-                       opacity-0 group-hover:opacity-100 
+                       border border-gray-300
+                       hover:border-blue-500
                        transition-all duration-300 ease-in-out"
             onClick={handlePrev}
           >
-            <ChevronLeft className="text-gray-600" />
+            <ChevronLeft 
+              className="text-gray-600 
+                         hover:text-blue-500 
+                         transition-colors duration-300"
+            />
           </button>
           <button
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 
+            className="absolute right-8 top-1/2 transform -translate-y-1/2 
                        bg-white shadow-md p-2 rounded-full 
-                       opacity-0 group-hover:opacity-100 
+                       border border-gray-300
+                       hover:border-blue-500
                        transition-all duration-300 ease-in-out"
             onClick={handleNext}
           >
-            <ChevronRight className="text-gray-600" />
+            <ChevronRight 
+              className="text-gray-600 
+                         hover:text-blue-500 
+                         transition-colors duration-300"
+            />
           </button>
 
           {/* Slide Indicators */}

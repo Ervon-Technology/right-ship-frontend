@@ -28,7 +28,7 @@ const Header = () => {
             <Link
               to="/login"
               className="group w-full sm:w-[258px] h-[58px] sm:h-[68px] flex justify-center items-center
-                         bg-blue-700 hover:bg-blue-800 text-white font-medium
+                         bg-[#084C73] hover:bg-blue-800 text-white font-medium
                          rounded-lg shadow-lg transition-all
                          transform hover:-translate-y-2 hover:scale-105
                          relative px-4 sm:px-0"
@@ -51,7 +51,7 @@ const Header = () => {
             <Link
               to="/company"
               className="group w-full sm:w-[258px] h-[58px] sm:h-[68px] flex justify-center items-center
-                         bg-red-700 hover:bg-red-800 text-white font-medium
+                         bg-red-800 hover:bg-red-700 text-white font-medium
                          rounded-lg shadow-lg transition-all
                          transform hover:-translate-y-2 hover:scale-105
                          relative px-4 sm:px-0"
