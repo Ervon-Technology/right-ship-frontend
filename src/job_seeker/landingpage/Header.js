@@ -22,7 +22,7 @@ const Header = () => {
           Fill your dreams here with RIGHTSHIPS.COM
         </h1>
         
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-8">
+        <div className="flex flex-row justify-center items-center gap-6 sm:gap-8">
           {/* Candidate Section */}
           <div className="flex flex-col items-center w-full sm:w-auto">
             <Link

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Header from "./Header";
 
@@ -42,126 +42,87 @@ const HomePage = () => {
     layout = "grid", 
     autoSlide = false, 
     autoSlideInterval = 3000,
-    responsive = true 
+    itemsPerSlide = 6
   }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const carouselRef = useRef(null);
 
-    // Determine items per slide based on layout and responsive design
-    const getItemsPerSlide = () => {
-      switch(layout) {
-        case "top": return 6;
-        case "standard": return 12;
-        case "listed": return 12;
-        default: return companies.length;
-      }
-    };
-
-    const itemsPerSlide = getItemsPerSlide();
     const totalSlides = Math.ceil(companies.length / itemsPerSlide);
 
-    // Auto-sliding effect
     useEffect(() => {
       if (!autoSlide) return;
 
-      const slideInterval = setInterval(() => {
-        handleNext();
+      const interval = setInterval(() => {
+        setCurrentIndex(prev => (prev === totalSlides - 1 ? 0 : prev + 1));
       }, autoSlideInterval);
 
-      return () => clearInterval(slideInterval);
-    }, [autoSlide, currentIndex]);
+      return () => clearInterval(interval);
+    }, [autoSlide, totalSlides, autoSlideInterval]);
 
-    const handlePrev = () => {
-      setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
-    };
+    const backgroundStyle = layout === "top" ? "bg-gray-50" : 
+                            layout === "standard" ? "bg-[#EFF7FF]" : 
+                            layout === "listed" ? "bg-gray-50" : 
+                            "bg-white";
 
-    const handleNext = () => {
-      setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
-    };
-
-    // Background and styling variations
-    const getBackgroundStyle = () => {
-      switch(layout) {
-        case "top": return "bg-gray-50";
-        case "standard": return "bg-[#EFF7FF]";
-        case "listed": return "bg-gray-50";
-        default: return "bg-white";
-      }
-    };
-
-    // Grid columns and rows configuration
-    const getGridConfig = () => {
-      switch(layout) {
-        case "top": return "grid-cols-2 sm:grid-cols-3 grid-rows-2";
-        case "standard": return "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 grid-rows-4";
-        case "listed": return "grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 grid-rows-2";
-        default: return "grid-cols-2 sm:grid-cols-3 grid-rows-3";
-      }
-    };
+    const gridConfig = layout === "top" ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-3 grid-rows-2" : 
+                       layout === "standard" ? "grid-cols-2 md:grid-cols-4 lg:grid-cols-3 grid-rows-4" : 
+                       layout === "listed" ? "grid-cols-2 md:grid-cols-6 lg:grid-cols-6 grid-rows-2" : 
+                       "grid-cols-2 sm:grid-cols-3 grid-rows-3";
 
     return (
-      <div className={`py-10 ${getBackgroundStyle()}`}>
+      <div className={`py-10 ${backgroundStyle}`}>
         <h2 className="text-3xl font-bold text-center mb-6">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1079B5] to-[#C11010]">
             {title}
           </span>
         </h2>
 
-        <div className="relative group px-10">
-          <div 
-            ref={carouselRef} 
-            className={`grid grid-cols-1 gap-4 transition-all duration-300 ease-in-out`}
-          >
-            <div className={`grid ${getGridConfig()} gap-4 mx-4`}>
+        <div className="relative group px-10 md:px-8 lg:px-12">
+          <div className="grid gap-6 transition-all duration-300 ease-in-out">
+            <div className={`grid ${gridConfig} gap-4 lg:gap-6`}>
               {companies
                 .slice(currentIndex * itemsPerSlide, currentIndex * itemsPerSlide + itemsPerSlide)
                 .map((company, index) => (
                   <div
                     key={index}
-                    className="bg-white p-4 rounded-xl flex items-center justify-center shadow-md transition hover:shadow-xl"
+                    className={`px-4 py-8 ${
+                      layout === "top" ? "bg-[#F6F6F6] rounded-xl" : layout === "standard" ? "bg-white rounded-xl shadow-sm" : "bg-transparent"
+                    }`}
+                    
                   >
                     <img
                       src={company}
                       alt={`Company ${index + 1}`}
-                      className="w-full max-h-16 object-contain"
+                      className="w-full max-h-20 object-contain"
                     />
                   </div>
                 ))}
             </div>
           </div>
 
-          {/* Navigation Buttons - Always Visible with Hover Effect */}
+          {/* Navigation Buttons */}
           <button
-            className="absolute left-8 top-1/2 transform -translate-y-1/2 
+            className="absolute left-6 top-1/2 transform -translate-y-1/2 
                        bg-white shadow-md p-2 rounded-full 
-                       border border-gray-300
-                       hover:border-blue-500
+                       border-2 border-gray-300
+                       hover:border-[#084C73]
                        transition-all duration-300 ease-in-out"
-            onClick={handlePrev}
+            onClick={() => setCurrentIndex(prev => (prev === 0 ? totalSlides - 1 : prev - 1))}
           >
-            <ChevronLeft 
-              className="text-gray-600 
-                         hover:text-blue-500 
-                         transition-colors duration-300"
-            />
+            <ChevronLeft className="text-[#C1C1C1] hover:text-[#084C73] transition-colors duration-300" />
           </button>
           <button
-            className="absolute right-8 top-1/2 transform -translate-y-1/2 
+            className="absolute right-6 top-1/2 transform -translate-y-1/2 
                        bg-white shadow-md p-2 rounded-full 
-                       border border-gray-300
-                       hover:border-blue-500
+                       border-2 border-gray-300
+                       hover:border-[#084C73]
                        transition-all duration-300 ease-in-out"
-            onClick={handleNext}
+            onClick={() => setCurrentIndex(prev => (prev === totalSlides - 1 ? 0 : prev + 1))}
           >
-            <ChevronRight 
-              className="text-gray-600 
-                         hover:text-blue-500 
-                         transition-colors duration-300"
-            />
+            <ChevronRight className="text-[#C1C1C1] hover:text-[#084C73] transition-colors duration-300" />
           </button>
 
           {/* Slide Indicators */}
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-6">
             {Array.from({ length: totalSlides }).map((_, index) => (
               <div
                 key={index}
@@ -169,7 +130,7 @@ const HomePage = () => {
                   index === currentIndex
                     ? "bg-blue-500 scale-125"
                     : "bg-gray-400 hover:bg-gray-600"
-                } transition-all duration-300 ease-in-out`}
+                } transition-all duration-300`}
                 onClick={() => setCurrentIndex(index)}
               ></div>
             ))}
@@ -187,18 +148,21 @@ const HomePage = () => {
           title="Top Companies" 
           companies={companyImages} 
           layout="top" 
+          itemsPerSlide={6}
           autoSlide={true}
         />
         <Carousel 
           title="Standard Companies" 
           companies={companyImages} 
           layout="standard" 
+          itemsPerSlide={12}
           responsive={true}
         />
         <Carousel 
           title="Listed Companies" 
           companies={companyImages} 
           layout="listed" 
+          itemsPerSlide={12}
           responsive={true}
         />
       </div>
